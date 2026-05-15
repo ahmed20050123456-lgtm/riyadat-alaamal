@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>امتحان ريادة الأعمال - د. محمد السرجاني</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #1a3a5c;
+    --primary-light: #2563a8;
+    --accent: #16a34a;
+    --accent-light: #22c55e;
+    --gold: #d97706;
+    --gold-light: #fbbf24;
+    --danger: #dc2626;
+    --danger-light: #fca5a5;
+    --success: #15803d;
+    --success-light: #bbf7d0;
+    --bg: #f0f4f8;
+    --card: #ffffff;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --shadow: 0 4px 24px rgba(26,58,92,0.10);
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Cairo', 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    direction: rtl;
+  }
+
+  /* ========= HEADER ========= */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: white;
+    padding: 2rem 1.5rem 1.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -40px; left: -40px;
+    width: 200px; height: 200px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50%;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; right: -30px;
+    width: 240px; height: 240px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 50%;
+  }
+  .header h1 { font-size: 2rem; font-weight: 900; letter-spacing: -0.5px; }
+  .header p { font-size: 1rem; opacity: 0.85; margin-top: 0.4rem; }
+  .header-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 50px;
+    padding: 0.3rem 1rem;
+    font-size: 0.82rem;
+    margin-top: 0.8rem;
+  }
+
+  /* ========= LECTURE TABS ========= */
+  .lecture-nav {
+    background: var(--card);
+    border-bottom: 2px solid var(--border);
+    padding: 0 1rem;
+    display: flex;
+    gap: 0.2rem;
+    overflow-x: auto;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  .lecture-nav::-webkit-scrollbar { height: 4px; }
+  .lecture-nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  .tab-btn {
+    flex-shrink: 0;
+    padding: 0.9rem 1.2rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--primary-light); background: #f8fafc; }
+  .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary-light); }
+
+  /* ========= MAIN CONTENT ========= */
+  .main { max-width: 860px; margin: 0 auto; padding: 2rem 1rem; }
+
+  /* ========= LECTURE SECTION ========= */
+  .lecture-section { display: none; }
+  .lecture-section.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .lecture-header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    border-radius: var(--radius);
+    padding: 1.5rem 2rem;
+    color: white;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .lecture-num {
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    width: 54px; height: 54px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; font-weight: 900;
+    flex-shrink: 0;
+  }
+  .lecture-header h2 { font-size: 1.15rem; font-weight: 700; }
+  .lecture-header p { font-size: 0.85rem; opacity: 0.85; margin-top: 0.2rem; }
+
+  /* ========= SCORE BAR ========= */
+  .score-bar {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    flex-wrap: wrap;
+  }
+  .score-item { text-align: center; }
+  .score-num { font-size: 1.6rem; font-weight: 900; }
+  .score-label { font-size: 0.75rem; color: var(--text-muted); }
+  .score-total .score-num { color: var(--primary); }
+  .score-correct .score-num { color: var(--success); }
+  .score-wrong .score-num { color: var(--danger); }
+  .score-skip .score-num { color: var(--gold); }
+  .progress-wrap { flex: 1; min-width: 120px; }
+  .progress-bar-bg { background: #e2e8f0; border-radius: 8px; height: 10px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-light)); border-radius: 8px; transition: width 0.4s; width: 0%; }
+  .progress-pct { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.3rem; text-align: left; }
+
+  /* ========= SECTION TITLES ========= */
+  .section-title {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-size: 1.05rem; font-weight: 700;
+    color: var(--primary);
+    margin: 1.8rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border);
+  }
+  .section-title .badge {
+    background: var(--primary);
+    color: white;
+    border-radius: 50px;
+    padding: 0.15rem 0.7rem;
+    font-size: 0.78rem;
+  }
+
+  /* ========= QUESTION CARD ========= */
+  .q-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    border: 1.5px solid var(--border);
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    position: relative;
+  }
+  .q-card:hover { border-color: #cbd5e1; box-shadow: var(--shadow); }
+  .q-card.answered-correct { border-color: var(--accent); background: #f0fdf4; }
+  .q-card.answered-wrong { border-color: var(--danger); background: #fff5f5; }
+
+  .q-num {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .q-text {
+    font-size: 0.97rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  /* TF Buttons */
+  .tf-wrap { display: flex; gap: 0.8rem; }
+  .tf-btn {
+    flex: 1;
+    padding: 0.7rem 0.5rem;
+    border-radius: 10px;
+    border: 2px solid var(--border);
+    background: var(--bg);
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s;
+    display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+  }
+  .tf-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  .tf-btn:disabled { cursor: default; }
+  .tf-btn.true-btn { color: var(--success); border-color: #86efac; }
+  .tf-btn.false-btn { color: var(--danger); border-color: #fca5a5; }
+  .tf-btn.true-btn:hover:not(:disabled) { background: #f0fdf4; }
+  .tf-btn.false-btn:hover:not(:disabled) { background: #fff5f5; }
+  .tf-btn.selected-correct { background: var(--success); color: white; border-color: var(--success); }
+  .tf-btn.selected-wrong { background: var(--danger); color: white; border-color: var(--danger); }
+  .tf-btn.show-correct { background: var(--success); color: white; border-color: var(--success); }
+
+  /* MCQ Options */
+  .mcq-opts { display: flex; flex-direction: column; gap: 0.5rem; }
+  .mcq-opt {
+    padding: 0.65rem 1rem;
+    border-radius: 10px;
+    border: 2px solid var(--border);
+    background: var(--bg);
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.18s;
+    text-align: right;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .mcq-opt:hover:not(:disabled) { border-color: var(--primary-light); background: #eff6ff; transform: translateX(-2px); }
+  .mcq-opt:disabled { cursor: default; }
+  .mcq-opt .opt-letter {
+    min-width: 26px; height: 26px;
+    background: var(--border);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .mcq-opt.selected-correct { background: #f0fdf4; border-color: var(--accent); color: var(--success); }
+  .mcq-opt.selected-correct .opt-letter { background: var(--accent); color: white; }
+  .mcq-opt.selected-wrong { background: #fff5f5; border-color: var(--danger); color: var(--danger); }
+  .mcq-opt.selected-wrong .opt-letter { background: var(--danger); color: white; }
+  .mcq-opt.show-correct { background: #f0fdf4; border-color: var(--accent); color: var(--success); }
+  .mcq-opt.show-correct .opt-letter { background: var(--accent); color: white; }
+
+  /* Feedback */
+  .feedback {
+    margin-top: 0.8rem;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    font-size: 0.86rem;
+    line-height: 1.65;
+    display: none;
+  }
+  .feedback.correct { background: #f0fdf4; border: 1.5px solid #86efac; color: #15803d; display: block; }
+  .feedback.wrong { background: #fff5f5; border: 1.5px solid #fca5a5; color: #dc2626; display: block; }
+  .feedback-icon { font-weight: 900; margin-left: 0.3rem; }
+
+  /* Result icon on card */
+  .q-result-icon {
+    position: absolute;
+    top: 1rem; left: 1rem;
+    font-size: 1.2rem;
+    display: none;
+  }
+  .q-card.answered-correct .q-result-icon.correct-icon { display: block; }
+  .q-card.answered-wrong .q-result-icon.wrong-icon { display: block; }
+
+  /* ========= RESET BTN ========= */
+  .reset-btn {
+    display: block;
+    width: 100%;
+    margin-top: 2rem;
+    padding: 1rem;
+    border-radius: var(--radius);
+    border: none;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white;
+    font-family: 'Cairo', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .reset-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+  .reset-btn:active { transform: translateY(0); }
+
+  /* ========= TIMER ========= */
+  .timer-bar {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 0.5rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    position: sticky;
+    top: 52px;
+    z-index: 99;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .timer-val { font-weight: 700; color: var(--primary); font-size: 1rem; }
+  .timer-val.warning { color: var(--gold); }
+  .finish-btn {
+    padding: 0.45rem 1.2rem;
+    border-radius: 50px;
+    border: none;
+    background: var(--primary);
+    color: white;
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .finish-btn:hover { opacity: 0.85; }
+
+  /* ========= RESULTS MODAL ========= */
+  .results-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .results-overlay.show { display: flex; }
+  .results-modal {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  .results-modal h2 { font-size: 1.4rem; font-weight: 900; color: var(--primary); text-align: center; margin-bottom: 0.3rem; }
+  .results-modal .subtitle { text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .big-score {
+    text-align: center;
+    margin: 1rem 0;
+  }
+  .big-score .num { font-size: 3.5rem; font-weight: 900; line-height: 1; }
+  .big-score .denom { font-size: 1.2rem; color: var(--text-muted); }
+  .big-score .grade { font-size: 1.1rem; font-weight: 700; margin-top: 0.4rem; padding: 0.3rem 1.2rem; border-radius: 50px; display: inline-block; }
+  .grade-a { background: #f0fdf4; color: #15803d; }
+  .grade-b { background: #eff6ff; color: #1d4ed8; }
+  .grade-c { background: #fffbeb; color: #92400e; }
+  .grade-d { background: #fff5f5; color: #dc2626; }
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.8rem;
+    margin: 1.2rem 0;
+  }
+  .res-item {
+    text-align: center;
+    padding: 0.8rem 0.5rem;
+    border-radius: 12px;
+    border: 1.5px solid var(--border);
+  }
+  .res-item .rn { font-size: 1.5rem; font-weight: 900; }
+  .res-item .rl { font-size: 0.75rem; color: var(--text-muted); }
+  .res-correct .rn { color: var(--success); }
+  .res-wrong .rn { color: var(--danger); }
+  .res-skip .rn { color: var(--gold); }
+  .lec-breakdown { margin-top: 1rem; }
+  .lec-row {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.88rem;
+  }
+  .lec-row:last-child { border-bottom: none; }
+  .lec-name { flex: 1; font-weight: 600; }
+  .lec-pct { font-weight: 700; min-width: 42px; text-align: left; }
+  .lec-bar-bg { flex: 2; background: #e2e8f0; border-radius: 8px; height: 8px; overflow: hidden; }
+  .lec-bar-fill { height: 100%; border-radius: 8px; }
+  .modal-actions { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; }
+  .modal-btn {
+    flex: 1;
+    min-width: 120px;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    border: none;
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .modal-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn-primary { background: var(--primary); color: white; }
+  .btn-secondary { background: var(--bg); color: var(--primary); border: 1.5px solid var(--border); }
+
+  /* ========= MOBILE ========= */
+  @media (max-width: 600px) {
+    .header h1 { font-size: 1.4rem; }
+    .q-card { padding: 1rem; }
+    .tf-btn { padding: 0.6rem; font-size: 0.85rem; }
+    .results-grid { grid-template-columns: repeat(3,1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🎓 امتحان ريادة الأعمال</h1>
+  <p>الطالب: أحمد حسين — أكاديمية الإسكندرية للإدارة والمحاسبة</p>
+  <div class="header-badge">7 محاضرات • 350 سؤال تفاعلي</div>
+</div>
+
+<div class="lecture-nav" id="lectureNav"></div>
+
+<div class="timer-bar">
+  <div>⏱️ وقت الجلسة: <span class="timer-val" id="globalTimer">00:00:00</span></div>
+  <div style="color:var(--text-muted);font-size:0.82rem;">المجموع الكلي: <span id="globalCorrect" style="color:var(--success);font-weight:700;">0</span> صحيح / <span id="globalWrong" style="color:var(--danger);font-weight:700;">0</span> خطأ / <span id="globalAnswered" style="color:var(--primary);font-weight:700;">0</span> مُجاب</div>
+  <button class="finish-btn" onclick="showResults()">📊 عرض النتائج الكاملة</button>
+</div>
+
+<div class="main" id="mainContent"></div>
+
+<!-- Results Modal -->
+<div class="results-overlay" id="resultsOverlay" onclick="if(event.target===this) closeResults()">
+  <div class="results-modal" id="resultsModal">
+    <h2>📊 نتائج الامتحان الكاملة</h2>
+    <div class="subtitle" id="resSubtitle"></div>
+    <div class="big-score">
+      <div class="num" id="resBigNum" style="color:var(--primary)">0</div>
+      <div class="denom" id="resDenom">من 0 سؤال</div>
+      <div class="grade" id="resGrade"></div>
+    </div>
+    <div class="results-grid">
+      <div class="res-item res-correct"><div class="rn" id="resCorrect">0</div><div class="rl">✅ صحيحة</div></div>
+      <div class="res-item res-wrong"><div class="rn" id="resWrong">0</div><div class="rl">❌ خاطئة</div></div>
+      <div class="res-item res-skip"><div class="rn" id="resSkip">0</div><div class="rl">⏭️ لم تُجَب</div></div>
+    </div>
+    <div class="lec-breakdown" id="lecBreakdown"></div>
+    <div class="modal-actions">
+      <button class="modal-btn btn-primary" onclick="closeResults()">متابعة الامتحان</button>
+      <button class="modal-btn btn-secondary" onclick="resetAll()">🔄 إعادة الكل</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const LECTURES = [
+  {
+    id: 1,
+    title: "المحاضرة الأولى",
+    subtitle: "مقدمة في ريادة الأعمال — المفهوم والأهمية والأنواع",
+    tf: [
+      { q: "كلمة Entrepreneurship أصلها فرنسي وتعني الشخص الذي يباشر عملاً تجارياً.", ans: true, exp: "صحيح — كلمة Entrepreneurship فرنسية الأصل وتعني الشخص الذي يقوم بالإشراع في عمل تجاري." },
+      { q: "ريادة الأعمال وفق تعريف شومبيتر هي عملية استهلاكية تهدف إلى المحافظة على الوضع الراهن في السوق.", ans: false, exp: "خطأ — عرّفها شومبيتر بأنها عملية إبداعية تهدف إلى إحداث تغيير في السوق من خلال منتجات جديدة وأساليب إنتاج مبتكرة." },
+      { q: "تحمل المخاطرة من أبرز خصائص ريادة الأعمال.", ans: true, exp: "صحيح — تحمل المخاطرة المحسوبة من الخصائص الجوهرية لريادة الأعمال." },
+      { q: "رائد الأعمال يتميز بالاعتماد التام على الآخرين في اتخاذ قراراته.", ans: false, exp: "خطأ — يتميز رائد الأعمال بالاستقلالية واتخاذ قراراته بنفسه." },
+      { q: "المشروعات الريادية تهدف إلى بناء ثراء كبير دائم يتجاوز هدف الدخل المستمر في المشروعات الصغيرة.", ans: true, exp: "صحيح — المشروعات الريادية تطمح لبناء ثروة كبيرة وليس مجرد دخل يومي." },
+      { q: "المشروعات الصغيرة تتميز بالمخاطرة العالية كما في المشروعات الريادية.", ans: false, exp: "خطأ — المشروعات الصغيرة تبتعد عن المخاطرة وتتسم بالأمان والروتين التقليدي." },
+      { q: "ريادة الأعمال تساهم في خلق فرص عمل جديدة وتقليل البطالة.", ans: true, exp: "صحيح — من أهم أدوار ريادة الأعمال توفير فرص عمل وتحسين مستوى المعيشة." },
+      { q: "يوصف رائد الأعمال بالشخص الجبان الذي يتجنب المخاطر.", ans: false, exp: "خطأ — يوصف رائد الأعمال بالشخص الجريء والمبدع والمخاطر بحسابية." },
+      { q: "الابتكار والإبداع من الخصائص الجوهرية لريادة الأعمال.", ans: true, exp: "صحيح — الابتكار وتقديم أفكار وحلول جديدة من أبرز خصائص ريادة الأعمال." },
+      { q: "ريادة الأعمال وفق Peter Drucker تعتمد على البحث العشوائي عن التغيير.", ans: false, exp: "خطأ — عرّفها Drucker بأنها سلوك ابتكاري منظم يقوم على البحث المنهجي عن التغيير واستثماره." },
+      { q: "المشروعات الريادية قد تحقق ثروة في خلال 5 إلى 10 سنوات.", ans: true, exp: "صحيح — المشروعات الريادية تحقق ثروة في زمن قياسي مقارنة بالمشروعات الصغيرة." },
+      { q: "المشروعات الصغيرة تتطلب ابتكاراً وإبداعاً عالياً مثل المشروعات الريادية.", ans: false, exp: "خطأ — المشروعات الصغيرة لا تتطلب الإبداع والابتكار بل تعتمد غالباً على تقليد الآخرين." },
+      { q: "المرونة والقدرة على التكيف من خصائص ريادة الأعمال.", ans: true, exp: "صحيح — النشاط الريادي يتميز بالقدرة على التكيف مع التغيرات البيئية والتكنولوجية والسوقية." },
+      { q: "ريادة الأعمال الحرفية تعتمد على الإنتاج الكمي الضخم.", ans: false, exp: "خطأ — ريادة الأعمال الحرفية تعتمد على المهارات اليدوية لإنتاج منتجات فريدة وشخصية بعيداً عن الإنتاج الكمي." },
+      { q: "خلق القيمة المضافة هدف محوري في ريادة الأعمال.", ans: true, exp: "صحيح — تهدف ريادة الأعمال إلى خلق قيمة اقتصادية أو اجتماعية جديدة." },
+      { q: "المشروعات الريادية تنطوي على مخاطر أقل بكثير من المشروعات الصغيرة.", ans: false, exp: "خطأ — المشروعات الريادية تتميز بالمخاطرة العالية التي تعد الثمن الذي يدفعه رائد الأعمال مقابل الثراء." },
+      { q: "ريادة الأعمال تُحفّز الابتكار وتحسّن جودة الحياة.", ans: true, exp: "صحيح — رواد الأعمال يسعون لتطوير منتجات وخدمات جديدة مما يعزز الابتكار ويحسن جودة الحياة." },
+      { q: "مصطلح ريادة الأعمال لا يوجد له مقترحات للترجمة في العربية.", ans: false, exp: "خطأ — تُرجم بعدة مقترحات منها: المبادرة، الريادة، المبادأة، إنشاء مشروع، والعمل الحر." },
+      { q: "استغلال الفرص يعني اكتشاف الفرص غير المستغلة وتحويلها لمشروعات ناجحة.", ans: true, exp: "صحيح — يركز رواد الأعمال على اكتشاف الفرص غير المستغلة في السوق وتحويلها إلى مشروعات ناجحة." },
+      { q: "ريادة الأعمال تُسهم في تقليل النمو الاقتصادي.", ans: false, exp: "خطأ — ريادة الأعمال تزيد النمو الاقتصادي وتُحسّن الناتج المحلي الإجمالي وتجذب الاستثمارات الأجنبية." },
+      { q: "Shane and Venkataraman (2000) عرّفا ريادة الأعمال كعملية لاكتشاف وتقييم واستغلال فرص الابتكار.", ans: true, exp: "صحيح — عرّفاها بأنها العملية التي يتم من خلالها اكتشاف وتقييم واستغلال فرص ابتكار سلع وخدمات مستقبلية." },
+      { q: "المبادرة تعني انتظار الآخرين لاتخاذ الخطوة الأولى.", ans: false, exp: "خطأ — المبادرة تعني روح الإقدام على تنفيذ الأفكار دون انتظار الآخرين." },
+      { q: "ريادة الأعمال الحرفية تشمل صناعات مثل الفخار والمجوهرات.", ans: true, exp: "صحيح — تشمل الحرف الفنية مثل الفخار والمجوهرات وصناعات التصميم اليدوي." },
+      { q: "المشروعات الصغيرة تبني ثروتها في خلال 5 سنوات كما المشروعات الريادية.", ans: false, exp: "خطأ — المشروعات الصغيرة تبني ثروتها على مدى حياة صاحبها بالمدى الطويل وقد لا تتطور." },
+      { q: "ريادة الأعمال تُسهم في تطوير المجتمعات وحل المشاكل المحلية.", ans: true, exp: "صحيح — رواد الأعمال غالباً يسعون لحل المشاكل المحلية وتحسين الظروف المعيشية لمجتمعاتهم." },
+    ],
+    mcq: [
+      { q: "أي من الآتي يُعدّ من خصائص ريادة الأعمال؟", opts: ["الاعتماد على الآخرين", "المبادرة واستغلال الفرص", "تجنب المخاطر كلياً", "الروتين التقليدي"], ans: 1, exp: "المبادرة واستغلال الفرص من أبرز خصائص ريادة الأعمال الستة الجوهرية." },
+      { q: "وفق Schumpeter، ريادة الأعمال هي:", opts: ["عملية استهلاكية", "عملية إبداعية تُحدث تغييراً في السوق", "عملية روتينية تحافظ على الوضع", "عملية تقليد للمنافسين"], ans: 1, exp: "عرّفها شومبيتر بأنها عملية إبداعية تهدف لإحداث تغيير في السوق عبر منتجات وطرق إنتاج جديدة." },
+      { q: "ما الفرق الأساسي بين المشروعات الريادية والمنشآت الصغيرة من حيث المخاطرة؟", opts: ["المشروعات الصغيرة أكثر مخاطرة", "المشروعات الريادية تتميز بالمخاطرة العالية", "كلاهما متساويان في المخاطرة", "لا توجد مخاطرة في أيٍّ منهما"], ans: 1, exp: "المشروعات الريادية تتميز بالمخاطرة العالية التي تُعد الثمن الذي يدفعه رائد الأعمال مقابل الثراء." },
+      { q: "وفق Peter Drucker، ريادة الأعمال تقوم على:", opts: ["البحث العشوائي عن التغيير", "تقليد الشركات الناجحة", "البحث المنهجي عن التغيير واستثماره فرصةً", "تجنب الابتكار"], ans: 2, exp: "عرّفها Drucker بأنها سلوك ابتكاري منظم يقوم على البحث المنهجي عن التغيير واستثماره كفرصة." },
+      { q: "أصل كلمة Entrepreneurship:", opts: ["إنجليزي", "فرنسي", "لاتيني", "ياباني"], ans: 1, exp: "كلمة Entrepreneurship فرنسية الأصل وتعني الشخص الذي يباشر أو يقوم بالإشراع في عمل تجاري." },
+      { q: "أي من الآتي ليس من العناصر الأساسية في ريادة الأعمال؟", opts: ["المبادرة", "الابتكار", "التقليد الكامل", "القيادة"], ans: 2, exp: "التقليد الكامل ليس من العناصر الريادية؛ العناصر تشمل المبادرة والأسبقية والإبداع والقيادة والمخاطرة والابتكار." },
+      { q: "ريادة الأعمال الحرفية تعتمد أساساً على:", opts: ["الإنتاج الكمي الضخم", "التكنولوجيا المتقدمة", "المهارات اليدوية والفنية لإنتاج منتجات فريدة", "الاستثمار الأجنبي"], ans: 2, exp: "ريادة الأعمال الحرفية تعتمد على المهارات الفنية واليدوية لإنتاج منتجات فريدة وشخصية بعيداً عن الإنتاج الكمي." },
+      { q: "أيٌّ من الآتي يُعبّر عن أهمية ريادة الأعمال؟", opts: ["زيادة البطالة", "تقليل الابتكار", "خلق فرص عمل وتحفيز النمو الاقتصادي", "تقليص الناتج المحلي"], ans: 2, exp: "ريادة الأعمال تخلق فرص عمل وتُحفّز الابتكار وتزيد النمو الاقتصادي وتطوّر المجتمعات." },
+      { q: "مقدار إيجاد الثروة في المشروعات الريادية مقارنة بالصغيرة:", opts: ["أقل بكثير", "متساوٍ", "أعلى بكثير ويهدف لبناء ثراء دائم", "صفر في كلا الحالتين"], ans: 2, exp: "المشروعات الريادية تهدف لبناء ثراء كبير دائم يتجاوز هدف المشروع الصغير البسيط." },
+      { q: "أي مما يلي يُعدّ مثالاً على ريادة الأعمال الحرفية؟", opts: ["مصنع سيارات ضخم", "صانع مجوهرات يدوية فريدة", "شركة برمجيات عملاقة", "متجر بقالة صغير"], ans: 1, exp: "صانع المجوهرات اليدوية الفريدة نموذج مثالي لريادة الأعمال الحرفية التي تعتمد على إنتاج عناصر فريدة." },
+      { q: "سرعة بناء الثروة في المشروعات الريادية قد تتحقق خلال:", opts: ["50-100 سنة", "طوال حياة صاحبها", "5-10 سنوات", "سنة واحدة فقط"], ans: 2, exp: "المشروعات الريادية قد تحقق ثروة في زمن قياسي يتراوح بين 5 إلى 10 سنوات." },
+      { q: "المشروعات الصغيرة تهدف بشكل أساسي إلى:", opts: ["تغيير السوق كلياً", "توليد دخل مستمر يُغني عن الوظيفة التقليدية", "الاستثمار الدولي", "الحصول على رأس مال مخاطر"], ans: 1, exp: "المشروعات الصغيرة تهدف لتوليد دخل مستمر بحيث يُغني صاحبها عن الوظيفة التقليدية." },
+      { q: "أيٌّ من الآتي يُعبّر عن مفهوم 'خلق القيمة المضافة' في ريادة الأعمال؟", opts: ["تقليد المنافسين", "خلق قيمة اقتصادية أو اجتماعية جديدة", "تقليل جودة المنتج لخفض التكاليف", "الاعتماد على الإنتاج التقليدي"], ans: 1, exp: "خلق القيمة المضافة يعني تقديم قيمة اقتصادية أو اجتماعية جديدة سواء عبر منتجات أو خدمات أو أساليب عمل مبتكرة." },
+      { q: "كيف تُسهم ريادة الأعمال في النمو الاقتصادي؟", opts: ["بتقليل الصادرات", "بزيادة البطالة", "بزيادة الناتج المحلي وجذب الاستثمارات الأجنبية", "برفع الضرائب"], ans: 2, exp: "المشاريع الناجحة تزيد الناتج المحلي وتُحسّن الميزان التجاري وتجذب الاستثمارات الأجنبية." },
+      { q: "الابتكار في ريادة الأعمال يعني:", opts: ["تكرار المنتجات القديمة بنفس الطريقة", "تقديم أفكار جديدة أو حلول مبتكرة تلبي احتياجات السوق", "تخفيض الأسعار فقط", "تجنب التغيير"], ans: 1, exp: "الابتكار في ريادة الأعمال يعني تقديم أفكار جديدة أو تطوير حلول مبتكرة تلبي احتياجات السوق بطرق غير تقليدية." },
+      { q: "الاستقلالية في ريادة الأعمال تعني:", opts: ["الاعتماد الكامل على المستثمرين في القرارات", "اتخاذ القرارات بشكل مستقل وامتلاك روح المبادرة", "تجنب اتخاذ القرارات", "الخضوع للإشراف الدائم"], ans: 1, exp: "يميل رواد الأعمال للعمل باستقلالية واتخاذ قراراتهم بأنفسهم مع امتلاك روح المبادرة." },
+      { q: "Shane and Venkataraman عرّفا ريادة الأعمال بأنها عملية تشمل:", opts: ["الإنتاج فقط", "اكتشاف وتقييم واستغلال فرص الابتكار", "البيع والتوزيع فقط", "إدارة الموارد البشرية"], ans: 1, exp: "عرّفاها بأنها عملية اكتشاف وتقييم واستغلال فرص ابتكار سلع وخدمات مستقبلية مع تحديد الفاعلين القائمين بذلك." },
+      { q: "ريادة الأعمال تُسهم في تطوير المجتمعات عبر:", opts: ["تجاهل المشاكل المحلية", "حل المشاكل المحلية وتحسين الظروف المعيشية", "تركيز الثروة في يد قلة", "تقليل فرص العمل"], ans: 1, exp: "رواد الأعمال غالباً ما يكونون جزءاً من مجتمعاتهم ويسعون لحل المشاكل المحلية وتحسين الظروف المعيشية." },
+      { q: "أيٌّ من الآتي يُعدّ من الخصائص الأساسية لريادة الأعمال؟", opts: ["الجمود والثبات", "المرونة والقدرة على التكيف", "الاعتماد على الروتين", "رفض التغيير"], ans: 1, exp: "المرونة والقدرة على التكيف مع التغيرات البيئية والتكنولوجية والسوقية من خصائص ريادة الأعمال الجوهرية." },
+      { q: "ما المقصود بـ'الأسبقية' في ريادة الأعمال؟", opts: ["التأخر في دخول السوق", "السبق في تقديم الفكرة أو المنتج للسوق قبل الآخرين", "تقليد من سبقوا", "الانتظار حتى ينجح الآخرون"], ans: 1, exp: "الأسبقية تعني السبق في تقديم الفكرة أو المنتج للسوق قبل الآخرين وهي عنصر أساسي في ريادة الأعمال." },
+      { q: "أيٌّ مما يلي لا يُعدّ من أهمية ريادة الأعمال؟", opts: ["خلق فرص العمل", "تحفيز الابتكار", "زيادة النمو الاقتصادي", "تقليص قطاع الخدمات"], ans: 3, exp: "أهمية ريادة الأعمال تشمل خلق فرص العمل وتحفيز الابتكار وزيادة النمو الاقتصادي وتطوير المجتمعات." },
+      { q: "ريادة الأعمال تُعرّف على أنها عملية تحويل الفكرة إلى:", opts: ["خسارة مالية", "مشكلة معقدة", "قيمة اقتصادية أو اجتماعية قابلة للتطبيق", "روتين عمل ثابت"], ans: 2, exp: "جوهر ريادة الأعمال تحويل الفكرة الإبداعية إلى قيمة اقتصادية أو اجتماعية قابلة للتطبيق الفعلي." },
+      { q: "أيٌّ من الصفات التالية تُعبّر عن رائد الأعمال؟", opts: ["المقلّد", "المبدع المنتج الجريء", "الخائف من التغيير", "المعتمد على الدولة دائماً"], ans: 1, exp: "يوصف رائد الأعمال بالمبدع الإنتاجي والشخص الجريء والمبادر والمخاطر." },
+      { q: "أيٌّ من الآتي يُميّز المشروعات الريادية عن المنشآت الصغيرة؟", opts: ["الروتين", "الابتكار وتحويل الأفكار إلى منتجات مربحة", "تقليد الآخرين", "الاستقرار الكامل"], ans: 1, exp: "تتصف المشروعات الريادية بالابتكار والإبداع وتحويل الأفكار إلى منتجات مربحة وهو ما يميزها عن المنشآت الصغيرة." },
+      { q: "ما الفرق بين المشروعات الريادية والصغيرة من حيث الابتكار؟", opts: ["كلاهما يتطلب ابتكاراً عالياً", "كلاهما لا يتطلب ابتكاراً", "الريادية تتطلب ابتكاراً عالياً والصغيرة لا تتطلبه غالباً", "الصغيرة أكثر ابتكاراً"], ans: 2, exp: "المشروعات الريادية تتصف بالابتكار والإبداع بينما الصغيرة لا تتطلب ذلك وقد تعتمد على تقليد الآخرين." },
+    ]
+  },
+  {
+    id: 2,
+    title: "المحاضرة الثانية",
+    subtitle: "أنواع ريادة الأعمال وصفات رائد الأعمال الناجح",
+    tf: [
+      { q: "ريادة الأعمال المؤسسية تُمارس داخل شركات كبيرة قائمة وتشجع الموظفين على التفكير كرواد أعمال.", ans: true, exp: "صحيح — ريادة الأعمال المؤسسية هي أنشطة ريادية داخل شركة قائمة تُشجع الموظفين على التصرف كرواد أعمال." },
+      { q: "ريادة الأعمال الاجتماعية تجعل الربح الهدف الأول قبل الأثر الاجتماعي.", ans: false, exp: "خطأ — في ريادة الأعمال الاجتماعية الربح وسيلة للاستدامة وليس الهدف الأول؛ الهدف حل مشكلة اجتماعية أو بيئية." },
+      { q: "الريادة الابتكارية تعتمد على فكرة جديدة تماماً وتقدم منتجاً غير موجود من قبل.", ans: true, exp: "صحيح — الريادة الابتكارية تعتمد على الابتكار الكامل وتقديم منتج أو خدمة غير موجودة من قبل." },
+      { q: "الريادة التقليدية تُعدّ أعلى مخاطرةً من الريادة الابتكارية.", ans: false, exp: "خطأ — الريادة التقليدية مخاطرها أقل لأنها تقوم على تقليد نموذج ناجح قائم بالفعل." },
+      { q: "الريادة الطموحة تعتمد على الجهد الشخصي والمثابرة أكثر من رأس المال.", ans: true, exp: "صحيح — الريادة الطموحة (Hustler) تعتمد على رأس مال قليل وجهد كبير ومثابرة مستمرة." },
+      { q: "ريادة الشراء تعني بناء مشروع جديد من الصفر.", ans: false, exp: "خطأ — ريادة الشراء تعني شراء مشروع قائم بالفعل ثم تطويره وتحسينه لتحقيق أرباح أكبر." },
+      { q: "الريادة التسلسلية تعني أن رائد الأعمال يؤسس أكثر من مشروع ويبيع مشروعاً ليبدأ آخر.", ans: true, exp: "صحيح — رائد الأعمال التسلسلي يؤسس مشروعاً وبعد نجاحه يبيعه ويبدأ مشروعاً جديداً." },
+      { q: "ريادة الأعمال الإبداعية تعتمد على التكنولوجيا الثقيلة كأساس لها.", ans: false, exp: "خطأ — ريادة الأعمال الإبداعية تعتمد على الموهبة والإبداع كرأس مال فكري لا على التكنولوجيا الثقيلة." },
+      { q: "الريادة الدولية تتطلب فهم ثقافات وأسواق مختلفة.", ans: true, exp: "صحيح — الريادة الدولية تشمل التوسع خارج الدولة ويتطلب فهم ثقافات وأسواق مختلفة." },
+      { q: "ريادة الأعمال المستدامة تهتم بالحاضر فقط ولا تأخذ باعتبار احتياجات الأجيال القادمة.", ans: false, exp: "خطأ — ريادة الأعمال المستدامة تراعي احتياجات الحاضر دون الإضرار بقدرة الأجيال القادمة على تلبية احتياجاتها." },
+      { q: "الحاجة إلى الإنجاز من أبرز الخصائص الشخصية لرائد الأعمال.", ans: true, exp: "صحيح — الحاجة إلى الإنجاز (Need for Achievement) من أبرز الخصائص الشخصية لرائد الأعمال." },
+      { q: "ريادة الأعمال الصغيرة تهدف لتغيير السوق على المستوى الدولي.", ans: false, exp: "خطأ — ريادة الأعمال الصغيرة تهدف لتحقيق دخل مستقر ومعيشة كافية وليس التوسع الكبير أو تغيير السوق." },
+      { q: "الريادة القائمة على البحث تُحوّل نتائج البحث العلمي إلى مشروعات تجارية ناجحة.", ans: true, exp: "صحيح — ريادة الأعمال القائمة على البحث تنقل المعرفة من المعمل إلى السوق وتستثمر رأس المال الفكري." },
+      { q: "موقع تقديم الخدمة غير مهم في ريادة الأعمال.", ans: false, exp: "خطأ — موقع تقديم الخدمة مهم جداً لأن التزامن والتفاعل المباشر مع العملاء يجعل الموقع عاملاً حاسماً." },
+      { q: "الصمود والمثابرة من الخصائص الشخصية لرائد الأعمال الناجح.", ans: true, exp: "صحيح — الصمود والمثابرة أي القدرة على مواجهة العقبات والمواقف الصعبة بذكاء وصبر من صفات رائد الأعمال." },
+      { q: "الريادة الاجتماعية تهتم فقط بتحقيق الأرباح المالية دون الاهتمام بالقضايا الاجتماعية.", ans: false, exp: "خطأ — الريادة الاجتماعية تمزج بين الأهداف الاقتصادية والأثر الاجتماعي وهدفها الأول حل مشكلة اجتماعية أو بيئية." },
+      { q: "ريادة الشركات الناشئة القابلة للتوسع مصممة للنمو السريع وتغيير السوق.", ans: true, exp: "صحيح — الشركات الناشئة القابلة للتوسع مصممة للنمو السريع وتعتمد على تمويل رأس المال المخاطر." },
+      { q: "الريادة الطموحة تعتمد على التمويل الخارجي الكبير من البداية.", ans: false, exp: "خطأ — رائد الأعمال الطموح لا يعتمد على تمويل خارجي بل يبدأ بإمكانيات بسيطة ويكبر تدريجياً." },
+      { q: "الريادة التكنولوجية تجمع بين التكنولوجيا وريادة الأعمال وتعتمد على الابتكار التقني.", ans: true, exp: "صحيح — الريادة التكنولوجية (Technopreneurship) تجمع بين التكنولوجيا وريادة الأعمال وتعتمد على الابتكار التقني." },
+      { q: "ريادة نمط الحياة تهدف للتوسع السريع وبناء إمبراطورية تجارية.", ans: false, exp: "خطأ — ريادة نمط الحياة هدفها الحفاظ على أسلوب حياة معين وتحقيق التوازن بين العمل والحياة وليس التوسع." },
+      { q: "Locus of Control يعني مدى اعتقاد الفرد بأنه يسيطر على مجريات أحداث حياته.", ans: true, exp: "صحيح — موقع التحكم (Locus of Control) يشير إلى مدى اعتقاد الفرد بأنه يسيطر على مجريات الأحداث في حياته." },
+      { q: "ريادة الشراء تنطوي على مخاطرة أعلى من الشركات الناشئة.", ans: false, exp: "خطأ — ريادة الشراء مخاطرتها أقل لأن المشروع المُشترى لديه عملاء وتدفق نقدي وسمعة في السوق." },
+      { q: "ريادة الأعمال المؤسسية تُستخدم موارد المؤسسة الداخلية لتطوير منتجات وخدمات جديدة.", ans: true, exp: "صحيح — الريادة المؤسسية تستخدم الموارد الداخلية كالخبرة ورأس المال والسمعة والتكنولوجيا لتطوير منتجات جديدة." },
+      { q: "الريادة الإبداعية تقتصر على الشركات الكبيرة فقط.", ans: false, exp: "خطأ — الريادة الإبداعية غالباً ما تكون مشروعات صغيرة أو متوسطة تعتمد على موهبة الشخص الفردية." },
+      { q: "ريادة الأعمال المستدامة تسعى لتحقيق توازن بين الربحية والمسؤولية المجتمعية والبيئية.", ans: true, exp: "صحيح — ريادة الأعمال المستدامة تحقق توازناً بين الجدوى الاقتصادية وحماية البيئة والعدالة الاجتماعية." },
+    ],
+    mcq: [
+      { q: "أي نوع من ريادة الأعمال يركز على الشغف الشخصي والتوازن بين العمل والحياة؟", opts: ["ريادة الشركات الناشئة القابلة للتوسع", "ريادة نمط الحياة", "الريادة الدولية", "ريادة الشراء"], ans: 1, exp: "ريادة نمط الحياة هدفها أسلوب حياة معين وليس التوسع وغالباً تكون قائمة على شغف شخصي." },
+      { q: "الريادة التقليدية (المقلدة) تقوم على:", opts: ["فكرة جديدة تماماً لم تُجرَّب من قبل", "محاكاة نموذج عمل ناجح قائم وتكييفه مع ظروفهم", "البحث العلمي المتقدم", "الاستثمار الدولي الواسع"], ans: 1, exp: "الريادة التقليدية تنطوي على محاكاة نموذج عمل ناجح قائم بالفعل وتكييفه مع الظروف الخاصة." },
+      { q: "ريادة الأعمال الإبداعية تعتمد أساساً على:", opts: ["التكنولوجيا الثقيلة", "الموهبة الفنية والإبداع المُدار تجارياً", "رأس المال الضخم فقط", "العمل في الصناعات التقليدية"], ans: 1, exp: "ريادة الأعمال الإبداعية تُحوّل الموهبة الفنية والإبداع إلى مشروع مربح ومستدام." },
+      { q: "ما الهدف الأساسي من الريادة الاجتماعية؟", opts: ["تحقيق أعلى ربح ممكن", "حل مشكلة اجتماعية أو بيئية", "السيطرة على السوق الدولي", "بناء احتكار تجاري"], ans: 1, exp: "الريادة الاجتماعية هدفها الأساسي حل مشكلة اجتماعية أو بيئية والربح وسيلة للاستدامة وليس الهدف الأول." },
+      { q: "أيٌّ من الآتي مثال على ريادة الأعمال الاجتماعية؟", opts: ["شركة طيران دولية", "مشروع إعادة تدوير النفايات", "مطعم فاخر", "محل إلكترونيات"], ans: 1, exp: "مشروع إعادة التدوير نموذج للريادة الاجتماعية التي تمزج الأهداف الاقتصادية بالأثر البيئي والاجتماعي." },
+      { q: "رائد الأعمال التسلسلي يتميز بـ:", opts: ["الاكتفاء بمشروع واحد طوال الحياة", "تأسيس مشروع وبيعه وبدء آخر جديد", "تجنب المخاطرة دائماً", "رفض الشراكات"], ans: 1, exp: "رائد الأعمال التسلسلي يؤسس مشروعاً ويبنيه حتى النجاح ثم يبيعه ويوظف رأس المال في مشروع جديد." },
+      { q: "الريادة الطموحة تتميز بـ:", opts: ["التمويل الخارجي الضخم", "رأس مال قليل + جهد كبير + مثابرة", "الاعتماد على التكنولوجيا المتقدمة", "العمل في شركات حكومية"], ans: 1, exp: "الريادة الطموحة (Hustler) تعتمد على رأس مال قليل وجهد شخصي كبير ومثابرة مستمرة دون تمويل خارجي." },
+      { q: "ريادة الشراء تُسمى أيضاً:", opts: ["Social Entrepreneurship", "Acquisition Entrepreneur", "Lifestyle Entrepreneurship", "Artisan Entrepreneurship"], ans: 1, exp: "ريادة الشراء قد تُسمى أيضاً Acquisition Entrepreneur وهي شراء شركة جاهزة وتطويرها." },
+      { q: "أيٌّ من الآتي من صفات رائد الأعمال الناجح؟", opts: ["تجنب اتخاذ القرارات", "التواصل الفعال وبناء العلاقات المهنية", "الخوف من المخاطرة", "رفض التغيير"], ans: 1, exp: "التواصل الفعال وامتلاك مهارات تواصل قوية لبناء علاقات إيجابية مع الشركاء والمستثمرين من صفات رائد الأعمال." },
+      { q: "الريادة الدولية تشمل:", opts: ["العمل المحلي فقط", "التصدير والفروع الدولية والأسواق العالمية", "بيع المنتجات في حي واحد", "تجنب الأسواق الأجنبية"], ans: 1, exp: "الريادة الدولية تشمل التوسع خارج حدود الدولة عبر التصدير والفروع الدولية والأسواق العالمية." },
+      { q: "ما الذي يميز الريادة المؤسسية عن الريادة الإبداعية؟", opts: ["الريادة المؤسسية داخل شركة كبيرة والإبداعية مشروع شخصي", "الريادة الإبداعية داخل شركة كبيرة والمؤسسية مشروع شخصي", "كلاهما نفس الشيء", "الريادة المؤسسية لا تستخدم موارد الشركة"], ans: 0, exp: "الريادة المؤسسية توجد داخل شركة كبيرة وتعتمد على مواردها بينما الإبداعية مشروع شخصي يعتمد على موهبة الشخص." },
+      { q: "أيٌّ من الخصائص الشخصية التالية ينتمي لرائد الأعمال؟", opts: ["Locus of Control", "Locus of Confusion", "External Dependence", "Social Isolation"], ans: 0, exp: "موقع التحكم (Locus of Control) من أبرز الخصائص الشخصية لرائد الأعمال ويعني اعتقاده بسيطرته على حياته." },
+      { q: "شركة تُطوّر الذكاء الاصطناعي كمنتج جديد — أيٌّ نوع ريادة هذا؟", opts: ["ريادة حرفية", "ريادة تكنولوجية", "ريادة نمط حياة", "ريادة شراء"], ans: 1, exp: "الريادة التكنولوجية (Technopreneurship) تجمع بين التكنولوجيا وريادة الأعمال وتعتمد على الابتكار التقني كالذكاء الاصطناعي." },
+      { q: "أيٌّ من الآتي مثال على ريادة نمط الحياة؟", opts: ["إطلاق شبكة اجتماعية عالمية", "مشروع تصوير سفر قائم على شغف شخصي", "بناء مصنع ضخم", "شراء سلسلة متاجر"], ans: 1, exp: "مشروع التصوير والسفر القائم على شغف شخصي مثال كلاسيكي لريادة نمط الحياة التي تُوازن بين العمل والحياة." },
+      { q: "الريادة المستدامة تسعى لـ:", opts: ["استنزاف الموارد الطبيعية", "دمج الاعتبارات البيئية والاجتماعية في القرارات الريادية", "تجاهل الأجيال القادمة", "تركيز الربح فقط"], ans: 1, exp: "ريادة الأعمال المستدامة تدمج الاعتبارات البيئية والاجتماعية والاقتصادية في القرارات الريادية لضمان التوازن." },
+      { q: "أيٌّ من الآتي لا يُعدّ مثالاً على الريادة الطموحة (Hustler)؟", opts: ["العمل الحر (Freelancing)", "الشركات الناشئة الممولة من مستثمرين كبار", "التجارة الإلكترونية السريعة", "الأعمال الجانبية (Side Hustles)"], ans: 1, exp: "الشركات الناشئة الممولة من مستثمرين كبار لا تنتمي للريادة الطموحة التي تعتمد على الذات وتمويل صغير." },
+      { q: "الريادة القائمة على البحث تهدف لـ:", opts: ["نقل المعرفة من المعمل إلى السوق", "بيع الأبحاث للحكومة فقط", "تجنب التجارة", "الاحتفاظ بالأبحاث في الجامعات"], ans: 0, exp: "ريادة الأعمال القائمة على البحث تُحوّل الأبحاث العلمية إلى مشروعات تجارية ناجحة بنقل المعرفة للسوق." },
+      { q: "النزاهة والالتزام الأخلاقي في ريادة الأعمال يعني:", opts: ["الخداع لتحقيق الربح", "الصدق والشفافية وبناء سمعة طيبة تعزز الثقة", "تجاهل أصحاب المصلحة", "التركيز على الربح دون قيود"], ans: 1, exp: "النزاهة والالتزام الأخلاقي يعني التصرف بصدق وشفافية وبناء سمعة طيبة تعزز الثقة وتسهم في استدامة المشروع." },
+      { q: "ما أهمية الإدارة المالية لرائد الأعمال؟", opts: ["ليست مهمة", "فهم الأرقام وإدارة التدفقات النقدية وضبط التكاليف لضمان الاستقرار المالي", "تفويض كل القرارات المالية للآخرين", "تجنب وضع ميزانيات"], ans: 1, exp: "الإدارة المالية مهمة لرائد الأعمال لفهم الأرقام وإدارة التدفقات النقدية وضبط التكاليف لضمان الاستقرار المالي." },
+      { q: "ما الذي يميز الشركات الناشئة القابلة للتوسع (Scalable Start-up) عن المشاريع الصغيرة؟", opts: ["تهدف للدخل المحلي فقط", "مصممة للنمو السريع وتغيير السوق وتعتمد على Venture Capital", "تتجنب التكنولوجيا", "لا تحتاج لتمويل"], ans: 1, exp: "الشركات الناشئة القابلة للتوسع مصممة للنمو السريع وتعتمد على تمويل رأس المال المخاطر وتهدف لتغيير السوق." },
+      { q: "مثال كلاسيكي على الشركات الناشئة القابلة للتوسع:", opts: ["محل حلاقة محلي", "شركة تقنية بدأت صغيرة وانتشرت عالمياً كـ Google", "مزرعة عائلية", "مطعم محلي"], ans: 1, exp: "Google مثال كلاسيكي على الشركات الناشئة القابلة للتوسع التي بدأت صغيرة وتحولت لعملاق عالمي." },
+      { q: "الدافعية (Motivation) كخاصية شخصية لرائد الأعمال تعني:", opts: ["انتظار التوجيهات الخارجية دائماً", "الدافع الداخلي القوي نحو العمل والإنجاز", "تجنب المسؤوليات", "الركون للراحة"], ans: 1, exp: "الدافعية تعني امتلاك الدافع الداخلي القوي الذي يدفع رائد الأعمال نحو العمل المستمر والإنجاز." },
+      { q: "أيٌّ من الآتي لا ينتمي لمجالات ريادة الأعمال الإبداعية؟", opts: ["تصميم الجرافيك", "صناعة الأفلام", "الموسيقى", "صناعة الأسلحة"], ans: 3, exp: "مجالات ريادة الأعمال الإبداعية تشمل الموضة والتصميم والأفلام والموسيقى وتطوير الألعاب وصناعة المحتوى الرقمي." },
+      { q: "ريادة الأعمال المستدامة تسعى لتحقيق توازن بين:", opts: ["الربح فقط", "الربح والمسؤولية المجتمعية والبيئية على المدى الطويل", "الإنتاج فقط", "التوزيع والتسويق"], ans: 1, exp: "ريادة الأعمال المستدامة تحقق توازناً بين الجدوى الاقتصادية وحماية البيئة والعدالة الاجتماعية على المدى الطويل." },
+      { q: "التحكم في موقع التحكم (Locus of Control) الداخلي يعني أن رائد الأعمال:", opts: ["يعتقد أن الحظ وحده يتحكم في حياته", "يعتقد أنه يسيطر على مجريات الأحداث بنفسه", "يعتمد على الآخرين دائماً", "يرفض تحمل المسؤولية"], ans: 1, exp: "موقع التحكم الداخلي يعني اعتقاد الفرد أنه يسيطر على مجريات الأحداث في حياته وهو من أبرز سمات رائد الأعمال." },
+    ]
+  },
+  {
+    id: 3,
+    title: "المحاضرة الثالثة",
+    subtitle: "مراحل دورة حياة المشروع الريادي — الاحتضان والتسريع والنمو",
+    tf: [
+      { q: "مرحلة ما قبل الاحتضان تبدأ بتوليد فكرة مشروع مبتكرة.", ans: true, exp: "صحيح — مرحلة ما قبل الاحتضان تبدأ بمرحلة الفكرة (Idea Stage) حيث يتم توليد فكرة مشروع مبتكرة." },
+      { q: "MVP تعني 'المنتج الأكثر تعقيداً وتكلفة'.", ans: false, exp: "خطأ — MVP تعني Minimum Viable Product أي المنتج الأولي الأدنى القابل للتطبيق وهو نموذج بسيط لاختبار الفكرة." },
+      { q: "حاضنة الأعمال تقدم إرشاداً ومنتورشيب وبرامج تدريب للمشاريع الناشئة.", ans: true, exp: "صحيح — حاضنة الأعمال تقدم إرشاداً وتدريباً ومساحة عمل وبناء علاقات وتمويلاً أولياً للمشاريع." },
+      { q: "مسرعة الأعمال تتميز بفترة دعم طويلة تمتد لسنوات.", ans: false, exp: "خطأ — مسرعة الأعمال تتميز بمدة قصيرة تتراوح بين 3 إلى 6 أشهر مع تركيز قوي على النمو السريع." },
+      { q: "التحقق من الفكرة يتم قبل ضخ استثمارات كبيرة.", ans: true, exp: "صحيح — مرحلة التحقق (Validation Stage) تهدف لاختبار الفكرة قبل استثمار وقت أو موارد مالية كبيرة." },
+      { q: "حاضنة الأعمال تُركّز على النمو السريع والتجهيز للمستثمرين.", ans: false, exp: "خطأ — هذا وصف مسرعة الأعمال؛ حاضنة الأعمال تُركّز على البناء وتطوير نموذج العمل للمشاريع المبكرة." },
+      { q: "مرحلة الإطلاق (Launch Stage) تعني الدخول الرسمي للسوق وبدء تحقيق الإيرادات.", ans: true, exp: "صحيح — مرحلة الإطلاق تعني الدخول الرسمي للسوق وبدء تحقيق الإيرادات الفعلية." },
+      { q: "اكتشاف العملاء والاستبيانات أدوات تُستخدم في مرحلة التحقق من الفكرة.", ans: true, exp: "صحيح — اكتشاف العملاء والاستبيانات والمقابلات والنماذج الأولية أدوات مرحلة التحقق." },
+      { q: "حاضنة الأعمال تدعم المشاريع التي لديها منتج جاهز وتحتاج للنمو السريع فقط.", ans: false, exp: "خطأ — هذا وصف مسرعة الأعمال؛ حاضنة الأعمال للمشاريع في المراحل المبكرة جداً." },
+      { q: "مرحلة النمو والتوسع تشمل زيادة الحصة السوقية ودخول أسواق جديدة.", ans: true, exp: "صحيح — مرحلة النمو والتوسع (Growth & Scaling) تشمل زيادة الحصة السوقية ودخول أسواق جديدة وتطوير منتجات إضافية." },
+      { q: "Prototype (النموذج الأولي) يُستخدم في مرحلة التحقق من الفكرة.", ans: true, exp: "صحيح — النموذج الأولي (Prototype) من أدوات مرحلة التحقق من الفكرة قبل الاستثمار الكبير." },
+      { q: "مسرعة الأعمال تقدم دعماً إرشادياً فقط دون تمويل.", ans: false, exp: "خطأ — مسرعة الأعمال تقدم تمويلاً وتجهيزاً للمستثمرين إضافة للدعم الإرشادي." },
+      { q: "بناء القدرات الديناميكية يعني القدرة على التعلم المستمر وتعديل الاستراتيجيات بسرعة.", ans: true, exp: "صحيح — برامج الدعم تبني قدرات ديناميكية أي القدرة على التعلم المستمر وتعديل الاستراتيجيات والاستجابة للتغيرات." },
+      { q: "مرحلة الاحتضان تسبق مرحلة ما قبل الاحتضان.", ans: false, exp: "خطأ — الترتيب الصحيح: مرحلة ما قبل الاحتضان ثم مرحلة الاحتضان ثم مرحلة النمو والتوسع." },
+      { q: "Seed Funding هو التمويل الأولي الذي تقدمه حاضنة الأعمال.", ans: true, exp: "صحيح — Seed Funding هو التمويل الأولي الذي تقدمه حاضنة الأعمال للمشاريع في مراحلها الأولى." },
+      { q: "مرحلة الاحتضان لا تشمل تطوير نموذج العمل أو إعداد خطة العمل.", ans: false, exp: "خطأ — مرحلة الاحتضان تشمل تطوير نموذج العمل وإعداد خطة العمل وتحسين المنتج." },
+      { q: "التحقق من الفكرة يهدف للتأكد من أن السوق يحتاج المنتج فعلاً.", ans: true, exp: "صحيح — الهدف من مرحلة التحقق التأكد من أن السوق يحتاج المنتج قبل الاستثمار الكبير." },
+      { q: "مرحلة التسريع تُقدّم دعماً إرشادياً أطول من الحاضنة.", ans: false, exp: "خطأ — مرحلة التسريع أقصر مدةً (3-6 أشهر) مع تركيز أقوى على النمو السريع والتجهيز للمستثمرين." },
+      { q: "مرحلة ما قبل الاحتضان تشمل اكتشاف الفرصة وتحديد المشكلة وفجوة السوق.", ans: true, exp: "صحيح — مرحلة الفكرة في ما قبل الاحتضان تشمل اكتشاف الفرصة وتحديد المشكلة وفجوة السوق ودراسة الجدوى." },
+      { q: "Networking (بناء العلاقات) من الخدمات التي تقدمها حاضنة الأعمال.", ans: true, exp: "صحيح — حاضنة الأعمال تقدم بناء العلاقات (Networking) إضافةً للإرشاد والتدريب والتمويل الأولي." },
+      { q: "مرحلة النمو تسبق مرحلة الاحتضان في دورة حياة المشروع.", ans: false, exp: "خطأ — الترتيب الصحيح: ما قبل الاحتضان ← الاحتضان ← النمو والتوسع." },
+      { q: "مسرعة الأعمال تُجهّز المشاريع لعروض المستثمرين.", ans: true, exp: "صحيح — أحد أهم أهداف مسرعة الأعمال تجهيز المشاريع الناشئة لعروض المستثمرين وجذب التمويل." },
+      { q: "دراسة أولية للجدوى تُجرى في مرحلة التحقق من الفكرة فقط.", ans: false, exp: "خطأ — الدراسة الأولية للجدوى تبدأ منذ مرحلة الفكرة (Idea Stage) في ما قبل الاحتضان." },
+      { q: "معايير تقييم الأفكار تشمل حجم السوق والقدرة التنافسية وإمكانات التوسع.", ans: true, exp: "صحيح — معايير تقييم الأفكار تشمل حجم السوق المستهدف والقدرة التنافسية وإمكانات التوسع والأثر الاجتماعي." },
+      { q: "حاضنة الأعمال ومسرعة الأعمال متماثلتان تماماً في طبيعة الدعم المقدم.", ans: false, exp: "خطأ — تختلفان في المرحلة المستهدفة والمدة الزمنية ونوع الدعم وهدف التمويل." },
+    ],
+    mcq: [
+      { q: "ما الهدف الأساسي من مرحلة التحقق من الفكرة (Validation Stage)؟", opts: ["ضخ استثمارات ضخمة فوراً", "التأكد من أن السوق يحتاج المنتج قبل الاستثمار الكبير", "إطلاق المنتج رسمياً", "تعيين موظفين"], ans: 1, exp: "مرحلة التحقق تهدف للتأكد من أن السوق فعلاً يحتاج المنتج قبل استثمار وقت أو موارد كبيرة." },
+      { q: "MVP اختصار لـ:", opts: ["Most Valuable Product", "Minimum Viable Product", "Maximum Value Plan", "Most Visible Project"], ans: 1, exp: "MVP اختصار Minimum Viable Product أي المنتج الأولي الأدنى القابل للتطبيق لاختبار الفكرة بأقل تكلفة." },
+      { q: "أيٌّ مما يلي تقدمه حاضنة الأعمال؟", opts: ["تمويل ضخم فقط دون إرشاد", "إرشاد ومنتورشيب وتدريب ومساحة عمل وتمويل أولي", "منافسة للمشاريع الأخرى", "بيع المنتجات مباشرة"], ans: 1, exp: "حاضنة الأعمال تقدم إرشاداً ومنتورشيب وتدريباً ومساحة عمل وبناء علاقات وتمويلاً أولياً (Seed Funding)." },
+      { q: "ما الفرق الرئيسي بين حاضنة الأعمال ومسرعة الأعمال؟", opts: ["لا فرق بينهما", "الحاضنة للمراحل المبكرة بمدة أطول والمسرعة للنمو السريع بمدة قصيرة", "المسرعة للمراحل المبكرة والحاضنة للنمو", "الحاضنة أغلى دائماً"], ans: 1, exp: "الحاضنة للمشاريع المبكرة بمدة أطول ودعم إرشادي، والمسرعة لمشاريع لديها منتج جاهز بمدة قصيرة 3-6 شهور." },
+      { q: "مرحلة الإطلاق (Launch Stage) تعني:", opts: ["بدء التفكير في الفكرة", "الدخول الرسمي للسوق وبدء تحقيق الإيرادات", "بناء النموذج الأولي", "التحقق من الفكرة فقط"], ans: 1, exp: "مرحلة الإطلاق تعني الدخول الرسمي للسوق وبدء تحقيق الإيرادات الفعلية." },
+      { q: "أيٌّ من الآتي يُعدّ من أدوات مرحلة التحقق من الفكرة؟", opts: ["التوسع الدولي", "اكتشاف العملاء والاستبيانات والنماذج الأولية", "توزيع الأرباح", "إعداد التقرير السنوي"], ans: 1, exp: "أدوات التحقق تشمل اكتشاف العملاء والاستبيانات والمقابلات والنماذج الأولية وMVP." },
+      { q: "مرحلة الاحتضان تُركّز على:", opts: ["الدخول للبورصة", "تطوير نموذج العمل وخطة العمل وتحسين المنتج", "تصفية الشركة", "توزيع الأسهم على الموظفين"], ans: 1, exp: "مرحلة الاحتضان تُركّز على تطوير نموذج العمل وإعداد خطة العمل وتحسين المنتج بمساعدة الحاضنة." },
+      { q: "Seed Funding هو:", opts: ["تمويل دولي ضخم", "التمويل الأولي الأصغر للمشاريع الناشئة", "أرباح سنوية للموظفين", "قرض بنكي تقليدي"], ans: 1, exp: "Seed Funding هو التمويل الأولي الأصغر الذي يُقدَّم للمشاريع الناشئة في مراحلها الأولى." },
+      { q: "ما ترتيب مراحل دورة حياة المشروع الريادي بشكل صحيح؟", opts: ["النمو ← الاحتضان ← ما قبل الاحتضان", "ما قبل الاحتضان ← الاحتضان ← النمو والتوسع", "الاحتضان ← ما قبل الاحتضان ← النمو", "النمو ← ما قبل الاحتضان ← الاحتضان"], ans: 1, exp: "الترتيب الصحيح: ما قبل الاحتضان (الفكرة والتحقق) ← الاحتضان ← النمو والتوسع." },
+      { q: "مسرعة الأعمال تتميز بـ:", opts: ["مدة طويلة وتركيز على البناء الأساسي", "مدة قصيرة 3-6 شهور وتركيز على النمو السريع والتجهيز للمستثمرين", "دعم مجاني دائماً", "قبول مشاريع في مراحلها الجنينية فقط"], ans: 1, exp: "مسرعة الأعمال تتميز بمدة قصيرة (3-6 أشهر) وتركيز قوي على النمو السريع وتجهيز العرض للمستثمرين." },
+      { q: "مرحلة ما قبل الاحتضان تشمل خطوتين أساسيتين هما:", opts: ["الإطلاق والتوسع", "الفكرة والتحقق منها", "الاحتضان والتسريع", "البيع والتصفية"], ans: 1, exp: "مرحلة ما قبل الاحتضان تشمل مرحلة الفكرة (Idea Stage) ومرحلة التحقق من الفكرة (Validation Stage)." },
+      { q: "ما الذي تشمله مرحلة النمو والتوسع (Scaling & Growth Stage)؟", opts: ["تحديد فكرة المشروع فقط", "زيادة الحصة السوقية ودخول أسواق جديدة وتطوير منتجات إضافية", "إطفاء المشروع", "إنشاء نموذج أولي"], ans: 1, exp: "مرحلة النمو تشمل زيادة الحصة السوقية ودخول أسواق جديدة وتطوير منتجات إضافية وبناء هياكل تنظيمية قوية." },
+      { q: "بناء القدرات الديناميكية لرائد الأعمال يعني:", opts: ["الجمود والالتزام بخطة ثابتة", "القدرة على التعلم المستمر وتعديل الاستراتيجيات والاستجابة للتغيرات", "رفض أي تغيير في الاستراتيجية", "تجاهل المنافسين"], ans: 1, exp: "القدرات الديناميكية تعني التعلم المستمر والقدرة على تعديل الاستراتيجيات بسرعة والاستجابة لتغيرات السوق." },
+      { q: "أيٌّ من معايير اختيار المشروعات في حاضنة الأعمال؟", opts: ["حجم الشركة المؤسِّسة فقط", "حجم السوق المستهدف والقدرة التنافسية وإمكانات التوسع والأثر الاجتماعي", "عمر رائد الأعمال فقط", "الجنسية"], ans: 1, exp: "معايير التقييم تشمل حجم السوق المستهدف والقدرة التنافسية وإمكانات التوسع والأثر الاجتماعي المتوقع." },
+      { q: "Networking في سياق حاضنة الأعمال يعني:", opts: ["تركيب شبكات الإنترنت", "بناء علاقات مهنية بين رواد الأعمال والشركاء والمستثمرين", "بيع المنتجات عبر الإنترنت", "تطوير تطبيقات التواصل الاجتماعي"], ans: 1, exp: "Networking يعني بناء علاقات مهنية وشبكات اتصال بين رواد الأعمال والشركاء والمستثمرين وهي من خدمات الحاضنة." },
+      { q: "أيٌّ من الآتي يُميّز مسرعة الأعمال عن حاضنة الأعمال؟", opts: ["تقبل المشاريع الجنينية فقط", "تمويل + تجهيز للمستثمرين بمدة قصيرة 3-6 شهور", "مدة دعم أطول", "لا تهتم بالنمو السريع"], ans: 1, exp: "مسرعة الأعمال تُميّزها المدة القصيرة (3-6 أشهر) والتركيز على النمو السريع والتمويل والتجهيز للمستثمرين." },
+      { q: "في أيّ مرحلة يُقدَّم التمويل الأولي (Seed Funding)؟", opts: ["مرحلة التوسع الدولي", "مرحلة الاحتضان", "مرحلة البيع والتصفية", "مرحلة التوزيع الدولي"], ans: 1, exp: "التمويل الأولي (Seed Funding) يُقدَّم في مرحلة الاحتضان ضمن خدمات حاضنة الأعمال." },
+      { q: "أيٌّ مما يلي يُعدّ من أدوات مرحلة التحقق من الفكرة؟", opts: ["التوسع الدولي الفوري", "استبيانات ومقابلات مع العملاء المحتملين", "تعيين مئات الموظفين", "إطلاق الحملات الإعلانية الضخمة"], ans: 1, exp: "استبيانات ومقابلات مع العملاء المحتملين من أهم أدوات مرحلة التحقق من الفكرة." },
+      { q: "لماذا تسبق مرحلة ما قبل الاحتضان مرحلة الاحتضان؟", opts: ["لأن الاحتضان أرخص", "لأن الفكرة يجب أن تُختبر وتُتحقق منها قبل دخول الحاضنة", "لا ترتيب محدد بينهما", "لأن الاحتضان يسبق دائماً"], ans: 1, exp: "يجب أن تُختبر الفكرة وتُتحقق منها أولاً قبل دخول الحاضنة لضمان عدم هدر الموارد على أفكار غير مجدية." },
+      { q: "مرحلة الاحتضان تدعم المشاريع في المراحل:", opts: ["المتأخرة جداً والناضجة", "المبكرة جداً في مراحل بناء نموذج العمل", "الدولية فقط", "التصفية والخروج"], ans: 1, exp: "حاضنة الأعمال للمشاريع في المراحل المبكرة مع التركيز على البناء وتطوير نموذج العمل وإعداد خطة العمل." },
+      { q: "مرحلة التسريع (Acceleration Stage) غالباً تتم داخل:", opts: ["البنوك التجارية", "مسرعة أعمال متخصصة", "المصانع الكبيرة", "وزارات الحكومة فقط"], ans: 1, exp: "مرحلة التسريع غالباً تتم داخل مسرعة أعمال متخصصة لمدة 3-6 أشهر مع تركيز على النمو السريع." },
+      { q: "أيٌّ من الآتي يُمثّل مرحلة الإطلاق (Launch Stage)؟", opts: ["تحديد الفكرة ودراستها", "الدخول الرسمي للسوق وبدء تحقيق الإيرادات", "بناء النماذج الأولية", "البحث عن حاضنة أعمال"], ans: 1, exp: "مرحلة الإطلاق تعني الدخول الرسمي للسوق وبدء تحقيق الإيرادات الفعلية وهي ضمن مرحلة النمو." },
+      { q: "ماذا يحدث في مرحلة الفكرة (Idea Stage)؟", opts: ["توزيع الأرباح", "توليد فكرة مبتكرة وتحديد المشكلة والسوق المستهدف ودراسة أولية للجدوى", "الدخول لأسواق دولية", "تعيين مجلس الإدارة"], ans: 1, exp: "في مرحلة الفكرة يتم توليد فكرة مبتكرة وتحديد المشكلة والسوق المستهدف وإجراء دراسة أولية للجدوى." },
+      { q: "دعم برامج الاحتضان يمتد إلى ما هو أبعد من التمويل ليشمل:", opts: ["بيع المنتجات للعملاء", "بناء قدرات ديناميكية لرواد الأعمال", "توزيع أسهم مجانية", "استيراد المعدات"], ans: 1, exp: "برامج الدعم تمتد لبناء قدرات ديناميكية أي القدرة على التعلم المستمر وتعديل الاستراتيجيات والاستجابة للتغيرات." },
+      { q: "ما الفرق بين حاضنة الأعمال ومسرعة الأعمال من حيث التمويل؟", opts: ["كلاهما لا يُقدّمان تمويلاً", "الحاضنة تقدم Seed Funding والمسرعة تقدم تمويلاً أكبر مع تجهيز للمستثمرين", "فقط المسرعة تقدم إرشاداً مجانياً", "لا فرق في التمويل"], ans: 1, exp: "الحاضنة تقدم Seed Funding أولي والمسرعة تقدم تمويلاً أكبر مع تجهيز المشروع لجذب مستثمرين أكبر." },
+    ]
+  },
+  {
+    id: 4,
+    title: "المحاضرة الرابعة",
+    subtitle: "تطوير فكرة المشروع — الإبداع والابتكار ونموذج العملية",
+    tf: [
+      { q: "الابتكار يعني تحويل الفكرة المبتكرة إلى قيمة اقتصادية أو اجتماعية قابلة للتطبيق.", ans: true, exp: "صحيح — الابتكار هو الاستغلال الناجح للأفكار الجديدة وتحويلها إلى قيمة فعلية من خلال التطبيق العملي." },
+      { q: "الإبداع والابتكار مصطلحان متطابقان تماماً لا فرق بينهما.", ans: false, exp: "خطأ — الإبداع توليد فكرة مبتكرة، والابتكار تحويل هذه الفكرة إلى قيمة اقتصادية أو اجتماعية قابلة للتطبيق." },
+      { q: "إدراك الفرصة أول مراحل نموذج العملية في الابتكار وريادة الأعمال.", ans: true, exp: "صحيح — نموذج العملية يبدأ بـ: إدراك الفرصة ← إيجاد الموارد ← تطوير المشروع ← تحقيق القيمة." },
+      { q: "عملية تحديد الفرص تشمل توليد الفكرة وتحديد الفرصة وتطويرها وتقييمها وتقييم الفريق.", ans: true, exp: "صحيح — تحديد الفرص يمر بخمس مراحل: توليد الفكرة، تحديد الفرصة، تطوير الفرصة، تقييم الفرصة، تقييم الفريق." },
+      { q: "الموارد البشرية والمالية والتكنولوجية غير ضرورية لبدء الابتكار.", ans: false, exp: "خطأ — الابتكار يتطلب تخصيص موارد أساسية: مالية وبشرية وتكنولوجية وتنظيمية." },
+      { q: "مرحلة تطوير المشروع تتسم في بدايتها بالوضوح التام وعدم الغموض.", ans: false, exp: "خطأ — مرحلة تطوير المشروع في بدايتها يسودها الغموض وعدم اليقين، ويتضح شكل الابتكار تدريجياً مع التطوير." },
+      { q: "نظام Stage-Gate يُستخدم لإدارة مخاطر تطوير المشروع.", ans: true, exp: "صحيح — نظام Stage-Gate يُقيّم المشروع عند مراحل محددة ويتخذ قرار الاستمرار أو التعديل أو الإيقاف." },
+      { q: "تحقيق القيمة في الابتكار التجاري يشمل حماية الملكية الفكرية وبراءات الاختراع.", ans: true, exp: "صحيح — تحقيق القيمة في الابتكار التجاري يشمل حماية الملكية الفكرية والعلامات التجارية وحقوق الملكية الأخرى." },
+      { q: "الابتكار الاجتماعي يقتصر على تحقيق الربح المالي فقط.", ans: false, exp: "خطأ — في الابتكار الاجتماعي تحقيق القيمة لا يقتصر على الربح بل يشمل تعظيم الأثر الاجتماعي ونشر الحل على نطاق أوسع." },
+      { q: "حاضنات التكنولوجيا تدعم الشركات القائمة على التكنولوجيا وتوفر المعرفة التقنية.", ans: true, exp: "صحيح — حاضنات التكنولوجيا تدعم الشركات التقنية وتوفر المعرفة التقنية وإدارة التغيير ودعم تأسيس الشركات الناشئة." },
+      { q: "الفرص الريادية قد تظهر نتيجة تطورات تكنولوجية أو تغير احتياجات العملاء أو ضغوط تشريعية.", ans: true, exp: "صحيح — الفرص قد تظهر نتيجة تطورات تكنولوجية أو تغير احتياجات العملاء أو ضغوط تشريعية أو تحركات المنافسين." },
+      { q: "محفظة المشاريع المتوازنة تجمع فقط مشاريع عالية المخاطرة.", ans: false, exp: "خطأ — محفظة المشاريع المتوازنة تجمع بين مشاريع عالية المخاطرة وعالية العائد ومشاريع أقل مخاطرة وأكثر استقراراً." },
+      { q: "مرحلة تطوير المشروع لا تتطلب أنشطة بحث وتجريب ودراسات سوق.", ans: false, exp: "خطأ — مرحلة تطوير المشروع تشمل البحث والتجريب ودراسات السوق وتحليل المنافسين وتصميم النماذج الأولية." },
+      { q: "التعلم من تجارب المشروع السابقة يُسهم في بناء قدرات ابتكارية مستقبلية.", ans: true, exp: "صحيح — تقييم المشروع بعد انتهائه واستخلاص الدروس يُسهم في بناء قدرات ابتكارية مستقبلية أقوى." },
+      { q: "حاضنات التنمية الاقتصادية تُركّز على خلق فرص العمل وتحفيز الاقتصاد المحلي.", ans: true, exp: "صحيح — حاضنات التنمية الاقتصادية تُركّز على خلق فرص عمل ودعم التوسع الصناعي وتحفيز الاقتصاد المحلي." },
+      { q: "إدارة فرق العمل في مرحلة التطوير تعني الاستغناء عن التنوع في الخبرات.", ans: false, exp: "خطأ — إدارة فرق العمل في مرحلة التطوير تعني دمج خبرات ومعارف متنوعة وبناء فريق متكامل." },
+      { q: "جوهر الابتكار يكمن في حداثة الفكرة بحد ذاتها بغض النظر عن التطبيق العملي.", ans: false, exp: "خطأ — جوهر الابتكار لا يكمن في حداثة الفكرة وحدها بل في قدرتها على التحول إلى قيمة فعلية عبر التطبيق العملي." },
+      { q: "ريادة الأعمال هي القوة المحركة لعملية الابتكار.", ans: true, exp: "صحيح — ريادة الأعمال تُعتبر القوة المحركة لعملية الابتكار من خلال جهود الأفراد المتحمسين والفرق الملتزمة." },
+      { q: "التخطيط طويل الأمد لرائد الأعمال يركز على مرحلة الإطلاق الأولى فقط.", ans: false, exp: "خطأ — التخطيط طويل الأمد يركز على نمو المشروع واستدامته على المدى الطويل وليس فقط على مرحلة الإطلاق." },
+      { q: "حاضنات الأعمال متعددة الاستخدامات تقدم خدمات متنوعة لمختلف القطاعات.", ans: true, exp: "صحيح — الحاضنات متعددة الاستخدامات تدعم النمو الصناعي والاقتصادي بشكل عام وتقدم خدمات لمختلف القطاعات." },
+      { q: "عملية الابتكار رحلة متكاملة تبدأ باكتشاف الفرصة وتنتهي بتحقيق القيمة.", ans: true, exp: "صحيح — العملية الابتكارية رحلة متكاملة: اكتشاف الفرصة ← توفير الموارد ← تطوير المشروع ← تحقيق القيمة." },
+      { q: "مرحلة تحقيق القيمة (Value Creation and Capture) تعني نجاح الابتكار تقنياً فقط.", ans: false, exp: "خطأ — النجاح التقني وحده لا يكفي؛ الابتكار يجب أن يحقق قيمة فعلية اقتصادية أو اجتماعية لاكتمال نجاحه." },
+      { q: "الابتكار يمكن تنظيمه وإدارته سواء في المشروعات الناشئة أو المنظمات العريقة.", ans: true, exp: "صحيح — إدارة الابتكار تعتمد على ثلاثة مفاهيم: الابتكار كعملية قابلة للإدارة وريادة الأعمال وخلق القيمة." },
+      { q: "تحديات رائد الأعمال المبتدئ تقتصر على تأمين التمويل فقط.", ans: false, exp: "خطأ — تحديات رائد الأعمال المبتدئ تشمل الموازنة بين الوقت الشخصي والمال والجهد والالتزامات الأسرية والاجتماعية." },
+      { q: "الهدف من تقييم المشروع بعد انتهائه هو تحليل ما نجح وما تحدى واستخلاص الدروس.", ans: true, exp: "صحيح — التقييم الشامل بعد انتهاء المشروع يحلل ما نجح وما أخفق والدروس المستفادة لتحسين المشروعات المستقبلية." },
+    ],
+    mcq: [
+      { q: "ما الفرق بين الإبداع والابتكار؟", opts: ["كلاهما متطابقان", "الإبداع توليد فكرة، والابتكار تحويلها إلى قيمة قابلة للتطبيق", "الابتكار أسبق من الإبداع", "الإبداع أشمل من الابتكار ويتضمنه"], ans: 1, exp: "الإبداع هو توليد الفكرة المبتكرة، والابتكار هو تحويل هذه الفكرة إلى قيمة اقتصادية أو اجتماعية قابلة للتطبيق." },
+      { q: "ما المراحل الأربع لنموذج العملية في الابتكار وريادة الأعمال؟", opts: ["التخطيط ← التنفيذ ← المراجعة ← الإنهاء", "إدراك الفرصة ← إيجاد الموارد ← تطوير المشروع ← تحقيق القيمة", "البحث ← التطوير ← التسويق ← البيع", "الفكرة ← الاحتضان ← الإطلاق ← التوسع"], ans: 1, exp: "نموذج العملية في الابتكار: إدراك الفرصة ← إيجاد الموارد ← تطوير المشروع ← تحقيق القيمة." },
+      { q: "نظام Stage-Gate يُستخدم لـ:", opts: ["تسريع التطوير دون مراجعة", "تقييم المشروع عند مراحل محددة واتخاذ قرار الاستمرار أو التعديل أو الإيقاف", "تجنب أي تقييم للمشروع", "إدارة الموارد البشرية فقط"], ans: 1, exp: "نظام Stage-Gate يُقيّم المشروع عند مراحل محددة 'بوابات' ويتخذ قرار الاستمرار أو التعديل أو الإيقاف." },
+      { q: "أيٌّ من الآتي يُمثّل موارد الابتكار؟", opts: ["الموارد الاجتماعية فقط", "الموارد المالية والبشرية والتكنولوجية والتنظيمية", "العلاقات الشخصية فقط", "المعدات القديمة"], ans: 1, exp: "موارد الابتكار تشمل: الموارد المالية والبشرية والتكنولوجية والتنظيمية." },
+      { q: "تحقيق القيمة في الابتكار التجاري لا يشمل:", opts: ["حماية الملكية الفكرية", "اختيار نموذج العمل المناسب", "تحديد آلية التسعير وقنوات التوزيع", "تجاهل المنافسين وعدم دراستهم"], ans: 3, exp: "تحقيق القيمة يشمل حماية الملكية الفكرية ونموذج العمل والتسعير والتوزيع والحفاظ على الميزة التنافسية." },
+      { q: "أيٌّ من أنواع حاضنات الأعمال يُركّز على الشركات التقنية؟", opts: ["الحاضنات متعددة الاستخدامات", "حاضنات التنمية الاقتصادية", "حاضنات التكنولوجيا", "الحاضنات الزراعية"], ans: 2, exp: "حاضنات التكنولوجيا تدعم الشركات القائمة على التكنولوجيا وتوفر المعرفة التقنية وإدارة التغيير." },
+      { q: "جوهر الابتكار يكمن في:", opts: ["حداثة الفكرة وحدها", "الإنفاق المالي الكبير", "قدرة الفكرة على التحول إلى قيمة فعلية عبر التطبيق العملي", "الشهرة الإعلامية"], ans: 2, exp: "جوهر الابتكار ليس في حداثة الفكرة بل في قدرتها على التحول إلى قيمة فعلية من خلال التطبيق العملي." },
+      { q: "عملية تحديد الفرص تشمل كم مرحلة؟", opts: ["مرحلتان", "ثلاث مراحل", "خمس مراحل", "سبع مراحل"], ans: 2, exp: "عملية تحديد الفرص تشمل خمس مراحل: توليد الفكرة، تحديد الفرصة، تطوير الفرصة، تقييم الفرصة، تقييم الفريق." },
+      { q: "محفظة المشاريع المتوازنة تجمع بين:", opts: ["مشاريع عالية المخاطرة فقط", "مشاريع عالية المخاطرة وعالية العائد + مشاريع أقل مخاطرة وأكثر استقراراً", "مشاريع منخفضة المخاطرة فقط", "مشاريع مضمونة الربح فقط"], ans: 1, exp: "المحفظة المتوازنة تجمع مشاريع عالية المخاطرة وعالية العائد مع مشاريع أقل مخاطرة وأكثر استقراراً لتوازن المحفظة." },
+      { q: "ما الذي يسود في بداية مرحلة تطوير المشروع؟", opts: ["الوضوح التام", "الغموض وعدم اليقين", "استقرار الموارد", "تحقق الأرباح"], ans: 1, exp: "في بداية مرحلة تطوير المشروع يسود الغموض وعدم اليقين، ويتضح شكل الابتكار تدريجياً مع تقدم التطوير." },
+      { q: "التوازن الإداري المطلوب في مرحلة التطوير يجمع بين:", opts: ["الإبداع فقط", "التحكم فقط", "الإبداع في إيجاد الحلول والتحكم بالوقت والميزانية والموارد", "الحرية الكاملة دون قيود"], ans: 2, exp: "مرحلة التطوير تتطلب توازناً بين الإبداع في إيجاد حلول مبتكرة والتحكم في الالتزام بالوقت والميزانية والموارد." },
+      { q: "أيٌّ من الأنشطة لا ينتمي لمرحلة تطوير المشروع؟", opts: ["البحث والتجريب", "دراسات السوق", "توزيع الأرباح على المساهمين", "تصميم النماذج الأولية"], ans: 2, exp: "توزيع الأرباح لا ينتمي لمرحلة التطوير؛ هذه المرحلة تشمل البحث والتجريب ودراسات السوق وتصميم النماذج الأولية." },
+      { q: "أيٌّ من الآتي يُعدّ من أنواع حاضنات الأعمال الثلاثة الرئيسية؟", opts: ["حاضنات المهن الفردية", "حاضنات متعددة الاستخدامات وحاضنات التنمية الاقتصادية وحاضنات التكنولوجيا", "حاضنات الحرف اليدوية", "حاضنات التجزئة"], ans: 1, exp: "أنواع حاضنات الأعمال الرئيسية: متعددة الاستخدامات، وحاضنات التنمية الاقتصادية، وحاضنات التكنولوجيا." },
+      { q: "ريادة الأعمال تُعتبر القوة المحركة للابتكار من خلال:", opts: ["البيروقراطية", "جهود الأفراد المتحمسين والفرق الملتزمة والشبكات الفاعلة", "القوانين الحكومية فقط", "المعدات التقنية"], ans: 1, exp: "ريادة الأعمال القوة المحركة للابتكار من خلال جهود الأفراد المتحمسين والفرق الملتزمة والشبكات الفاعلة." },
+      { q: "التحديات الرئيسية في الدول النامية أمام رواد الأعمال تشمل:", opts: ["سهولة الوصول للتمويل وبساطة الإجراءات", "صعوبة الوصول للتمويل وضعف البنية التحتية وتعقيد الإجراءات الإدارية", "توفر الخبرات ودعم الحكومة الكامل", "الانفتاح التام على الأسواق الدولية"], ans: 1, exp: "تحديات الدول النامية تشمل: صعوبة التمويل، ضعف البنية التحتية، تعقيد الإجراءات، نقص الخبرة، وتفضيل الشباب للقطاع الحكومي." },
+      { q: "في الابتكار الاجتماعي، تحقيق القيمة يشمل:", opts: ["تعظيم الربح المالي فقط", "تعظيم الأثر الاجتماعي ونشر الحل وبناء شراكات وضمان الاستدامة", "تصفية المشروع", "التركيز على الأسهم فقط"], ans: 1, exp: "الابتكار الاجتماعي يشمل: تعظيم الأثر الاجتماعي، نشر الحل، بناء شراكات فاعلة، وضمان استدامة الحلول." },
+      { q: "خلق القيمة كهدف نهائي للابتكار يُعبَّر عنه من خلال:", opts: ["الشهرة الإعلامية فقط", "مؤشرات مالية أو نمو اقتصادي أو استدامة بيئية أو تحسين الرفاه الاجتماعي", "حجم المكاتب والمقار", "عدد الموظفين"], ans: 1, exp: "خلق القيمة يُعبَّر عنه عبر مؤشرات مالية أو نمو اقتصادي أو استدامة بيئية أو تحسين الرفاه الاجتماعي." },
+      { q: "أيٌّ من التحديات التالية يواجهها رائد الأعمال المبتدئ؟", opts: ["توفر الموارد الكافية دائماً", "الموازنة بين الوقت والمال والجهد والالتزامات الأسرية", "سهولة الحصول على التمويل", "وضوح الصورة الكاملة منذ البداية"], ans: 1, exp: "رائد الأعمال المبتدئ يواجه تحدي الموازنة بين الوقت الشخصي والمال والجهد والالتزامات الأسرية والاجتماعية." },
+      { q: "حماية الملكية الفكرية في الابتكار التجاري تشمل:", opts: ["التسعير العشوائي", "براءات الاختراع والعلامات التجارية وحقوق الملكية الفكرية الأخرى", "تجاهل المنافسين", "توزيع المنتج مجاناً"], ans: 1, exp: "حماية الملكية الفكرية تشمل براءات الاختراع والعلامات التجارية وحقوق الملكية الفكرية الأخرى." },
+      { q: "ما الذي تُقدّمه الحاضنات متعددة الاستخدامات؟", opts: ["دعم للشركات التقنية فقط", "خدمات متنوعة لمختلف القطاعات ودعم النمو الصناعي والاقتصادي العام", "دعم خاص بالزراعة", "دعم للشركات الدولية فقط"], ans: 1, exp: "الحاضنات متعددة الاستخدامات تدعم النمو الصناعي والاقتصادي بشكل عام وتقدم خدمات متنوعة لمختلف القطاعات." },
+      { q: "القيمة الحقيقية للابتكار لا تقتصر على السلعة أو الخدمة بل تشمل:", opts: ["الشكل الخارجي للمنتج فقط", "بناء قدرات ابتكارية ومهارات رصد الفرص وإدارة المخاطر", "حجم المبنى والمقر", "عدد المنتجات المباعة فقط"], ans: 1, exp: "القيمة الحقيقية للابتكار تشمل بناء قدرات ابتكارية وتحسين مهارات رصد الفرص وتخصيص الموارد وإدارة المخاطر." },
+      { q: "أي من الآتي صحيح عن العملية الابتكارية؟", opts: ["كل مرحلة مستقلة ولا تؤثر على الأخرى", "كل مرحلة تعتمد على ما قبلها ونجاح كل منها يؤثر على احتمالات النجاح الكلي", "يمكن تخطي أي مرحلة دون تأثير", "المرحلة الأخيرة هي الأهم دائماً"], ans: 1, exp: "العملية الابتكارية متكاملة؛ كل مرحلة تعتمد على ما قبلها ونجاح كل منها يؤثر على احتمالات النجاح الكلي للمشروع." },
+      { q: "أيٌّ من الصفات تميز مرحلة تطوير المشروع؟", opts: ["وضوح تام وبدون غموض", "غموض في البداية ثم وضوح تدريجي مع تقدم التطوير", "ربحية فورية منذ اليوم الأول", "لا تحتاج لموارد مالية"], ans: 1, exp: "مرحلة تطوير المشروع يسودها الغموض في البداية ويتضح شكل الابتكار تدريجياً مع تقدم التطوير." },
+      { q: "ما هدف التقييم الشامل بعد انتهاء المشروع؟", opts: ["توزيع الأرباح على المساهمين", "تحليل ما نجح وما أخفق واستخلاص دروس لتحسين المشروعات المستقبلية", "إيقاف الابتكار نهائياً", "إعادة البداية من الصفر دائماً"], ans: 1, exp: "التقييم الشامل يحلل ما نجح وما تحدى ويستخلص الدروس المستفادة لبناء قدرات ابتكارية مستقبلية أقوى." },
+      { q: "أيٌّ من التحديات التالية يواجهها الدول النامية في تطوير ريادة الأعمال؟", opts: ["وفرة التمويل وسهولة الإجراءات", "ضعف البنية التحتية وتعقيد الإجراءات الإدارية ونقص الخبرة", "دعم حكومي متكامل لرواد الأعمال", "بيئة أعمال محفزة ومتطورة"], ans: 1, exp: "تحديات الدول النامية: صعوبة التمويل، ضعف البنية التحتية، تعقيد الإجراءات، نقص الخبرة الإدارية والتقنية." },
+    ]
+  },
+  {
+    id: 5,
+    title: "المحاضرة الخامسة",
+    subtitle: "دراسة الجدوى وخطة العمل",
+    tf: [
+      { q: "دراسة الجدوى الأولية هي تقييم مبدئي وسريع لفكرة المشروع قبل الاستثمار الكبير.", ans: true, exp: "صحيح — دراسة الجدوى الأولية تقييم مبدئي يهدف لتحديد مدى قابلية المشروع للتنفيذ قبل استثمار وقت أو موارد مالية كبيرة." },
+      { q: "دراسة الجدوى تُجرى عادةً بعد مرحلة التنفيذ الفعلي للمشروع.", ans: false, exp: "خطأ — دراسة الجدوى تُجرى في المرحلة الأولية قبل مرحلة التنفيذ وتساعد صانعي القرار على تقييم الفكرة المقترحة." },
+      { q: "أهم جوانب دراسة الجدوى هي المالية والفنية والسوقية والقانونية.", ans: true, exp: "صحيح — أهم جوانب دراسة الجدوى هي الجوانب المالية والفنية والسوقية أو التسويقية والقانونية." },
+      { q: "خطة العمل تُعدّ قبل دراسة الجدوى.", ans: false, exp: "خطأ — دراسة الجدوى مرحلة أولى تسبق خطة العمل؛ خطة العمل تأتي بعد التأكد من جدوى المشروع." },
+      { q: "خطة العمل وثيقة تفصيلية توضح فكرة المشروع وكيفية تنفيذها وتحقيق أهدافه.", ans: true, exp: "صحيح — خطة العمل وثيقة تفصيلية توضح فكرة المشروع وكيفية تنفيذها ويتم إعدادها للحصول على التمويل غالباً." },
+      { q: "دراسة الجدوى الأولية تُوفّر قاعدة معلومات موثوقة عند عرض المشروع على البنوك والمستثمرين.", ans: true, exp: "صحيح — دراسة الجدوى توفر قاعدة معلومات موثوقة يمكن الاعتماد عليها عند إعداد خطة العمل أو عرض المشروع على البنوك والمستثمرين." },
+      { q: "النتيجة النهائية لدراسة الجدوى هي قرار الاستمرار في المشروع أو التوقف.", ans: true, exp: "صحيح — نتيجة دراسة الجدوى قرار الاستمرار في تنفيذ الفكرة أم تعديلها أم التخلي عنها." },
+      { q: "خطة الورقة الواحدة (Napkin Plan) هي المرحلة التفصيلية الكاملة لدراسة الجدوى.", ans: false, exp: "خطأ — خطة الورقة الواحدة (Napkin Plan) هي الدراسة التمهيدية الأولى التي تُحدد ما إذا كانت الجدوى تستدعي المرحلة التفصيلية." },
+      { q: "دراسة الجدوى تعتمد على مصادر أولية كالمقابلات والاستبيانات ومصادر ثانوية كالتقارير الحكومية.", ans: true, exp: "صحيح — دراسة الجدوى تعتمد على مصادر أولية كالمقابلات والاستبيانات ومصادر ثانوية كالتقارير والإحصاءات الصناعية." },
+      { q: "أسلوب دلفي في التنبؤ يعتمد على رأي العملاء العاديين وليس الخبراء.", ans: false, exp: "خطأ — أسلوب دلفي يعتمد على رأي الخبراء المتخصصين في مجال المشروع وليس العملاء العاديين." },
+      { q: "خطة العمل تساعد في تحويل الأهداف العامة إلى خطط تشغيلية واضحة.", ans: true, exp: "صحيح — خطة العمل تساعد في تحويل الأهداف العامة إلى خطط تشغيلية واضحة ودعم عملية اتخاذ القرار." },
+      { q: "تقييم المخاطر في خطة العمل يشمل استخدام فترة الاسترداد والعائد على الاستثمار والقيمة الحالية الصافية.", ans: true, exp: "صحيح — تقييم المخاطر يستخدم أساليب تقييم مالي كفترة الاسترداد والعائد على الاستثمار والقيمة الحالية الصافية." },
+      { q: "دراسة الجدوى الأولية ضرورية بنفس الدرجة لجميع المشاريع بغض النظر عن حجمها.", ans: false, exp: "خطأ — دراسة الجدوى مهمة للمشاريع الكبيرة لكن المشاريع الصغيرة قد لا تحتاجها لتوفير تكاليف الدراسة." },
+      { q: "خطة العمل تساعد في توزيع المسؤوليات وتجنب الخلافات المستقبلية بين الشركاء.", ans: true, exp: "صحيح — خطة العمل توضح توزيع المسؤوليات وتجنب الخلافات المستقبلية وتدعم عملية اتخاذ القرار." },
+      { q: "العصف الذهني من أساليب التنبؤ المستخدمة في تخطيط الأعمال.", ans: true, exp: "صحيح — العصف الذهني داخل المنظمة من أساليب التنبؤ المستخدمة في خطة العمل إلى جانب تحليل الاتجاهات وأسلوب دلفي." },
+      { q: "مكونات خطة العمل تشمل وصف السلعة أو الخدمة وتحليل السوق وتحديد العملاء المستهدفين.", ans: true, exp: "صحيح — مكونات خطة العمل تشمل وصف السلعة وتحليل السوق وتحديد العملاء وتحليل المنافسين والتوقعات المالية." },
+      { q: "دراسة الجدوى لا تساعد في اكتشاف فرص جديدة.", ans: false, exp: "خطأ — دراسة الجدوى تساعد على اكتشاف فرص جديدة وتحديد المخاطر المحتملة ووضع استراتيجيات للتعامل معها." },
+      { q: "خطة الورقة الواحدة (Napkin Plan) هي مسح سريع وأولي لجدوى المشروع.", ans: true, exp: "صحيح — Napkin Plan هي الدراسة التمهيدية الأولى التي تُحدد ما إذا كانت الجدوى الأولية تستدعي المرحلة التفصيلية." },
+      { q: "تقديرات المالية في دراسة الجدوى الأولية يجب أن تكون دقيقة تماماً بالتفصيل.", ans: false, exp: "خطأ — في المرحلة الأولية لا يشترط الدقة المبالغة بل يكفي معلومات أساسية ومعرفة مبدئية للانتقال للمرحلة التفصيلية." },
+      { q: "دراسة الجدوى تُزوّد الإدارة بالمعلومات اللازمة لاتخاذ قرارات استثمارية سليمة.", ans: true, exp: "صحيح — من أهمية دراسة الجدوى أنها تُزوّد الإدارة بالمعلومات اللازمة لاتخاذ قرارات استثمارية سليمة." },
+      { q: "خطة العمل تُستخدم غالباً لإقناع المستثمرين أو الحصول على تمويل.", ans: true, exp: "صحيح — إعداد خطة العمل يهدف غالباً للحصول على التمويل أو دعم المستثمرين وإقناعهم بجدوى المشروع." },
+      { q: "تطوير السيناريوهات المستقبلية ليس من أساليب التنبؤ في تخطيط الأعمال.", ans: false, exp: "خطأ — تطوير السيناريوهات المستقبلية من أساليب التنبؤ المستخدمة في خطة العمل." },
+      { q: "خطة العمل تشمل استراتيجيات التسعير والتسويق والتوزيع.", ans: true, exp: "صحيح — مكونات خطة العمل تشمل استراتيجيات التسعير والتسويق والتوزيع وتحديد المخاطر وخطط التعامل معها." },
+      { q: "دراسة الجدوى تُسهم في تطبيق نطاق البدائل المتاحة واختيار أفضلها.", ans: true, exp: "صحيح — دراسة الجدوى تُسهم في تطبيق نطاق البدائل المتاحة واختيار أفضلها ضمن فوائدها الجوهرية." },
+      { q: "خطة العمل تشمل التوقعات المالية كالتدفق النقدي ونقطة التعادل.", ans: true, exp: "صحيح — مكونات خطة العمل تشمل التقديرات المالية مثل التدفق النقدي ونقطة التعادل ومتطلبات التمويل." },
+    ],
+    mcq: [
+      { q: "ما الهدف الرئيسي من دراسة الجدوى الأولية؟", opts: ["تنفيذ المشروع فوراً", "تقييم مدى قابلية المشروع للتنفيذ قبل الاستثمار الكبير", "إعداد التقرير السنوي", "توزيع الأرباح"], ans: 1, exp: "دراسة الجدوى الأولية تقييم مبدئي يهدف لتحديد مدى قابلية المشروع للتنفيذ قبل استثمار وقت أو موارد كبيرة." },
+      { q: "أيٌّ من الجوانب التالية لا يُعدّ من أهم جوانب دراسة الجدوى؟", opts: ["الجوانب المالية", "الجوانب الفنية", "الجوانب الاجتماعية الشخصية لصاحب المشروع", "الجوانب السوقية أو التسويقية"], ans: 2, exp: "أهم جوانب دراسة الجدوى هي المالية والفنية والسوقية والقانونية — الجوانب الشخصية لصاحب المشروع ليست من الجوانب الرئيسية." },
+      { q: "متى تُجرى دراسة الجدوى في دورة حياة المشروع؟", opts: ["بعد التنفيذ", "قبل مرحلة التنفيذ وفي المرحلة الأولية", "خلال مرحلة النمو", "عند التصفية"], ans: 1, exp: "دراسة الجدوى تُجرى في المرحلة الأولية قبل التنفيذ لتساعد على تقييم الفكرة واتخاذ قرار الاستمرار أو التوقف." },
+      { q: "ما العلاقة بين دراسة الجدوى وخطة العمل؟", opts: ["خطة العمل تسبق دراسة الجدوى", "دراسة الجدوى مرحلة أولى تسبق خطة العمل", "كلاهما يُعدّان في نفس الوقت", "لا علاقة بينهما"], ans: 1, exp: "دراسة الجدوى مرحلة أولى تُحدد مدى جدوى المشروع، وخطة العمل تأتي بعدها توضح كيفية التنفيذ والإدارة." },
+      { q: "أسلوب دلفي في التنبؤ يعتمد على:", opts: ["آراء العملاء العشوائيين", "رأي الخبراء المتخصصين", "بيانات المبيعات التاريخية فقط", "العصف الذهني الجماعي"], ans: 1, exp: "أسلوب دلفي يعتمد على رأي الخبراء المتخصصين في مجال المشروع للتنبؤ بالمستقبل." },
+      { q: "ما اسم الدراسة التمهيدية الأولى قبل دراسة الجدوى التفصيلية؟", opts: ["Business Plan", "Napkin Plan", "Market Research", "SWOT Analysis"], ans: 1, exp: "Napkin Plan (خطة الورقة الواحدة) هي الدراسة التمهيدية الأولى التي تُحدد ما إذا كانت الجدوى الأولية تستدعي المرحلة التفصيلية." },
+      { q: "أيٌّ من المصادر يُعدّ مصدراً ثانوياً في دراسة الجدوى؟", opts: ["المقابلات مع العملاء", "الاستبيانات الميدانية", "التقارير الحكومية والإحصاءات الصناعية", "الدراسات الميدانية الخاصة"], ans: 2, exp: "التقارير الحكومية والإحصاءات الصناعية والمنشورات المتخصصة وتقارير المؤسسات الدولية مصادر ثانوية في دراسة الجدوى." },
+      { q: "خطة العمل تُستخدم للحصول على:", opts: ["التراخيص الحكومية فقط", "التمويل أو دعم المستثمرين", "الأراضي والعقارات", "حل النزاعات القانونية"], ans: 1, exp: "خطة العمل غالباً ما يتم إعدادها بهدف الحصول على التمويل أو دعم المستثمرين وإقناعهم بجدوى المشروع." },
+      { q: "أيٌّ من الآتي من مكونات خطة العمل؟", opts: ["قائمة الموظفين المفصولين", "وصف السلعة أو الخدمة وتحليل السوق والعملاء المستهدفين والتوقعات المالية", "قائمة أسعار المنافسين فقط", "ملف الشركة التاريخي فقط"], ans: 1, exp: "مكونات خطة العمل تشمل وصف السلعة وتحليل السوق وتحديد العملاء وتحليل المنافسين والتوقعات المالية والمخاطر." },
+      { q: "أيٌّ من أساليب التنبؤ التالية يعتمد على رأي خبراء متخصصين؟", opts: ["تحليل الاتجاهات", "أسلوب دلفي", "العصف الذهني", "استطلاعات رأي العملاء"], ans: 1, exp: "أسلوب دلفي يعتمد على رأي الخبراء المتخصصين للتوصل لتوافق حول التنبؤات المستقبلية." },
+      { q: "فترة الاسترداد في تقييم المخاطر تعني:", opts: ["مدة الحصول على القرض", "الفترة الزمنية اللازمة لاسترداد رأس المال المستثمر من الأرباح", "مدة دراسة الجدوى", "فترة التدريب على المشروع"], ans: 1, exp: "فترة الاسترداد هي الفترة الزمنية اللازمة لاسترداد رأس المال المستثمر من الأرباح المتحققة." },
+      { q: "دراسة الجدوى الأولية ضرورية بشكل أساسي لـ:", opts: ["المشاريع الصغيرة جداً دون استثناء", "المشاريع الكبيرة والمعقدة التي تتطلب استثمارات كبيرة", "مشاريع الهواية فقط", "مشاريع المقايضة فقط"], ans: 1, exp: "دراسة الجدوى ضرورية للمشاريع الكبيرة؛ أما المشاريع الصغيرة جداً فقد لا تحتاجها لتوفير تكاليف الدراسة." },
+      { q: "أيٌّ من الآتي صحيح عن العلاقة بين دراسة الجدوى وخطة العمل؟", opts: ["كلاهما يُعدّان بعد التنفيذ", "دراسة الجدوى أولاً لتحديد ما إذا نبدأ، وخطة العمل ثانياً لتحديد كيف نبدأ", "خطة العمل تُعدّ أولاً", "لا علاقة ترتيبية بينهما"], ans: 1, exp: "دراسة الجدوى تحدد ما إذا كنا سنبدأ، وخطة العمل تحدد كيف سنبدأ وتُفصّل كيفية التنفيذ والإدارة." },
+      { q: "ما الذي يُميّز خطة العمل عن دراسة الجدوى؟", opts: ["خطة العمل أقل تفصيلاً", "خطة العمل تُركّز على كيفية التنفيذ والإدارة بعد التأكد من جدوى المشروع", "دراسة الجدوى أكثر تفصيلاً", "لا فرق جوهري بينهما"], ans: 1, exp: "خطة العمل تُركّز على كيفية التنفيذ والإدارة والتشغيل بعد التأكد من جدوى المشروع، وتشمل استراتيجيات التسويق والمالية." },
+      { q: "أهمية دراسة الجدوى تشمل:", opts: ["زيادة احتمالية الفشل", "تحديد نقاط القوة والضعف والفرص والتهديدات وتزويد الإدارة بمعلومات استثمارية سليمة", "إهدار الموارد", "تجاهل المنافسين"], ans: 1, exp: "أهمية دراسة الجدوى تشمل تحديد SWOT وتزويد الإدارة بمعلومات سليمة واكتشاف الفرص وتقليل الفشل." },
+      { q: "أيٌّ من الآتي من أساليب التنبؤ في خطة الأعمال؟", opts: ["الإنتاج العشوائي", "تحليل الاتجاهات والانحدار الإحصائي وأسلوب دلفي وتطوير السيناريوهات", "اتخاذ القرار بالحدس فقط", "تجاهل بيانات السوق"], ans: 1, exp: "أساليب التنبؤ في خطة الأعمال: تحليل الاتجاهات والانحدار الإحصائي، استطلاعات رأي العملاء، العصف الذهني، أسلوب دلفي، السيناريوهات." },
+      { q: "القيمة الحالية الصافية (NPV) تُستخدم في:", opts: ["تقييم أداء الموظفين", "تقييم المخاطر والجدوى المالية للمشروع", "تصميم المنتجات", "التسويق والترويج"], ans: 1, exp: "القيمة الحالية الصافية (NPV) أسلوب تقييم مالي يُستخدم في تقييم المخاطر والجدوى المالية للمشروع." },
+      { q: "متى نحتاج لدراسة الجدوى الأولية؟", opts: ["عند الحيرة بين عدة مشاريع أو الحصول على تمويل أو تنظيم الأفكار", "فقط بعد بدء المشروع", "عند توزيع الأرباح", "عند تصفية الشركة"], ans: 0, exp: "نحتاج لدراسة الجدوى عند الحيرة بين عدة مشاريع أو الحصول على تمويل أو تنظيم الأفكار أو بناء نموذج العمل." },
+      { q: "خطوات إعداد دراسة الجدوى الأولية تبدأ بـ:", opts: ["إعداد التقرير النهائي", "جمع البيانات والمعلومات الأولية حول فكرة المشروع والسوق", "تنفيذ المشروع مباشرة", "توزيع الأرباح"], ans: 1, exp: "تبدأ خطوات دراسة الجدوى بجمع البيانات والمعلومات الأولية حول فكرة المشروع والسوق ثم التحليل والتقييم." },
+      { q: "أيٌّ من الآتي يُعدّ من مكونات خطة العمل؟", opts: ["فقط وصف الشركة", "تحديد المخاطر وخطط التعامل معها والتقديرات المالية والتسويقية", "فقط قائمة الموظفين", "فقط العنوان والموقع"], ans: 1, exp: "خطة العمل شاملة وتتضمن وصف السلعة وتحليل السوق والعملاء والمنافسين والمخاطر والتقديرات المالية والتسويق." },
+      { q: "دراسة الجدوى توثّق الافتراضات والبيانات المستخدمة في التقديرات بهدف:", opts: ["التعقيد وتضخيم العمل", "تقليل الأخطاء الناتجة عن المعلومات غير الدقيقة", "إخفاء المعلومات الحساسة", "زيادة التكاليف"], ans: 1, exp: "توثيق الافتراضات والبيانات في دراسة الجدوى يهدف لتقليل الأخطاء الناتجة عن المعلومات غير الدقيقة." },
+      { q: "ما البيانات الأساسية التي تجمعها دراسة الجدوى الأولية؟", opts: ["بيانات الموظفين فقط", "معلومات السوق والجوانب الفنية والمالية والتراخيص القانونية", "معلومات المساهمين فقط", "بيانات الشركات المنافسة فقط"], ans: 1, exp: "دراسة الجدوى تجمع: معلومات السوق والتسويق، الجوانب الفنية كالمعدات والتكاليف، الجوانب المالية، والتراخيص القانونية." },
+      { q: "أيٌّ من الآتي يُميّز خطة العمل عن دراسة الجدوى من حيث الاستخدام؟", opts: ["دراسة الجدوى لإقناع المستثمرين وخطة العمل لتقييم الفكرة", "خطة العمل لإقناع المستثمرين والحصول على تمويل ودراسة الجدوى لتقييم ما إذا نبدأ", "كلاهما يُعدّان للحصول على التراخيص فقط", "لا فرق في الاستخدام"], ans: 1, exp: "خطة العمل تُستخدم لإقناع المستثمرين والحصول على تمويل، بينما دراسة الجدوى لتقييم ما إذا كان المشروع مجدياً أم لا." },
+      { q: "أيٌّ من مراحل إعداد دراسة الجدوى يأتي ثالثاً؟", opts: ["جمع البيانات الأولية", "تحليل البيانات وإعداد التقديرات", "تقييم الجدوى الاقتصادية للمشروع", "إعداد الجدول الزمني"], ans: 2, exp: "خطوات دراسة الجدوى: (1) جمع البيانات، (2) تحليل البيانات وإعداد التقديرات، (3) تقييم الجدوى الاقتصادية، (4) الجدول الزمني." },
+      { q: "أهمية دراسة الجدوى في تقليل الفشل تتمثل في:", opts: ["زيادة تكاليف المشروع", "زيادة احتمالية نجاح المشروع وتقليل احتماليات الفشل", "تعقيد عملية التنفيذ", "تأخير بدء المشروع بلا فائدة"], ans: 1, exp: "دراسة الجدوى تزيد من احتمالية نجاح المشروع وتقلل من احتماليات الفشل بتحديد المخاطر والفرص مسبقاً." },
+    ]
+  },
+  {
+    id: 6,
+    title: "المحاضرة السادسة",
+    subtitle: "تحليل السوق والمنافسين — تطوير المنتجات الجديدة",
+    tf: [
+      { q: "عملية تطوير المنتجات الجديدة تتطلب توازناً بين الاستمرار في مشروعات غير مؤكدة وبين مخاطر الإنهاء المبكر.", ans: true, exp: "صحيح — التطوير يتطلب توازناً دقيقاً بين الاستمرار في مشاريع باحتماليات نجاح غير مؤكدة وبين مخاطر الإنهاء المبكر." },
+      { q: "منهجية كوبر المرحلية تُنصح بها لاستثمار الفحص المنهجي والمراقبة في تطوير المنتجات.", ans: true, exp: "صحيح — منهجية كوبر المرحلية (Stage-Gate) تُنصح بها للفحص المنهجي والمراقبة وأطر التقدم في تطوير المنتجات." },
+      { q: "مرحلة توليد الأفكار تهدف لاختيار المنتج النهائي وإطلاقه في السوق.", ans: false, exp: "خطأ — توليد الأفكار يهدف لتحديد فرص السلع والخدمات الجديدة، وليس اختيار المنتج النهائي أو إطلاقه." },
+      { q: "استراتيجية جذب السوق (Market Pull) تناسب الابتكارات التدريجية التي يُعبّر عنها المستهلكون.", ans: true, exp: "صحيح — جذب السوق تبرز فاعليتها في الابتكارات التدريجية التي تستند إلى وعي المستهلك وتفضيلاته المُعلنة." },
+      { q: "استراتيجية دفع التكنولوجيا (Technology Push) تُستخدم عندما يعرف العميل تماماً ما يريده ويستطيع التعبير عنه.", ans: false, exp: "خطأ — دفع التكنولوجيا يُستخدم عند التعامل مع احتياجات غير مُدركة أو معقدة تقنياً لا يستطيع العميل التعبير عنها." },
+      { q: "المشاريع منخفضة الجدة تُقاس بمعايير مالية وتسويقية كمية.", ans: true, exp: "صحيح — المشاريع منخفضة الجدة تقييمها سهل ويعتمد على معايير مالية وتسويقية كمية مثل حجم المبيعات والحصة السوقية." },
+      { q: "المشاريع عالية الجدة تُقاس فقط بمعايير الربح الفوري.", ans: false, exp: "خطأ — المشاريع عالية الجدة تتطلب معايير استراتيجية أوسع تركز على التعلم التنظيمي وبناء الفرص المستقبلية." },
+      { q: "تقييم مشروعات تطوير المنتجات الجديدة يعتمد بنيوياً على درجة الابتكار.", ans: true, exp: "صحيح — تقييم نجاح المنتجات يعتمد على درجة الابتكار: المشاريع منخفضة الجدة بمعايير كمية، وعالية الجدة بمعايير استراتيجية." },
+      { q: "توليد الأفكار في تطوير المنتجات يختار بين جذب السوق ودفع التكنولوجيا بناءً على مدى حداثة المنتج.", ans: true, exp: "صحيح — اختيار الاستراتيجية يعتمد على مدى حداثة المنتج: الابتكارات التدريجية تستخدم جذب السوق والجذرية دفع التكنولوجيا." },
+      { q: "في مرحلة اختيار المشروع (Project Selection)، الخطأ يُسبّب خسارة واحدة فقط.", ans: false, exp: "خطأ — الخطأ في الاختيار يُسبّب خسارتين: تكلفة الموارد على مشاريع ضعيفة + تكلفة الفرصة البديلة للمشاريع الواعدة." },
+      { q: "مرحلة تطوير المنتج تشمل تعاون فريق البحث والتطوير والمصممين والمهندسين وفريق التسويق.", ans: true, exp: "صحيح — في مرحلة تطوير المنتج يتعاون فريق البحث والتطوير والمصممون والمهندسون وفريق التسويق لحل المشكلات." },
+      { q: "العميل يشتري التكنولوجيا لذاتها وليس للفوائد التي يحصل عليها منها.", ans: false, exp: "خطأ — العملاء لا يشترون التكنولوجيا في حد ذاتها، بل يشترون المنتجات للفوائد التي يمكنهم الحصول عليها." },
+      { q: "اختبار Alpha هو اختبار داخلي يسبق اختبار Beta.", ans: true, exp: "صحيح — مراحل الاختبار: Alpha (داخلي) ← Beta (مع عينة مستخدمين) ← Gamma (نهائي قبل الإطلاق)." },
+      { q: "اختبار Gamma هو اختبار مع عينة من المستخدمين الخارجيين.", ans: false, exp: "خطأ — اختبار Beta هو مع عينة من المستخدمين، أما Gamma فهو الاختبار النهائي للتأكد من الجاهزية الكاملة قبل الإطلاق." },
+      { q: "تكلفة الفرصة البديلة في اختيار المشاريع تعني تكلفة المشاريع الواعدة التي لم تُختر.", ans: true, exp: "صحيح — تكلفة الفرصة البديلة هي تكلفة المشاريع الواعدة التي كان يمكن أن تنجح لو خُصّصت لها موارد إضافية." },
+      { q: "نموذج تطوير المنتجات الجديدة من أربع مراحل يبدأ بتوليد الفكرة وينتهي بتسويق المنتج.", ans: true, exp: "صحيح — النموذج المبسط: (1) توليد الفكرة، (2) تقييم المشاريع واختيارها، (3) تطوير المنتج، (4) تسويق المنتج ومراجعته." },
+      { q: "العلاقة بين تطوير المنتجات والتسويق تتسم بالانفصال التام.", ans: false, exp: "خطأ — العلاقة بين تطوير المنتجات والتسويق تتسم بالتكامل العملي وليس الانفصال." },
+      { q: "المشاريع البسيطة منخفضة الجدة تُقاس بالتأثير الاستراتيجي والتعلم المؤسسي.", ans: false, exp: "خطأ — المشاريع البسيطة تُقاس بالأرقام والمعايير الكمية، أما المشاريع المبتكرة عالية الجدة فتُقاس بالتأثير الاستراتيجي والتعلم." },
+      { q: "في مرحلة اختيار المشروع، الاختيار الخاطئ يُسبّب خسارتين وليس خسارة واحدة.", ans: true, exp: "صحيح — الاختيار الخاطئ يُسبّب: (1) تكلفة فعلية للموارد على مشروع ضعيف، (2) تكلفة الفرصة البديلة للمشروع الواعد." },
+      { q: "اختبار Beta يهدف للتأكد من الجاهزية الكاملة للمنتج قبل الإطلاق في السوق.", ans: false, exp: "خطأ — اختبار Gamma هو الذي يهدف للتأكد من الجاهزية الكاملة قبل الإطلاق، أما Beta فمع عينة من المستخدمين." },
+      { q: "استراتيجية جذب السوق تناسب التعديلات التدريجية على منتجات قائمة.", ans: true, exp: "صحيح — عند التعديلات التدريجية وتوسيع خطوط الإنتاج القائمة يكون اعتماد جذب السوق هو الخيار الأمثل." },
+      { q: "مرحلة تسويق المنتج ومراجعته هي المرحلة الثانية في نموذج تطوير المنتجات.", ans: false, exp: "خطأ — تسويق المنتج ومراجعته هي المرحلة الرابعة والأخيرة في النموذج المبسط لتطوير المنتجات الجديدة." },
+      { q: "التطوير التشاركي يدمج العميل كشريك في عملية التطوير لتقليل مخاطر الفشل.", ans: true, exp: "صحيح — التطوير التشاركي يدمج العميل كشريك في العملية لتقليل مخاطر الفشل وضبط متطلبات العملاء." },
+      { q: "عند ظهور فجوة بين التصميم الحالي والمتطلبات في تطوير المنتج، يجب على الفريق اتخاذ إجراءات سريعة.", ans: true, exp: "صحيح — عند ظهور أي مشكلة أو فجوة بين التصميم الحالي والمتطلبات يتعين على الفريق اتخاذ إجراءات سريعة لسدها." },
+      { q: "الطريقة المتبعة في معالجة المشكلات أثناء التطوير لا تؤثر على سرعة وفعالية العملية.", ans: false, exp: "خطأ — الطريقة المتبعة في معالجة المشكلات تؤثر بشكل مباشر على سرعة وفعالية عملية التطوير." },
+    ],
+    mcq: [
+      { q: "أيٌّ من الاستراتيجيتين يُستخدم عند التعامل مع احتياجات غير مُدركة من المستهلك؟", opts: ["جذب السوق (Market Pull)", "دفع التكنولوجيا (Technology Push)", "كلاهما متساويان", "لا توجد استراتيجية محددة"], ans: 1, exp: "دفع التكنولوجيا يُستخدم عند التعامل مع احتياجات غير مُدركة أو معقدة تقنياً لا يستطيع العميل التعبير عنها." },
+      { q: "كم عدد مراحل النموذج المبسط لتطوير المنتجات الجديدة؟", opts: ["مرحلتان", "ثلاث مراحل", "أربع مراحل", "خمس مراحل"], ans: 2, exp: "النموذج المبسط من أربع مراحل: توليد الفكرة، تقييم واختيار المشروع، تطوير المنتج، تسويق المنتج ومراجعته." },
+      { q: "ما خسارتا الاختيار الخاطئ للمشاريع في مرحلة اختيار المشروع؟", opts: ["فقدان الموظفين وتراجع السمعة", "تكلفة الموارد على مشروع ضعيف + تكلفة الفرصة البديلة للمشروع الواعد", "ارتفاع أسعار المواد الخام", "انخفاض الطلب في السوق"], ans: 1, exp: "الاختيار الخاطئ يُسبّب خسارتين: تكلفة فعلية على مشروع ضعيف + تكلفة الفرصة البديلة للمشروع الواعد." },
+      { q: "أيٌّ من الاختبارات التالية هو الاختبار الداخلي للمنتج؟", opts: ["Beta", "Gamma", "Alpha", "Delta"], ans: 2, exp: "Alpha هو الاختبار الداخلي الأول، يليه Beta مع عينة مستخدمين، ثم Gamma كاختبار نهائي." },
+      { q: "استراتيجية جذب السوق (Market Pull) تتناسب مع:", opts: ["الابتكارات الجذرية غير المألوفة", "التعديلات التدريجية على منتجات موجودة وتوسيع خطوط الإنتاج", "المنتجات التكنولوجية المعقدة", "الاحتياجات غير المُدركة"], ans: 1, exp: "جذب السوق تناسب الابتكارات التدريجية كالتعديلات على منتجات قائمة وتوسيع خطوط الإنتاج." },
+      { q: "لماذا العميل لا يشتري التكنولوجيا في حد ذاتها؟", opts: ["لأن التكنولوجيا غالية", "لأنه يشتري المنتجات للفوائد التي يحصل عليها منها وليس للتقنية ذاتها", "لأنه لا يفهم التكنولوجيا", "لأن التكنولوجيا غير متاحة"], ans: 1, exp: "العملاء لا يشترون التكنولوجيا لذاتها بل يشترون المنتجات للفوائد العملية التي يمكنهم الحصول عليها." },
+      { q: "أيٌّ من المراحل التالية تأتي ثالثةً في نموذج تطوير المنتجات؟", opts: ["توليد الفكرة", "تقييم واختيار المشروع", "تطوير المنتج", "تسويق المنتج"], ans: 2, exp: "الترتيب: (1) توليد الفكرة، (2) تقييم واختيار المشروع، (3) تطوير المنتج، (4) تسويق المنتج ومراجعته." },
+      { q: "أيٌّ من مراحل الاختبار تأتي قبل إطلاق المنتج النهائي في السوق؟", opts: ["Alpha فقط", "Beta فقط", "Alpha ثم Beta ثم Gamma", "لا توجد مراحل اختبار"], ans: 2, exp: "مراحل الاختبار تتسلسل: Alpha (داخلي) ← Beta (عينة مستخدمين) ← Gamma (نهائي قبل الإطلاق)." },
+      { q: "كيف تُقيَّم المشاريع عالية الجدة (High Innovation)؟", opts: ["بمعايير مالية وتسويقية كمية فقط", "بمعايير استراتيجية تركز على التعلم التنظيمي وبناء الفرص المستقبلية", "بحجم المبيعات والحصة السوقية فقط", "بعدد الموظفين"], ans: 1, exp: "المشاريع عالية الجدة تتطلب معايير استراتيجية أوسع تركز على التعلم التنظيمي وبناء الفرص المستقبلية." },
+      { q: "التطوير التشاركي في تسويق المنتجات الجديدة يعني:", opts: ["استبعاد العميل من العملية", "دمج العميل كشريك في العملية لتقليل مخاطر الفشل وضبط المتطلبات", "الاعتماد على فريق داخلي فقط", "تقليص عدد الاختبارات"], ans: 1, exp: "التطوير التشاركي يدمج العميل كشريك في العملية لتقليل مخاطر الفشل وضبط متطلبات العملاء وتهيئة القبول السوقي." },
+      { q: "منهجية كوبر المرحلية (Stage-Gate) تُساعد في:", opts: ["تسريع الإطلاق دون مراجعة", "الفحص المنهجي والمراقبة وأطر التقدم لتطوير المنتجات بكفاءة", "تجاهل مراحل التقييم", "تقليص الموارد المخصصة للتطوير"], ans: 1, exp: "منهجية كوبر المرحلية تُنصح بها للفحص المنهجي والمراقبة وأطر التقدم لإدارة تطوير المنتجات بكفاءة وفعالية." },
+      { q: "أيٌّ من العوامل التالية لا يُعدّ من عوامل نجاح المنتجات الجديدة؟", opts: ["الميزة التنافسية الجوهرية", "الاستخبارات السوقية", "رفض آراء العملاء تماماً", "كفاية الموارد"], ans: 2, exp: "رفض آراء العملاء لا يُعدّ من عوامل نجاح المنتجات؛ بل العكس — فهم احتياجات العملاء أساس النجاح." },
+      { q: "ما الفرق بين المشاريع منخفضة الجدة وعالية الجدة في التقييم؟", opts: ["كلاهما يُقاس بنفس الطريقة", "منخفضة الجدة بمعايير كمية وعالية الجدة بمعايير استراتيجية", "عالية الجدة أسهل تقييماً", "لا فرق في التقييم"], ans: 1, exp: "منخفضة الجدة: معايير كمية (مبيعات، حصة سوقية). عالية الجدة: معايير استراتيجية (تعلم تنظيمي، فرص مستقبلية)." },
+      { q: "في أيٌّ الحالات يكون اختيار استراتيجية 'دفع التكنولوجيا' مناسباً؟", opts: ["عندما يعرف العملاء بالضبط ما يريدون", "عندما تكون هناك احتياجات غير مُدركة أو معقدة تقنياً", "عند تعديل منتجات قائمة", "عندما يُعبّر العملاء عن تفضيلاتهم بوضوح"], ans: 1, exp: "دفع التكنولوجيا يُستخدم عند وجود احتياجات غير مُدركة أو معقدة تقنياً لا يستطيع العميل التعبير عنها." },
+      { q: "أيٌّ من الفرق التالية يجب أن تتعاون في مرحلة تطوير المنتج؟", opts: ["فريق المحاسبة فقط", "فريق البحث والتطوير والمصممون والمهندسون وفريق التسويق", "الإدارة العليا فقط", "فريق الموارد البشرية فقط"], ans: 1, exp: "في مرحلة تطوير المنتج يجب تعاون: فريق البحث والتطوير، المصممون، المهندسون، وفريق التسويق معاً." },
+      { q: "أيٌّ من الآتي مثال على المشاريع البسيطة منخفضة الجدة (Low Innovation)؟", opts: ["اختراع تقنية لم تُعرف من قبل", "تطوير نسخة محسّنة من هاتف موجود بتحسينات بسيطة", "إطلاق منتج يغيّر السوق بالكامل", "ابتكار خدمة جديدة كلياً"], ans: 1, exp: "المشاريع منخفضة الجدة كتطوير نسخة محسّنة من منتج موجود تُقاس بمعايير كمية مباشرة كالمبيعات والحصة السوقية." },
+      { q: "مرحلة توليد الأفكار في تطوير المنتجات تهدف لـ:", opts: ["إطلاق المنتج في السوق مباشرة", "تحديد فرص السلع والخدمات الجديدة", "اختيار الموزعين", "تقييم أداء الموظفين"], ans: 1, exp: "مرحلة توليد الأفكار تهدف لتحديد فرص السلع والخدمات الجديدة وهي المرحلة الأولى في نموذج التطوير." },
+      { q: "نجاح تسويق المنتجات الجديدة يتأثر بـ:", opts: ["شكل المكتب فقط", "درجة الابتكار في المنتج وما إذا كان منخفض أو عالي الجدة", "لون تغليف المنتج فقط", "موقع الشركة الجغرافي فقط"], ans: 1, exp: "تقييم نجاح تسويق المنتجات يعتمد بنيوياً على درجة الابتكار — منخفض الجدة بمعايير كمية، وعالي الجدة بمعايير استراتيجية." },
+      { q: "أيٌّ من الاختبارات التالية يُجرى مع عينة من المستخدمين الخارجيين؟", opts: ["Alpha", "Beta", "Gamma", "Delta"], ans: 1, exp: "اختبار Beta يُجرى مع عينة من المستخدمين الخارجيين قبل اختبار Gamma النهائي." },
+      { q: "ما الضغوط التي تواجه فرق تطوير المنتجات في ظل قصر دورات حياة المنتجات؟", opts: ["انخفاض الطلب على الابتكار", "ضغوط للتعامل مع عدد أكبر من الفرص مع إدارة المخاطر بكفاءة وفعالية", "عدم وجود ضغوط", "توفر وقت كافٍ دائماً"], ans: 1, exp: "قصر دورات حياة المنتجات يفرض ضغوطاً على فرق التطوير للتعامل مع فرص أكثر مع إدارة المخاطر بكفاءة وفعالية." },
+      { q: "تكلفة الفرصة البديلة في اختيار المشاريع تعني:", opts: ["تكلفة تصنيع المنتج", "تكلفة المشاريع الواعدة التي لم تُختر لكنها كانت ستنجح", "تكلفة إعلانات التسويق", "رواتب الموظفين"], ans: 1, exp: "تكلفة الفرصة البديلة تعني تكلفة المشاريع الواعدة التي كان يمكن أن تنجح لو خُصّصت لها موارد إضافية بدلاً من المشروع الضعيف." },
+      { q: "أيٌّ من المراحل الأربع لتطوير المنتجات الجديدة تأتي ثانيةً؟", opts: ["توليد الفكرة", "تقييم المشاريع واختيارها", "تطوير المنتج", "تسويق المنتج"], ans: 1, exp: "الترتيب: (1) توليد الفكرة، (2) تقييم المشاريع واختيارها، (3) تطوير المنتج، (4) تسويق المنتج ومراجعته." },
+      { q: "عندما تظهر فجوة في مرحلة تطوير المنتج بين التصميم والمتطلبات، ماذا يجب على الفريق؟", opts: ["تجاهل الفجوة وتجاهل المتطلبات", "اتخاذ إجراءات سريعة لسد هذه الفجوات", "إيقاف المشروع فوراً", "الانتظار حتى نهاية المشروع"], ans: 1, exp: "عند ظهور أي فجوة بين التصميم والمتطلبات يتعين على الفريق اتخاذ إجراءات سريعة لسدها." },
+      { q: "أيٌّ من العوامل التالية يُعدّ من عوامل نجاح المنتجات الجديدة الثمانية؟", opts: ["رفض آراء العملاء", "دعم الإدارة العليا والالتزام القيادي", "تجاهل المنافسين", "الاعتماد على الحظ"], ans: 1, exp: "دعم الإدارة العليا والالتزام القيادي أحد العوامل الثمانية لنجاح المنتجات الجديدة." },
+      { q: "ما الهدف من إجراء اختبار Alpha في عملية تطوير المنتج؟", opts: ["اختبار مع عينة من المستخدمين الخارجيين", "اختبار داخلي للفريق للتحقق من جودة المنتج قبل الخروج للخارج", "اختبار نهائي يسبق الإطلاق مباشرة", "اختبار السوق الكامل"], ans: 1, exp: "Alpha هو الاختبار الداخلي الذي يُجريه الفريق الداخلي للتحقق من جودة المنتج قبل الانتقال لاختبار Beta مع المستخدمين." },
+    ]
+  },
+  {
+    id: 7,
+    title: "المحاضرة السابعة",
+    subtitle: "عوامل نجاح المنتجات وتطوير الخدمات",
+    tf: [
+      { q: "الميزة التنافسية الجوهرية تعني تقديم قيمة مضافة حقيقية وتفوق في نسبة الأداء/التكلفة.", ans: true, exp: "صحيح — الميزة التنافسية الجوهرية تعني تقديم قيمة مضافة حقيقية وتفوق في نسبة الأداء إلى التكلفة من منظور العميل." },
+      { q: "الاستخبارات السوقية في عوامل نجاح المنتجات تشمل التقييم المبدئي للسوق والتقييم الفني.", ans: true, exp: "صحيح — الاستخبارات السوقية تشمل التحضير المسبق والفرز الأولي والتقييم المبدئي للسوق والتقييم الفني ودراسات السوق." },
+      { q: "تعريف المنتج الواضح يُحدد الأسواق المستهدفة وقائمة متطلبات المنتج قبل بدء التطوير.", ans: true, exp: "صحيح — تعريف المنتج الواضح يتضمن الأسواق المستهدفة وتعريف المفهوم والفوائد واستراتيجية الموقع وقائمة المتطلبات." },
+      { q: "الخدمات تتسم بالملموسية التامة مثل السلع تماماً.", ans: false, exp: "خطأ — الخدمات غالباً غير ملموسة على عكس السلع، رغم أنه يمكن رؤية نتائجها أو الشعور بها." },
+      { q: "تقييم جودة الخدمة يعتمد على الفارق بين توقعات العميل والأداء الفعلي.", ans: true, exp: "صحيح — يُقيَّم العملاء الخدمة على أساس الفارق بين توقعاتهم للأداء والأداء الفعلي الذي حصلوا عليه." },
+      { q: "الخدمات يمكن تخزينها مثل السلع تماماً.", ans: false, exp: "خطأ — الخدمات لا تُخزَّن (Perishability)؛ الطاقة الإنتاجية غير المستغلة كالمقاعد الشاغرة في الطائرة تُعدّ خسارة غير مستردة." },
+      { q: "التزامن بين الإنتاج والاستهلاك خاصية مميزة للخدمات دون السلع.", ans: true, exp: "صحيح — الخدمات تتميز بالتزامن بين الإنتاج والاستهلاك مما يفرقها عن السلع التي تُنتج وتُخزن مسبقاً." },
+      { q: "فرق العمل متعددة التخصصات (Cross-functional teams) من عوامل نجاح المنتجات الجديدة.", ans: true, exp: "صحيح — الهيكلة التنظيمية المرنة باستخدام فرق متعددة التخصصات لضمان التنسيق من الفكرة حتى الإطلاق عامل نجاح أساسي." },
+      { q: "الضمان (Assurance) في تقييم الخدمات يعني معرفة الموظفين ولطفهم وقدرتهم على بث الثقة.", ans: true, exp: "صحيح — الضمان (Assurance) يعني معرفة الموظفين ولطفهم وقدرتهم على بث الثقة في نفوس العملاء." },
+      { q: "الجوانب الملموسة في تقييم الخدمة تشمل مظهر المرافق والمعدات والموظفين.", ans: true, exp: "صحيح — الجوانب الملموسة تشمل مظهر المرافق والمعدات والموظفين وهي أحد عوامل تقييم جودة الخدمة." },
+      { q: "موقع تقديم الخدمة أقل أهمية من موقع الإنتاج في قطاع الخدمات.", ans: false, exp: "خطأ — موقع تقديم الخدمة غالباً أكثر أهمية من موقع الإنتاج بسبب التزامن والتفاعل المباشر مع العملاء." },
+      { q: "التعاطف (Empathy) في تقييم الخدمة يعني توفير الرعاية والاهتمام الفردي بالعملاء.", ans: true, exp: "صحيح — التعاطف (Empathy) يعني توفير الرعاية والاهتمام الفردي بالعملاء وهو أحد أبعاد تقييم جودة الخدمة." },
+      { q: "كفاية الموارد ليست من عوامل نجاح المنتجات الجديدة.", ans: false, exp: "خطأ — كفاية الموارد المالية والمهارات البشرية المتخصصة اللازمة لتحويل الفكرة لمنتج ملموس عامل نجاح أساسي." },
+      { q: "الاستجابة (Responsiveness) في تقييم الخدمة تعني سرعة الخدمة والاستعداد للمساعدة.", ans: true, exp: "صحيح — الاستجابة (Responsiveness) تعني سرعة الخدمة والاستعداد للمساعدة وهي أحد أبعاد تقييم جودة الخدمة." },
+      { q: "التزامن في الخدمات لا يُسبّب تحديات في ضبط معايير الجودة.", ans: false, exp: "خطأ — التزامن بين الإنتاج والاستهلاك يُسبّب تحديات في ضبط معايير الجودة اللحظية وتخطيط الطاقة الاستيعابية." },
+      { q: "قطاع الخدمات يتسم بتنوع هيكلي واسع من مبادرات فردية إلى كيانات ضخمة.", ans: true, exp: "صحيح — قطاع الخدمات يتنوع من مبادرات فردية ومؤسسات صغيرة إلى كيانات ضخمة ومنظمات غير ربحية في القطاعين العام والمدني." },
+      { q: "الكفاءة (Reliability) في تقييم الخدمة تعني القدرة على تقديمها بشكل موثوق ومتسق.", ans: true, exp: "صحيح — الكفاءة (Reliability) تعني القدرة على تقديم الخدمة بشكل موثوق ومتسق وهي من أبعاد تقييم جودة الخدمة." },
+      { q: "إدارة المخاطر الاستباقية تعني رصد التحديات التقنية والسوقية وتضمين خطط الطوارئ.", ans: true, exp: "صحيح — الإدارة الاستباقية للمخاطر تعني رصد التحديات التقنية والسوقية وتضمين خطط الطوارئ في نموذج العمل." },
+      { q: "الطاقة الإنتاجية غير المستغلة في الخدمات يمكن تخزينها واستخدامها لاحقاً.", ans: false, exp: "خطأ — الطاقة الإنتاجية غير المستغلة في الخدمات كالمقاعد الشاغرة تُعدّ خسارة غير مستردة لا يمكن تخزينها." },
+      { q: "دعم الإدارة العليا يوفر بيئة محفزة للابتكار ودعماً مؤسسياً للمشروع.", ans: true, exp: "صحيح — دعم الإدارة العليا يوفر بيئة محفزة للابتكار وتقديم الدعم المؤسسي اللازم وهو أحد عوامل النجاح الثمانية." },
+      { q: "درجة التواصل مع العملاء تتباين وفقاً لطبيعة الخدمة المقدمة.", ans: true, exp: "صحيح — درجة التواصل مع العملاء تتباين حسب طبيعة الخدمة: الرعاية الصحية تتطلب تفاعلاً مستمراً، والاستشارات المالية تفاعلاً دورياً." },
+      { q: "الهيكلة التنظيمية الجامدة تُعزّز التنسيق وتُسرّع تطوير المنتجات.", ans: false, exp: "خطأ — الهيكلة التنظيمية المرنة باستخدام فرق متعددة التخصصات هي التي تُعزّز التنسيق وتُسرّع التطوير." },
+      { q: "مفهوم كثافة التفاعل (Interaction Intensity) في الخدمات يشير للتفاعل بين مقدم الخدمة والمستفيد.", ans: true, exp: "صحيح — كثافة التفاعل (Interaction Intensity) يشير لمستوى التفاعل بين مقدم الخدمة والمستفيد والذي يتباين حسب طبيعة الخدمة." },
+      { q: "عوامل نجاح المنتجات الثمانية تشمل دعم الإدارة العليا والميزة التنافسية الجوهرية وكفاية الموارد.", ans: true, exp: "صحيح — العوامل الثمانية تشمل: الميزة التنافسية، الاستخبارات السوقية، تعريف واضح للمنتج، إدارة المخاطر، الهيكلة التنظيمية، كفاية الموارد، كفاءة التنفيذ، ودعم الإدارة العليا." },
+      { q: "المطاعم ومتاجر التجزئة وخدمات الترفيه أمثلة على أهمية الموقع في الخدمات.", ans: true, exp: "صحيح — المطاعم ومتاجر التجزئة وخدمات الترفيه أمثلة على الخدمات التي يكون فيها الموقع عاملاً حاسماً للنجاح." },
+    ],
+    mcq: [
+      { q: "كم عامل من عوامل نجاح المنتجات الجديدة وفق الدراسات المعتمدة على المقارنة الزوجية؟", opts: ["أربعة عوامل", "ستة عوامل", "ثمانية عوامل", "عشرة عوامل"], ans: 2, exp: "الدراسات المعتمدة على المقارنة الزوجية أشارت إلى ثمانية عوامل بنيوية لنجاح المنتجات الجديدة." },
+      { q: "أيٌّ من الأبعاد التالية لا يُعدّ من أبعاد تقييم جودة الخدمة؟", opts: ["الاستجابة (Responsiveness)", "الجوانب الملموسة (Tangibles)", "السعر المنخفض دائماً", "التعاطف (Empathy)"], ans: 2, exp: "أبعاد تقييم جودة الخدمة: الملموسة، الاستجابة، الكفاءة، الضمان، التعاطف — السعر المنخفض ليس بُعداً من أبعاد الجودة." },
+      { q: "لماذا موقع تقديم الخدمة أكثر أهمية من موقع الإنتاج؟", opts: ["بسبب انخفاض تكاليف الإيجار", "بسبب التزامن والتفاعل المباشر مع العملاء", "بسبب قوانين الضرائب", "بسبب قرب المنافسين"], ans: 1, exp: "موقع تقديم الخدمة أكثر أهمية بسبب التزامن والتفاعل المباشر مع العملاء كما في المطاعم ومتاجر التجزئة." },
+      { q: "Perishability (عدم القابلية للتخزين) في الخدمات يعني:", opts: ["إمكانية تخزين الخدمات لاستخدامها لاحقاً", "الطاقة الإنتاجية غير المستغلة تُعدّ خسارة غير مستردة", "أن الخدمات قابلة للتصدير", "أن الخدمات تتحسن مع الوقت"], ans: 1, exp: "عدم القابلية للتخزين يعني الطاقة الإنتاجية غير المستغلة كالمقاعد الشاغرة في الطائرة تُعدّ خسارة غير مستردة." },
+      { q: "أيٌّ من العوامل يُعدّ من عوامل نجاح المنتجات الثمانية؟", opts: ["تجاهل المنافسين", "كفاية الموارد المالية والبشرية المتخصصة", "الاعتماد على الحظ", "تقليص ميزانية التطوير"], ans: 1, exp: "كفاية الموارد المالية والمهارات البشرية المتخصصة اللازمة لتحويل الفكرة إلى منتج ملموس عامل نجاح أساسي." },
+      { q: "الاستخبارات السوقية (Market Intelligence) في عوامل نجاح المنتجات تشمل:", opts: ["التقييم المبدئي للسوق والتقييم الفني ودراسات السوق التفصيلية", "الإعلانات التلفزيونية فقط", "مراقبة وسائل التواصل الاجتماعي فقط", "دراسة منتجات المنافسين فقط"], ans: 0, exp: "الاستخبارات السوقية تشمل التحضير المسبق والفرز الأولي والتقييم المبدئي والتقييم الفني ودراسات السوق التفصيلية." },
+      { q: "مفهوم كثافة التفاعل (Interaction Intensity) في الخدمات يعني:", opts: ["كثافة الإنتاج", "مستوى التفاعل بين مقدم الخدمة والمستفيد والذي يتباين حسب طبيعة الخدمة", "كثافة الاستهلاك", "كثافة المنافسة"], ans: 1, exp: "كثافة التفاعل يشير لمستوى التفاعل بين مقدم الخدمة والمستفيد والذي يتباين: الرعاية الصحية عالية والاستشارات أقل." },
+      { q: "أيٌّ من الخصائص تُميّز الخدمات عن السلع؟", opts: ["الملموسية التامة وإمكانية التخزين", "عدم الملموسية والتزامن بين الإنتاج والاستهلاك وعدم القابلية للتخزين", "إمكانية الإنتاج المسبق والتخزين", "الاستقلالية عن التفاعل مع العميل"], ans: 1, exp: "الخدمات تتميز بعدم الملموسية والتزامن بين الإنتاج والاستهلاك وعدم القابلية للتخزين والتواصل مع العملاء." },
+      { q: "الضمان (Assurance) كبُعد في تقييم جودة الخدمة يعني:", opts: ["سرعة تقديم الخدمة", "معرفة الموظفين ولطفهم وقدرتهم على بث الثقة في العملاء", "توفير رعاية فردية", "مظهر المرافق والموظفين"], ans: 1, exp: "الضمان (Assurance) يعني معرفة الموظفين ولطفهم وقدرتهم على بث الثقة في نفوس العملاء." },
+      { q: "أيٌّ من مراحل الخدمات التالية لا ينطبق عليها خاصية التخزين؟", opts: ["السلع الصناعية الكبيرة", "خدمات الطيران (المقاعد الشاغرة خسارة)", "المواد الغذائية المعلبة", "الملابس الجاهزة"], ans: 1, exp: "خدمات الطيران مثال كلاسيكي على عدم القابلية للتخزين — المقعد الشاغر في رحلة مضت خسارة غير مستردة." },
+      { q: "تعريف المنتج الواضح كعامل نجاح يشمل:", opts: ["تجاهل العملاء المستهدفين", "تحديد الأسواق المستهدفة وتعريف المفهوم والفوائد واستراتيجية الموقع وقائمة المتطلبات", "التركيز على التصميم فقط", "وضع أهداف مالية فقط"], ans: 1, exp: "تعريف المنتج الواضح يتضمن الأسواق المستهدفة ومفهوم المنتج وفوائده واستراتيجية التموضع وقائمة المتطلبات." },
+      { q: "أيٌّ من الاختلافات الجوهرية بين السلع والخدمات صحيح؟", opts: ["الخدمات أكثر ملموسية من السلع", "السلع تُنتج وتُخزن بينما الخدمات تُنتج وتُستهلك في نفس الوقت", "السلع والخدمات متطابقان في جميع خصائصهما", "الخدمات تُصنَّع في مصانع مثل السلع"], ans: 1, exp: "السلع تُنتج مسبقاً وتُخزن، بينما الخدمات يتزامن إنتاجها مع استهلاكها مما يُميّزها جوهرياً عن السلع." },
+      { q: "الهيكلة التنظيمية المرنة (Flexible Organizational Structure) في عوامل النجاح تعتمد على:", opts: ["التسلسل الهرمي الصارم", "فرق عمل متعددة التخصصات لضمان التنسيق من الفكرة إلى الإطلاق", "الاعتماد على قسم واحد فقط", "رفض مشاركة أقسام التسويق"], ans: 1, exp: "الهيكلة المرنة تعتمد على فرق متعددة التخصصات (Cross-functional teams) لضمان التنسيق من الفكرة حتى الإطلاق." },
+      { q: "مثال على خدمة تتطلب تفاعلاً عالياً ومستمراً بين مقدم الخدمة والعميل:", opts: ["بيع الأسهم عبر تطبيق", "الرعاية الصحية التي تتطلب تفاعلاً مستمراً", "تحميل ملف رقمي", "شراء منتج من متجر إلكتروني"], ans: 1, exp: "الرعاية الصحية مثال على الخدمات ذات التفاعل العالي المستمر لضمان دقة المخرجات والتشخيص الصحيح." },
+      { q: "كفاءة التنفيذ التقني والتسويقي كعامل نجاح تعني:", opts: ["تجاهل متطلبات السوق", "الدقة في الأنشطة الإنتاجية والاختبارات لضمان المواءمة بين المنتج وتوقعات السوق", "التركيز على سرعة الإنتاج دون اعتبار الجودة", "رفض آراء العملاء"], ans: 1, exp: "كفاءة التنفيذ تعني الدقة في الأنشطة الإنتاجية واختبارات ما قبل الطرح لضمان المواءمة بين المنتج وتوقعات السوق." },
+      { q: "أيٌّ من الآتي يُعدّ اختلافاً جوهرياً بين السلع والخدمات؟", opts: ["كلاهما لا يُقيَّم من قِبل العملاء", "السلع ملموسة والخدمات غير ملموسة غالباً", "كلاهما يُخزَّن بنفس الطريقة", "كلاهما مستقل عن العلاقة مع العميل"], ans: 1, exp: "أحد الاختلافات الجوهرية أن السلع تميل للملموسية بينما الخدمات غالباً غير ملموسة رغم إمكانية رؤية نتائجها." },
+      { q: "أيٌّ من الأبعاد التالية يُقيَّم به العملاء الخدمة؟", opts: ["لون المنتج", "الاستجابة والكفاءة والضمان والتعاطف والجوانب الملموسة", "سعر المنتج فقط", "حجم الشركة"], ans: 1, exp: "يُقيَّم العملاء الخدمة على أساس خمسة أبعاد: الملموسة، الاستجابة، الكفاءة، الضمان، التعاطف." },
+      { q: "استراتيجيات إدارة الطاقة الإنتاجية في الخدمات تهدف لـ:", opts: ["تجاهل الفجوات بين العرض والطلب", "المرونة في إدارة الطاقة الإنتاجية والتحكم في مستويات الطلب لضمان الكفاءة التشغيلية", "تثبيت الطاقة الإنتاجية دائماً", "تقليل عدد الموظفين"], ans: 1, exp: "استراتيجيات إدارة الطاقة الإنتاجية تهدف لسد فجوات بين العرض والطلب وضمان الكفاءة التشغيلية في الخدمات." },
+      { q: "أيٌّ من قطاعات الخدمات التالية يُعدّ مثالاً على أهمية الموقع في الخدمات؟", opts: ["التأمين الرقمي", "المطاعم ومتاجر التجزئة وخدمات الترفيه", "خدمات الأرشيف الإلكتروني", "إنتاج البرمجيات عن بُعد"], ans: 1, exp: "المطاعم ومتاجر التجزئة وخدمات الترفيه أمثلة على الخدمات التي يكون فيها الموقع الجغرافي عاملاً حاسماً للنجاح." },
+      { q: "إدارة المخاطر الاستباقية في عوامل نجاح المنتجات تتضمن:", opts: ["تجاهل التحديات التقنية", "رصد التحديات التقنية والسوقية وتضمين خطط الطوارئ في نموذج العمل", "الانتظار حتى تظهر المشاكل للتعامل معها", "الاعتماد على التجربة والخطأ فقط"], ans: 1, exp: "إدارة المخاطر الاستباقية تعني رصد التحديات التقنية والسوقية مبكراً وتضمين خطط الطوارئ في صلب نموذج العمل." },
+      { q: "أيٌّ من العوامل التالية يُعزّز نجاح المنتجات الجديدة؟", opts: ["تجاهل البحث والتطوير", "دعم الإدارة العليا وتوفير بيئة محفزة للابتكار", "تقليص الميزانية المخصصة لتطوير المنتجات", "الاعتماد على الحدس فقط دون دراسات"], ans: 1, exp: "دعم الإدارة العليا وتوفير بيئة محفزة للابتكار وتقديم الدعم المؤسسي اللازم عامل نجاح ثامن وحاسم." },
+      { q: "أيٌّ من الآتي لا يُعدّ من خصائص تقييم الخدمة؟", opts: ["الاستجابة", "الكفاءة", "السعر المنخفض دائماً", "التعاطف"], ans: 2, exp: "أبعاد تقييم الخدمة الخمسة: الملموسة، الاستجابة، الكفاءة، الضمان، التعاطف — السعر المنخفض ليس بُعداً من أبعاد الجودة." },
+      { q: "التزامن بين الإنتاج والاستهلاك يُسبّب تحديات تشغيلية في:", opts: ["إنتاج السلع المعمرة", "ضبط معايير الجودة اللحظية وتخطيط الطاقة الاستيعابية ومعالجة الأخطاء فور حدوثها", "تخزين البضائع", "شحن المنتجات"], ans: 1, exp: "التزامن يُسبّب تحديات في ضبط معايير الجودة اللحظية وتخطيط الطاقة الاستيعابية ومعالجة الأخطاء فور حدوثها." },
+      { q: "أيٌّ من الآتي يُمثّل الاستجابة (Responsiveness) في تقييم الخدمة؟", opts: ["مظهر الموظفين", "سرعة الخدمة والاستعداد للمساعدة", "معرفة الموظفين التقنية", "اهتمام فردي بكل عميل"], ans: 1, exp: "الاستجابة (Responsiveness) تعني سرعة تقديم الخدمة والاستعداد للمساعدة وهي أحد الأبعاد الخمسة لتقييم الجودة." },
+      { q: "أيٌّ من العوامل التالية يُعدّ الأول من عوامل نجاح المنتجات الثمانية؟", opts: ["دعم الإدارة العليا", "الميزة التنافسية الجوهرية بتقديم قيمة مضافة حقيقية", "كفاية الموارد", "الهيكلة التنظيمية المرنة"], ans: 1, exp: "الميزة التنافسية الجوهرية وهي تقديم قيمة مضافة حقيقية وتفوق في نسبة الأداء/التكلفة هي العامل الأول." },
+    ]
+  }
+];
+
+function buildScoreBar(lectureId) {
+  return `
+    <div class="score-bar" id="score-bar-${lectureId}">
+      <div class="score-item score-total">
+        <div class="score-num" id="total-${lectureId}">50</div>
+        <div class="score-label">إجمالي الأسئلة</div>
+      </div>
+      <div class="score-item score-correct">
+        <div class="score-num" id="correct-${lectureId}">0</div>
+        <div class="score-label">إجابات صحيحة</div>
+      </div>
+      <div class="score-item score-wrong">
+        <div class="score-num" id="wrong-${lectureId}">0</div>
+        <div class="score-label">إجابات خاطئة</div>
+      </div>
+      <div class="score-item score-skip">
+        <div class="score-num" id="remaining-${lectureId}">50</div>
+        <div class="score-label">متبقية</div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="prog-${lectureId}"></div></div>
+        <div class="progress-pct" id="pct-${lectureId}">0% مكتمل</div>
+      </div>
+    </div>`;
+}
+
+function buildTFCard(q, qNum, lectureId) {
+  const id = `tf_${lectureId}_${qNum}`;
+  return `
+    <div class="q-card" id="card-${id}">
+      <div class="q-result-icon correct-icon">✅</div>
+      <div class="q-result-icon wrong-icon">❌</div>
+      <div class="q-num">سؤال ${qNum} — صح أم خطأ</div>
+      <div class="q-text">${q.q}</div>
+      <div class="tf-wrap">
+        <button class="tf-btn true-btn" onclick="answerTF('${id}', true, ${q.ans}, '${escapeQ(q.exp)}', '${lectureId}')">✓ صح</button>
+        <button class="tf-btn false-btn" onclick="answerTF('${id}', false, ${q.ans}, '${escapeQ(q.exp)}', '${lectureId}')">✗ خطأ</button>
+      </div>
+      <div class="feedback" id="fb-${id}"></div>
+    </div>`;
+}
+
+function buildMCQCard(q, qNum, lectureId, qIdx) {
+  const id = `mcq_${lectureId}_${qNum}`;
+  const letters = ['أ', 'ب', 'ج', 'د'];
+  let optsHtml = q.opts.map((opt, i) => `
+    <button class="mcq-opt" onclick="answerMCQ('${id}', ${i}, ${q.ans}, '${escapeQ(q.exp)}', '${lectureId}')" id="${id}_opt${i}">
+      <span class="opt-letter">${letters[i]}</span>${opt}
+    </button>`).join('');
+  return `
+    <div class="q-card" id="card-${id}">
+      <div class="q-result-icon correct-icon">✅</div>
+      <div class="q-result-icon wrong-icon">❌</div>
+      <div class="q-num">سؤال ${qNum} — اختر الإجابة الصحيحة</div>
+      <div class="q-text">${q.q}</div>
+      <div class="mcq-opts">${optsHtml}</div>
+      <div class="feedback" id="fb-${id}"></div>
+    </div>`;
+}
+
+function escapeQ(str) {
+  return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+}
+
+const state = {};
+
+function getState(lectureId) {
+  if (!state[lectureId]) state[lectureId] = { correct: 0, wrong: 0, answered: 0, total: 50 };
+  return state[lectureId];
+}
+
+function updateScore(lectureId) {
+  const s = getState(lectureId);
+  document.getElementById(`correct-${lectureId}`).textContent = s.correct;
+  document.getElementById(`wrong-${lectureId}`).textContent = s.wrong;
+  document.getElementById(`remaining-${lectureId}`).textContent = s.total - s.answered;
+  const pct = Math.round((s.answered / s.total) * 100);
+  document.getElementById(`prog-${lectureId}`).style.width = pct + '%';
+  document.getElementById(`pct-${lectureId}`).textContent = pct + '% مكتمل';
+  updateGlobalScore();
+}
+
+function updateGlobalScore() {
+  let totalC = 0, totalW = 0, totalA = 0;
+  LECTURES.forEach(l => {
+    const s = getState(l.id);
+    totalC += s.correct; totalW += s.wrong; totalA += s.answered;
+  });
+  document.getElementById('globalCorrect').textContent = totalC;
+  document.getElementById('globalWrong').textContent = totalW;
+  document.getElementById('globalAnswered').textContent = totalA;
+}
+
+// ===== TIMER =====
+let timerSec = 0;
+const timerEl = document.getElementById('globalTimer');
+setInterval(() => {
+  timerSec++;
+  const h = String(Math.floor(timerSec/3600)).padStart(2,'0');
+  const m = String(Math.floor((timerSec%3600)/60)).padStart(2,'0');
+  const s = String(timerSec%60).padStart(2,'0');
+  timerEl.textContent = `${h}:${m}:${s}`;
+  if (timerSec > 3600) timerEl.className = 'timer-val warning';
+}, 1000);
+
+// ===== RESULTS =====
+function showResults() {
+  let totalC=0,totalW=0,totalA=0,totalQ=0;
+  LECTURES.forEach(l=>{ const s=getState(l.id); totalC+=s.correct; totalW+=s.wrong; totalA+=s.answered; totalQ+=s.total; });
+  const pct = totalQ > 0 ? Math.round((totalC/totalQ)*100) : 0;
+  document.getElementById('resBigNum').textContent = totalC;
+  document.getElementById('resDenom').textContent = `من ${totalA} سؤال مُجاب (الكلي: ${totalQ})`;
+  document.getElementById('resCorrect').textContent = totalC;
+  document.getElementById('resWrong').textContent = totalW;
+  document.getElementById('resSkip').textContent = totalQ - totalA;
+  const h = Math.floor(timerSec/3600), m = Math.floor((timerSec%3600)/60), sec = timerSec%60;
+  document.getElementById('resSubtitle').textContent = `الوقت المستغرق: ${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')} | النسبة: ${pct}%`;
+  let gradeText, gradeCls;
+  if(pct>=90){gradeText='ممتاز 🏆';gradeCls='grade-a';}
+  else if(pct>=75){gradeText='جيد جداً ⭐';gradeCls='grade-b';}
+  else if(pct>=60){gradeText='جيد 👍';gradeCls='grade-c';}
+  else{gradeText='يحتاج مراجعة 📚';gradeCls='grade-d';}
+  const gradeEl = document.getElementById('resGrade');
+  gradeEl.textContent = gradeText; gradeEl.className = 'grade ' + gradeCls;
+  let bkHtml = '<div style="font-weight:700;font-size:0.95rem;margin-bottom:0.6rem;color:var(--primary)">أداء كل محاضرة:</div>';
+  const colors = ['#2563a8','#16a34a','#d97706','#7c3aed','#dc2626','#0891b2','#be185d'];
+  LECTURES.forEach((l,i) => {
+    const s = getState(l.id);
+    const lp = s.answered > 0 ? Math.round((s.correct/s.answered)*100) : 0;
+    bkHtml += `<div class="lec-row">
+      <div class="lec-name">م${l.id}</div>
+      <div class="lec-bar-bg"><div class="lec-bar-fill" style="width:${lp}%;background:${colors[i]}"></div></div>
+      <div class="lec-pct" style="color:${colors[i]}">${lp}%</div>
+      <div style="font-size:0.78rem;color:var(--text-muted);min-width:70px">${s.correct}/${s.answered} مُجاب</div>
+    </div>`;
+  });
+  document.getElementById('lecBreakdown').innerHTML = bkHtml;
+  document.getElementById('resultsOverlay').classList.add('show');
+}
+
+function closeResults() { document.getElementById('resultsOverlay').classList.remove('show'); }
+
+function resetAll() {
+  LECTURES.forEach(l => resetLecture(l.id));
+  closeResults();
+  showTab(1);
+}
+
+function answerTF(id, userAns, correctAns, exp, lectureId) {
+  const card = document.getElementById(`card-${id}`);
+  if (card.classList.contains('answered-correct') || card.classList.contains('answered-wrong')) return;
+  const trueBtn = card.querySelector('.true-btn');
+  const falseBtn = card.querySelector('.false-btn');
+  trueBtn.disabled = true; falseBtn.disabled = true;
+  const isCorrect = userAns === correctAns;
+  const s = getState(lectureId);
+  s.answered++;
+  if (isCorrect) {
+    s.correct++;
+    card.classList.add('answered-correct');
+    if (userAns === true) trueBtn.classList.add('selected-correct');
+    else falseBtn.classList.add('selected-correct');
+    document.getElementById(`fb-${id}`).className = 'feedback correct';
+    document.getElementById(`fb-${id}`).innerHTML = `<span class="feedback-icon">✅</span> إجابة صحيحة! ${exp}`;
+  } else {
+    s.wrong++;
+    card.classList.add('answered-wrong');
+    if (userAns === true) { trueBtn.classList.add('selected-wrong'); falseBtn.classList.add('show-correct'); }
+    else { falseBtn.classList.add('selected-wrong'); trueBtn.classList.add('show-correct'); }
+    const correctText = correctAns ? 'صح ✓' : 'خطأ ✗';
+    document.getElementById(`fb-${id}`).className = 'feedback wrong';
+    document.getElementById(`fb-${id}`).innerHTML = `<span class="feedback-icon">❌</span> إجابة خاطئة. الإجابة الصحيحة: <strong>${correctText}</strong><br>${exp}`;
+  }
+  updateScore(lectureId);
+}
+
+function answerMCQ(id, userAns, correctAns, exp, lectureId) {
+  const card = document.getElementById(`card-${id}`);
+  if (card.classList.contains('answered-correct') || card.classList.contains('answered-wrong')) return;
+  const opts = card.querySelectorAll('.mcq-opt');
+  opts.forEach(btn => btn.disabled = true);
+  const isCorrect = userAns === correctAns;
+  const s = getState(lectureId);
+  s.answered++;
+  const letters = ['أ', 'ب', 'ج', 'د'];
+  if (isCorrect) {
+    s.correct++;
+    card.classList.add('answered-correct');
+    opts[userAns].classList.add('selected-correct');
+    document.getElementById(`fb-${id}`).className = 'feedback correct';
+    document.getElementById(`fb-${id}`).innerHTML = `<span class="feedback-icon">✅</span> إجابة صحيحة! ${exp}`;
+  } else {
+    s.wrong++;
+    card.classList.add('answered-wrong');
+    opts[userAns].classList.add('selected-wrong');
+    opts[correctAns].classList.add('show-correct');
+    document.getElementById(`fb-${id}`).className = 'feedback wrong';
+    document.getElementById(`fb-${id}`).innerHTML = `<span class="feedback-icon">❌</span> إجابة خاطئة. الإجابة الصحيحة: <strong>${letters[correctAns]}</strong><br>${exp}`;
+  }
+  updateScore(lectureId);
+}
+
+function resetLecture(lectureId) {
+  state[lectureId] = { correct: 0, wrong: 0, answered: 0, total: 50 };
+  const sect = document.getElementById(`lec-${lectureId}`);
+  sect.querySelectorAll('.q-card').forEach(card => {
+    card.className = 'q-card';
+    card.querySelectorAll('.tf-btn, .mcq-opt').forEach(btn => { btn.disabled = false; btn.className = btn.className.replace(/selected-correct|selected-wrong|show-correct/g, '').trim(); });
+  });
+  sect.querySelectorAll('.feedback').forEach(fb => { fb.className = 'feedback'; fb.innerHTML = ''; });
+  updateScore(lectureId);
+}
+
+function showTab(id) {
+  document.querySelectorAll('.lecture-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`lec-${id}`).classList.add('active');
+  document.getElementById(`tab-${id}`).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// BUILD UI
+const nav = document.getElementById('lectureNav');
+const main = document.getElementById('mainContent');
+
+LECTURES.forEach(lec => {
+  // Tab
+  const tabBtn = document.createElement('button');
+  tabBtn.className = 'tab-btn' + (lec.id === 1 ? ' active' : '');
+  tabBtn.id = `tab-${lec.id}`;
+  tabBtn.textContent = `م${lec.id}`;
+  tabBtn.onclick = () => showTab(lec.id);
+  nav.appendChild(tabBtn);
+
+  // Section
+  let html = `<div class="lecture-section ${lec.id === 1 ? 'active' : ''}" id="lec-${lec.id}">`;
+  html += `<div class="lecture-header">
+    <div class="lecture-num">${lec.id}</div>
+    <div><h2>${lec.title}</h2><p>${lec.subtitle}</p></div>
+  </div>`;
+  html += buildScoreBar(lec.id);
+
+  // TF section
+  html += `<div class="section-title"><span>أسئلة صح أم خطأ</span><span class="badge">25 سؤال</span></div>`;
+  lec.tf.forEach((q, i) => { html += buildTFCard(q, i + 1, lec.id); });
+
+  // MCQ section
+  html += `<div class="section-title"><span>أسئلة اختيار من متعدد</span><span class="badge">25 سؤال</span></div>`;
+  lec.mcq.forEach((q, i) => { html += buildMCQCard(q, i + 26, lec.id, i); });
+
+  html += `<button class="reset-btn" onclick="resetLecture(${lec.id})">🔄 إعادة المحاولة للمحاضرة ${lec.id}</button>`;
+  
+  // Navigation buttons
+  html += `<div style="display:flex;gap:0.8rem;margin-top:0.8rem;">`;
+  if (lec.id > 1) {
+    html += `<button onclick="showTab(${lec.id-1})" style="flex:1;padding:0.75rem;border-radius:12px;border:1.5px solid var(--border);background:var(--card);font-family:Cairo,sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;color:var(--primary)">← المحاضرة ${lec.id-1}</button>`;
+  }
+  if (lec.id < LECTURES.length) {
+    html += `<button onclick="showTab(${lec.id+1})" style="flex:1;padding:0.75rem;border-radius:12px;border:none;background:linear-gradient(135deg,var(--primary),var(--primary-light));color:white;font-family:Cairo,sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;">المحاضرة ${lec.id+1} ←</button>`;
+  } else {
+    html += `<button onclick="showResults()" style="flex:1;padding:0.75rem;border-radius:12px;border:none;background:linear-gradient(135deg,#15803d,#22c55e);color:white;font-family:Cairo,sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;">📊 عرض النتائج النهائية</button>`;
+  }
+  html += `</div>`;
+  html += `</div>`;
+
+  const div = document.createElement('div');
+  div.innerHTML = html;
+  main.appendChild(div.firstChild);
+});
+</script>
+</body>
+</html>
