@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>امتحان Java التفاعلي</title>
+<style>
+:root{--bg:#0b1a2e;--card:#12284a;--card2:#183358;--gold:#f5b942;--teal:#2dd4bf;--ok:#16a34a;--okbg:#0f3d2a;--bad:#dc2626;--badbg:#4a1620;--txt:#eaf1fb;--mut:#9fb3cf}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at top,#13355f,#0b1a2e 60%);color:var(--txt);font-family:"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.9;min-height:100vh}
+.wrap{max-width:900px;margin:0 auto;padding:16px}
+header{text-align:center;padding:28px 16px;margin-bottom:16px;border-radius:20px;background:linear-gradient(135deg,#0f2a50,#1c4a7a);border:1px solid var(--gold);box-shadow:0 8px 30px #0006}
+header h1{margin:6px 0;color:var(--gold);font-size:2rem}
+header .sub{color:var(--mut);font-size:.95rem}
+.designer{margin-top:14px;font-size:1.35rem;font-weight:700}
+.designer .smile{font-size:2rem;vertical-align:middle}
+.wink{margin-top:2px;font-size:1.15rem;color:var(--teal);font-weight:600}
+.bar{position:sticky;top:0;z-index:10;background:#0b1a2eee;backdrop-filter:blur(6px);padding:10px 0;margin-bottom:10px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.tab{background:var(--card);color:var(--txt);border:1px solid #2b4a78;padding:8px 16px;border-radius:999px;cursor:pointer;font:inherit}
+.tab.active{background:var(--gold);color:#1a1a1a;font-weight:700;border-color:var(--gold)}
+.prog{height:8px;background:#1b3558;border-radius:99px;margin-top:10px;overflow:hidden}
+.prog>div{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--gold));transition:width .4s}
+.stats{display:flex;justify-content:space-around;font-size:.9rem;color:var(--mut);margin-top:6px;flex-wrap:wrap;gap:6px}
+section{display:none}
+section.active{display:block}
+.q{background:var(--card);border:1px solid #27487a;border-radius:16px;padding:16px;margin:14px 0}
+.q .meta{display:flex;justify-content:space-between;font-size:.8rem;color:var(--mut);margin-bottom:6px}
+.q .num{background:var(--gold);color:#111;border-radius:99px;padding:0 10px;font-weight:700}
+.q h3{margin:4px 0 12px;font-size:1.08rem;font-weight:600}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:10px;align-items:center;text-align:right;background:var(--card2);color:var(--txt);border:2px solid #2b4a78;border-radius:12px;padding:10px 12px;cursor:pointer;font:inherit;width:100%}
+.opt:hover:not(:disabled){border-color:var(--gold);transform:translateX(-2px)}
+.opt .l{background:#0b1a2e;border-radius:50%;min-width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--gold)}
+.opt.correct{background:var(--okbg);border-color:var(--ok)}
+.opt.wrong{background:var(--badbg);border-color:var(--bad)}
+.opt:disabled{cursor:default}
+.tfrow{grid-template-columns:1fr 1fr}
+.exp{display:none;margin-top:12px;padding:12px;border-radius:12px;background:#0b1a2e;border-right:5px solid var(--teal)}
+.exp.show{display:block;animation:fade .35s}
+.exp .verdict{font-weight:700;margin-bottom:4px}
+.exp .verdict.ok{color:#4ade80}.exp .verdict.no{color:#f87171}
+@keyframes fade{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+code{direction:ltr;unicode-bidi:embed;background:#071326;color:#8be9fd;padding:1px 6px;border-radius:6px;font-family:Consolas,monospace;font-size:.92em}
+textarea{width:100%;min-height:110px;margin-top:6px;border-radius:12px;border:2px solid #2b4a78;background:var(--card2);color:var(--txt);padding:10px;font:inherit;resize:vertical}
+.btn{background:var(--gold);color:#1a1a1a;border:0;border-radius:12px;padding:9px 18px;font:inherit;font-weight:700;cursor:pointer;margin-top:8px}
+.btn.sec{background:var(--card2);color:var(--txt);border:1px solid #2b4a78}
+.model p{margin:4px 0}
+.result{text-align:center;background:var(--card);border:1px solid var(--gold);border-radius:20px;padding:24px;margin:14px 0}
+.result .big{font-size:3rem;color:var(--gold);font-weight:800}
+.result table{margin:12px auto;border-collapse:collapse;min-width:70%}
+.result td,.result th{border:1px solid #2b4a78;padding:6px 14px}
+footer{text-align:center;color:var(--mut);font-size:.85rem;padding:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="sub">مقرر أساسيات برمجة الحاسب بلغة Java • المحاضرات 1 – 4</div>
+  <h1>☕ الامتحان التفاعلي الشامل</h1>
+  <div class="sub">50 صح وخطأ • 50 اختيار من متعدد • 10 أسئلة مقالية</div>
+  <div class="designer"><span class="smile">🙂</span> تصميم: أحمد حسين إبراهيم</div>
+  <div class="wink">أحلى مسا على فخدكو 😉</div>
+</header>
+
+<div class="bar">
+  <div class="tabs">
+    <button class="tab active" data-t="tf">✔✘ صح وخطأ (50)</button>
+    <button class="tab" data-t="mc">🔘 اختيار من متعدد (50)</button>
+    <button class="tab" data-t="es">✍ مقالي (10)</button>
+    <button class="tab" data-t="res">🏆 النتيجة</button>
+  </div>
+  <div class="prog"><div id="pb"></div></div>
+  <div class="stats"><span>تمت الإجابة: <b id="done">0</b> / 100</span><span>صحيحة: <b id="right">0</b></span><span>خاطئة: <b id="wrong">0</b></span></div>
+</div>
+
+<section id="tf" class="active"></section>
+<section id="mc"></section>
+<section id="es"></section>
+<section id="res"></section>
+<footer>اضغط على أي إجابة لتظهر لك الإجابة الصحيحة مع الشرح فورًا • بالتوفيق 💪</footer>
+</div>
+
+<script>
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/`([^`]+)`/g,"<code>$1</code>");
+const tf=(l,q,a,e)=>({l,q,a,e});
+const mc=(l,q,o,a,e)=>({l,q,o,a,e});
+
+/* ===================== صح وخطأ ===================== */
+const TF=[
+// المحاضرة 1
+tf(1,"البرمجة هي الوسيلة التي تُترجم بها الخوارزميات والحلول المنطقية إلى برامج قابلة للتنفيذ بواسطة الحاسب.",true,"هذا هو تعريف البرمجة كما ورد في المحاضرة الأولى."),
+tf(1,"يقتصر تعلم أي لغة برمجة على حفظ أوامرها وقواعدها فقط.",false,"تعلم اللغة يرتكز في المقام الأول على اتباع منهجية حل المشكلات، وليس مجرد حفظ الأوامر والقواعد."),
+tf(1,"في مثال حساب متوسط ثلاثة أعداد تكون الخوارزمية: `Sum = A + B + C` ثم `Average = Sum / 3`.",true,"المدخلات A, B, C، والخوارزمية جمع ثم قسمة، والمخرجات طباعة قيمة Average."),
+tf(1,"تُصنَّف Java كلغة متخصصة تُستخدم في مجال واحد فقط.",false,"Java لغة عامة الاستخدام (General-Purpose) صُممت لتطوير مجموعة واسعة من التطبيقات مع دعم قوي للبرمجة كائنية التوجه OOP."),
+tf(1,"بدأت Java كمشروع داخل شركة Sun Microsystems عام 1991 بقيادة James Gosling.",true,"شارك معه Mike Sheridan و Patrick Naughton، وكان الهدف لغة بسيطة وموثوقة تعمل على أكثر من منصة."),
+tf(1,"أعلنت Sun عن الإصدار الأول من Java عام 2010.",false,"الإصدار الأول أُعلن عام 1995، أما عام 2010 فهو عام استحواذ Oracle على Sun."),
+tf(1,"استحوذت شركة Oracle على Sun Microsystems عام 2010 وأصبحت المسؤولة عن تطوير منصة Java.",true,"Oracle هي الجهة المسؤولة عن تطوير Java وإصدار تحديثاتها الدورية."),
+tf(1,"في لغات البرمجة التقليدية يتحول البرنامج مباشرة إلى تعليمات خاصة بمعالج ونظام تشغيل محدد، بينما في Java يتحول إلى Bytecode.",true,"هذه هي ميزة الاستقلال عن المنصة: Bytecode وسيط تنفّذه JVM على أي نظام تشغيل."),
+tf(1,"ملف الشيفرة المصدرية في Java يحمل الامتداد `.class`.",false,"الشيفرة المصدرية امتدادها `.java`، أما `.class` فهو ملف الـ Bytecode الناتج عن الترجمة."),
+tf(1,"تخلصت Java من التعامل المباشر مع المؤشرات (Pointers) الموجود في C و C++.",true,"هذا من أسباب سهولة تعلم Java وتقليل الأخطاء المعقدة."),
+// المحاضرة 2
+tf(2,"بيئات التطوير المتكاملة (IDE) مثل Eclipse و IntelliJ IDEA تجمع الأدوات البرمجية داخل واجهة موحدة.",true,"بدلًا من كتابة الكود في محرر نصي ثم استخدام أدوات خارجية مستقلة للتجميع والتشغيل."),
+tf(2,"المترجم `javac` أداة تابعة لحزمة تطوير جافا JDK.",true,"وظيفته قراءة ملف `.java` وفحصه وتوليد ملف Bytecode إن كان الكود سليمًا."),
+tf(2,"إذا كان في الكود خطأ صياغة (Syntax Error) فإن `javac` ينتج ملف `.class` ويكمل العملية.",false,"عند وجود أخطاء صياغة يوقف المترجم العملية ويعرض رسائل توضح مكان الخطأ ونوعه ولا يولد ملف `.class`."),
+tf(2,"ملف الـ Bytecode مرتبط بنوع عتاد الجهاز الذي تمت فيه الترجمة.",false,"الـ Bytecode محايد ومستقل عن عتاد الجهاز، وهذا سر شعار WORA."),
+tf(2,"يُشغَّل البرنامج `Hello` بعد ترجمته بالأمر `java Hello`.",true,"يقرأ الـ JVM ملف `Hello.class` وينفذ تعليماته دون إعادة ترجمة الكود المصدر."),
+tf(2,"الـ Class في Java هو قالب أساسي لتعريف الكائنات (Objects) ويحتوي على بيانات وسلوكيات.",true,"يحتوي على البيانات/الخصائص (Attributes) والعمليات/السلوكيات (Methods)."),
+tf(2,"الدالة `main` تحتاج إلى إنشاء كائن من الـ Class أولًا حتى تستدعيها JVM.",false,"الكلمة `static` تربط الدالة بالـ Class نفسه فتستدعيها JVM مباشرة دون إنشاء Object."),
+tf(2,"الكلمة `void` تعني أن الدالة ترجع قيمة عددية بعد انتهاء عملها.",false,"`void` تعني أن الدالة تؤدي مهمة تنفيذية ولا ترجع أي قيمة."),
+tf(2,"اسم الـ Class العام `public class` يجب أن يطابق اسم الملف المخزن على القرص.",true,"فالـ Class `Hello` العام يجب أن يُحفظ داخل ملف `Hello.java`."),
+tf(2,"نسيان الفاصلة المنقوطة `;` في نهاية التعليمة يؤدي إلى خطأ ترجمة (Compile Error).",true,"الفاصلة المنقوطة تُستخدم لإنهاء أغلب الجمل والتعليمات البرمجية."),
+tf(2,"يجوز أن يبدأ اسم المتغير في Java برقم مثل `2age`.",false,"لا يجوز أن يبدأ الاسم برقم؛ يبدأ بحرف أو `_` أو `$`، فـ `age2` صحيح بينما `2age` خاطئ."),
+tf(2,"Java حساسة لحالة الأحرف، فالمتغير `age` يختلف عن `Age`.",true,"لأنها Case Sensitive."),
+tf(2,"النوع الافتراضي للأعداد الصحيحة في Java هو `int`، والافتراضي للأعداد العشرية هو `double`.",true,"`int` حجمه 4 bytes، و `double` حجمه 8 bytes."),
+tf(2,"لتخزين قيمة من النوع `float` لا بد من إضافة الحرف `L` في نهايتها.",false,"الحرف `L` للنوع `long`، أما `float` فيتطلب إضافة `f` أو `F`."),
+tf(2,"يمكن إعادة إسناد قيمة جديدة لثابت معرَّف بالكلمة `final` أثناء تشغيل البرنامج.",false,"الثابت يُعيَّن مرة واحدة فقط، ومحاولة تغييره تسبب خطأ ترجمة (Compile-Time Error)."),
+tf(2,"التحويل الصريح الضيق `(int) 10.75` يعطي القيمة 10.",true,"يُحذف الكسر العشري دون تقريب، وهذا مثال على فقدان البيانات."),
+tf(2,"التحويل التلقائي المتسع (Widening) يتم من نوع أصغر إلى أكبر ولا يتسبب عادةً في فقدان البيانات.",true,"مساره: byte → short → int → long → float → double."),
+tf(2,"ناتج العملية `10 / 4` بين عددين من النوع `int` هو `2.5`.",false,"القسمة بين عددين صحيحين تعطي عددًا صحيحًا فقط، فالناتج 2 وتُهمل الكسور."),
+tf(2,"المعامل `=` هو معامل المقارنة، والمعامل `==` هو معامل الإسناد.",false,"العكس: `=` للإسناد (تخزين قيمة) و `==` للمقارنة (التحقق من التساوي)."),
+tf(2,"ناتج التعبير `2 + 3 * 4` يساوي 14.",true,"الضرب أسبق من الجمع: 3×4=12 ثم 2+12=14."),
+tf(2,"الدالة `println()` تطبع النص دون الانتقال إلى سطر جديد.",false,"هذا عمل `print()`. أما `println()` فتطبع ثم تنشئ سطرًا جديدًا تلقائيًا."),
+tf(2,"الدالة `next()` في Scanner تقرأ السطر النصي كاملًا حتى الضغط على Enter.",false,"`next()` تقرأ كلمة واحدة فقط (تتوقف عند أول مسافة)، والتي تقرأ السطر كاملًا هي `nextLine()`."),
+// المحاضرة 3
+tf(3,"تراكيب التحكم في Java ثلاثة أنواع: التتابع (Sequence) والتفرع (Selection) والتكرار (Iteration).",true,"التتابع ينفذ بالترتيب، والتفرع يختار مسارًا حسب شرط، والتكرار يعيد التنفيذ طالما تحقق الشرط."),
+tf(3,"نتيجة تقييم الشرط (Condition) إحدى قيمتين فقط: `true` أو `false`.",true,"الشرط تعبير منطقي (Boolean Expression)."),
+tf(3,"في جملة `if` البسيطة تُنفَّذ الكتلة عندما تكون قيمة الشرط `false`.",false,"تُنفَّذ الكتلة عندما يكون الشرط `true`، وإذا كان `false` تُتجاهل الكتلة."),
+tf(3,"التعبير `age >= 18 && age <= 60` يتحقق عندما يكون العمر 60 بالضبط.",true,"المعاملان `>=` و `<=` يشملان الحدين 18 و 60."),
+tf(3,"في تركيب `if-else` يتم تنفيذ الكتلتين معًا في كل مرة.",false,"يضمن هذا التركيب تنفيذ مسار واحد فقط من المسارين في كل مرة."),
+tf(3,"إذا كانت `grade = 40` فإن الشرط `grade >= 50` يعطي `false` وتُنفَّذ كتلة `else`.",true,"فتطبع البرنامج Fail (راسب)."),
+tf(3,"يُفضَّل استخدام الأقواس المعقوفة `{ }` مع `if` حتى لو كانت تحتوي على تعليمة واحدة.",true,"لأنها تحافظ على وضوح الكود وتمنع الأخطاء عند التعديل مستقبلًا."),
+// المحاضرة 4
+tf(4,"تصميم البرامج هو عملية التخطيط للحل البرمجي قبل مرحلة التنفيذ الفعلي.",true,"وهو حلقة الوصل بين فهم المشكلة وكتابة البرنامج."),
+tf(4,"تصميم البرامج مرحلة اختيارية ورفاهية برمجية يمكن الاستغناء عنها.",false,"المحاضرة تؤكد أنه ليس اختياريًا بل من أهم مراحل دورة حياة تطوير البرمجيات SDLC."),
+tf(4,"من نتائج ضعف التخطيط: شيفرات معقدة وصعبة الصيانة واستهلاك وقت طويل في اكتشاف الأخطاء.",true,"وكذلك حلول غير مكتملة أو قاصرة."),
+tf(4,"من مهارات التفكير كعالم حاسوب: التجريد (Abstraction) وتفكيك المشكلات.",true,"المبرمج الناجح لا يعتمد على حفظ قواعد اللغة فقط بل على التفكير المنطقي وتحليل المشكلات."),
+tf(4,"الحاسب يستطيع تنفيذ أفكار غير محددة وحلول غير منظمة.",false,"الحاسب آلة صماء لا تنفذ أفكارًا غير محددة، لذا يجب تحليل المشكلة وبناء طريقة واضحة للحل قبل التكويد."),
+tf(4,"المراحل الخمس لتحويل المشكلة إلى برنامج: تحليل المشكلة، تصميم الحل، صياغة الخوارزمية، كتابة الكود، اختبار البرنامج.",true,"بهذا الترتيب كما في التسلسل الكامل في خلاصة المحاضرة."),
+tf(4,"تُستخدم المخططات الانسيابية (Flowcharts) أو شبه الشيفرة (Pseudocode) في مرحلة صياغة الخوارزمية.",true,"لتوصيف خطوات الحل خطوة بخطوة بشكل منظم ومفهوم."),
+tf(4,"الثالوث الأساسي لتحليل المشكلة هو المدخلات (Inputs) والمعالجة (Processing) والمخرجات (Outputs).",true,"هذه العناصر الثلاثة يفكك بها المبرمج أي مشكلة."),
+tf(4,"المعالجة (Processing) هي البيانات والأرقام التي يحتاجها البرنامج للعمل.",false,"هذا تعريف المدخلات. أما المعالجة فهي العمليات الحسابية والمنطقية والخطوات اللازمة لتحويل المدخلات إلى نتائج."),
+tf(4,"نموذج جورج بوليا (Pólya) يتكون من أربع مراحل أساسية.",true,"فهم المشكلة، وضع خطة للحل، تنفيذ الخطة، المراجعة والتحقق."),
+tf(4,"في مثال متوسط 3 درجات يكون نوع المدخلات `double` وتُحسب المعالجة بالمعادلة `(g1+g2+g3)/3.0`.",true,"المدخلات g1,g2,g3 من النوع double، والمخرجات عرض قيمة average.")
+];
+
+/* ===================== اختيار من متعدد ===================== */
+const MC=[
+// المحاضرة 1
+mc(1,"تُعرَّف البرمجة بأنها:",["تصميم واجهات التطبيقات فقط","الوسيلة التي تُترجم بها الخوارزميات والحلول المنطقية إلى برامج قابلة للتنفيذ بواسطة الحاسب","حفظ أوامر لغة البرمجة وقواعدها","إصلاح أعطال الأجهزة"],1,"هذا هو تعريف المحاضرة الأولى، ولا يقتصر التعلم على الحفظ بل على منهجية حل المشكلات."),
+mc(1,"أول مرحلة في منهجية حل المشكلات هي:",["كتابة الكود","اختبار البرنامج","فهم المشكلة وتحليل متطلباتها","طباعة النتائج"],2,"المراحل: فهم المشكلة، تحديد البيانات (مدخلات/مخرجات)، ثم تصميم خوارزمية صحيحة قبل كتابة الكود."),
+mc(1,"قاد مشروع تطوير Java داخل Sun Microsystems عام 1991:",["Bill Gates","James Gosling","Dennis Ritchie","Linus Torvalds"],1,"قاده James Gosling بمشاركة Mike Sheridan و Patrick Naughton. وكان اسم اللغة في البداية Oak."),
+mc(1,"أُعلن عن الإصدار الأول من Java رسميًا عام:",["1991","2010","1995","2005"],2,"عام 1995 وانتشرت بشعار WORA (Write Once, Run Anywhere)."),
+mc(1,"الشركة التي استحوذت على Sun Microsystems عام 2010 هي:",["Microsoft","Google","IBM","Oracle"],3,"Oracle أصبحت الجهة المسؤولة عن تطوير منصة Java وإصدار تحديثاتها الدورية."),
+mc(1,"أبرز تعقيد تخلصت منه Java مقارنةً بـ C و C++:",["الدوال","المتغيرات","التعامل المباشر مع المؤشرات (Pointers)","الأقواس المعقوفة"],2,"وهذا من عوامل سهولة التعلم والتنظيم في Java."),
+mc(1,"الصورة الوسيطة التي يحوّل إليها المترجم كود Java تُسمى:",["Machine Code","Pseudocode","Source Code","Bytecode"],3,"الـ Bytecode تنفّذه JVM على أي نظام تشغيل، وهذا سر الاستقلال عن المنصة."),
+mc(1,"الترتيب الصحيح لمراحل دورة تنفيذ برنامج Java:",["JVM ← javac ← .java ← .class ← Output","‎.java ← javac ← .class (Bytecode) ← JVM ← Execution","‎.class ← .java ← javac ← JVM ← Output","javac ← JVM ← .java ← .class ← Output"],1,"Source Code ثم Compiler (javac) ثم Bytecode (.class) ثم JVM ثم Execution (الناتج)."),
+// المحاضرة 2
+mc(2,"من أمثلة بيئات التطوير المتكاملة (IDE):",["Eclipse و IntelliJ IDEA","Windows و Linux","Chrome و Firefox","Word و Excel"],0,"تجمع أدوات التحرير والترجمة والتشغيل وتصحيح الأخطاء وإدارة المشروع في واجهة موحدة."),
+mc(2,"الأداة التي تفحص ملف `.java` وتولد الـ Bytecode وتبلغ عن أخطاء الصياغة هي:",["java","javac","JVM","IDE"],1,"`javac` هو المترجم، وإذا وُجدت أخطاء يوقف العملية ويعرض رسائل توضح مكانها ونوعها."),
+mc(2,"المترجم `javac` جزء من حزمة:",["JVM","IDE","JDK","OOP"],2,"JDK هي حزمة تطوير جافا (Java Development Kit)."),
+mc(2,"امتداد ملف الـ Bytecode هو:",[".java",".exe",".txt",".class"],3,"مثل `Hello.class`، وهو ملف محايد مستقل عن عتاد الجهاز (ويبدأ دائمًا بالقيمة 0xCAFEBABE)."),
+mc(2,"الأمر الصحيح لترجمة الملف `Hello.java` هو:",["java Hello","javac Hello.java","run Hello.class","compile Hello"],1,"الترجمة تنتج `Hello.class` عبر الأمر `javac Hello.java`."),
+mc(2,"الأمر الصحيح لتشغيل البرنامج بعد الترجمة:",["java Hello","javac Hello.class","run Hello.java","execute Hello"],0,"`java Hello` تجعل الـ JVM تقرأ `Hello.class` وتنفذه."),
+mc(2,"الـ Class في Java هو:",["متغير يخزن رقمًا","أمر لطباعة النصوص","قالب أساسي لتعريف الكائنات يحتوي على البيانات والسلوكيات","ملف التشغيل النهائي"],2,"ويجب أن يحتوي كل برنامج Java على Class واحد على الأقل."),
+mc(2,"وظيفة الكلمة `static` في تعريف `main`:",["تربط الدالة بالـ Class نفسه فتُستدعى دون إنشاء كائن","تجعلها لا ترجع قيمة","تجعل الدالة خاصة","تعني أنها تستقبل مصفوفة"],0,"فتستدعيها JVM مباشرة دون إنشاء Object."),
+mc(2,"الكلمة `void` في الدالة `main` تعني:",["ترجع نصًا","ترجع رقمًا","تستقبل معاملات","لا ترجع أي قيمة"],3,"تؤدي مهمة تنفيذية ولا ترجع قيمة عددية أو نصية."),
+mc(2,"`String[] args` في الدالة `main` تُستخدم من أجل:",["طباعة نص","استقبال معاملات تُمرَّر للبرنامج من سطر الأوامر","تعريف ثابت","إغلاق البرنامج"],1,"مصفوفة نصوص تستقبل المدخلات من سطر الأوامر عند التشغيل."),
+mc(2,"الأسلوب المفضل لتسمية الـ Class (أول حرف من كل كلمة كبير):",["student_record","studentrecord","StudentRecord","studentRecord"],2,"يسمى UpperCamelCase مثل `StudentRecord`."),
+mc(2,"أي الأسماء التالية صالح كاسم متغير في Java؟",["2age","class","my-var","_total"],3,"يجوز البدء بحرف أو `_` أو `$`، ولا يجوز البدء برقم أو استخدام كلمة محجوزة أو الرمز `-`."),
+mc(2,"عدد أنواع البيانات الأولية (Primitive) في Java:",["4","6","8","10"],2,"byte, short, int, long, float, double, char, boolean."),
+mc(2,"النوع الافتراضي للقيمة الحرفية `25.75` هو:",["int","float","long","double"],3,"`double` هو النوع الافتراضي للأعداد العشرية، ولاستخدام float تضيف `f` في النهاية."),
+mc(2,"حجم النوع `int` في الذاكرة:",["1 byte","2 bytes","4 bytes (32 bit)","8 bytes"],2,"ونطاقه تقريبًا من -2.14×10⁹ إلى 2.14×10⁹."),
+mc(2,"أي الأنواع التالية يتطلب إضافة الحرف `L` في نهاية القيمة؟",["int","float","long","char"],2,"النوع `long` يستخدم `L`، والنوع `float` يستخدم `f`."),
+mc(2,"الكلمة المفتاحية المستخدمة لتعريف الثوابت:",["const","final","static","fixed"],1,"مثل `final double PI = 3.14159;`."),
+mc(2,"اتفاقية تسمية الثوابت في Java:",["taxRate","TaxRate","taxrate","TAX_RATE"],3,"أحرف كبيرة بالكامل وتُفصل الكلمات بشرطة سفلية."),
+mc(2,"قيمة `int result = 10 / 4;` هي:",["2.5","2","3","2.0"],1,"قسمة عددين صحيحين تعطي عددًا صحيحًا وتُهمل الكسور. للحصول على عشري حوّل أحد الرقمين إلى `double`."),
+mc(2,"قيمة `int value = (int) 10.75;` هي:",["11","10.75","10","10.0"],2,"التحويل الصريح الضيق يحذف الكسر العشري دون تقريب (فقدان بيانات)."),
+mc(2,"قيمة التعبير `(2 + 3) * 4` هي:",["14","24","9","20"],3,"الأقواس لها الأولوية: 2+3=5 ثم 5×4=20 (بينما `2+3*4` تساوي 14)."),
+mc(2,"وظيفة موجّه التنسيق `%.2f` في `printf`:",["تقريب العدد العشري إلى خانتين عشريتين","طباعة عدد صحيح","طباعة نص","إنشاء سطر جديد"],0,"أما `%d` فللأعداد الصحيحة."),
+mc(2,"الاستيراد الصحيح لاستخدام الفئة Scanner:",["import java.io.Scanner;","import java.util.Scanner;","import Scanner;","include java.util.Scanner;"],1,"ثم `Scanner input = new Scanner(System.in);`."),
+mc(2,"إذا أدخل المستخدم النص `Mohamed Hana` فإن `input.next()` تقرأ:",["Mohamed Hana","Hana","Mohamed فقط","خطأ"],2,"`next()` تقرأ كلمة واحدة وتتوقف عند أول مسافة، بينما `nextLine()` تقرأ السطر كاملًا."),
+// المحاضرة 3
+mc(3,"أنواع تراكيب التحكم الرئيسية في Java:",["التتابع والتفرع والتكرار","الإدخال والإخراج والتخزين","الترجمة والتنفيذ والتحويل","المتغيرات والثوابت والدوال"],0,"Sequence, Selection, Iteration."),
+mc(3,"الشرط (Condition) هو تعبير منطقي نتيجته:",["أي عدد صحيح","نص","true أو false فقط","عدد عشري"],2,"ويستخدم البرنامج هذه النتيجة لتحديد المسار الذي سيُنفَّذ."),
+mc(3,"المعامل `&&` تكون نتيجته `true` عندما:",["يتحقق أحد الشرطين على الأقل","يتحقق الشرطان معًا","لا يتحقق أي شرط","يتحقق شرط واحد فقط"],1,"AND المنطقية تتطلب تحقق الشرطين في نفس الوقت."),
+mc(3,"قيمة `age < 18 || age > 60` عندما `age = 70`:",["false","خطأ ترجمة","true","لا شيء"],2,"`||` OR تكفي فيها تحقق شرط واحد، و 70 > 60 فالنتيجة true."),
+mc(3,"عندما يكون شرط جملة `if` البسيطة `false`:",["تُنفَّذ الكتلة","تُتجاهل الكتلة وينتقل البرنامج إلى أول تعليمة بعد `if`","يتوقف البرنامج","يحدث خطأ"],1,"وإذا كان `true` تُنفَّذ الكتلة ثم يتابع البرنامج."),
+mc(3,"في الكود `if (age >= 18) { System.out.println(\"Adult\"); }` عند `age = 15` يكون الناتج:",["Adult","لا يظهر أي ناتج","Error","15"],1,"الشرط `15 >= 18` يعطي false فتُتجاهل تعليمة الطباعة."),
+mc(3,"في برنامج Pass/Fail عند إدخال الدرجة 42 (النجاح `>= 50`) يطبع:",["Pass","كلاهما","Fail","لا شيء"],2,"الشرط false فتُنفَّذ كتلة `else` مباشرة."),
+mc(3,"يضمن تركيب `if-else`:",["تنفيذ مسار واحد فقط من المسارين","تنفيذ المسارين معًا","تكرار الكود","تخطي الشرط"],0,"إما كتلة `if` أو كتلة `else` في كل مرة تشغَّل فيها."),
+// المحاضرة 4
+mc(4,"يُعرَّف تصميم البرامج بأنه:",["كتابة الكود النهائي","عملية التخطيط للحل البرمجي قبل مرحلة التنفيذ الفعلي","اختبار البرنامج بعد الانتهاء","تركيب الأجهزة"],1,"وظيفته تحويل المشكلة الواقعية إلى خطوات منظمة قابلة للتنفيذ بواسطة الحاسب."),
+mc(4,"من نتائج غياب التخطيط الجيد:",["برامج أسرع دائمًا","حلول مكتملة وسهلة الصيانة","لا تأثير","شيفرات معقدة وصعبة الصيانة واستهلاك وقت طويل في اكتشاف الأخطاء"],3,"إضافة إلى حلول غير مكتملة أو قاصرة."),
+mc(4,"الاختصار SDLC يعني:",["Software Development Life Cycle","System Data Logic Control","Structured Data Language Code","Simple Design Learning Cycle"],0,"دورة حياة تطوير البرمجيات، وتصميم البرامج من أهم مراحلها."),
+mc(4,"من فوائد تصميم البرامج:",["زيادة الأخطاء","إنشاء حلول ومكونات يمكن إعادة استخدامها (Reusability)","تعقيد الصيانة","إلغاء مرحلة الاختبار"],1,"ومنها أيضًا تقليل الأخطاء وتنظيم الأفكار وتسهيل التعاون بين أعضاء الفريق."),
+mc(4,"الترتيب الصحيح للمراحل الخمس لتحويل المشكلة إلى برنامج:",["كتابة الكود ← تحليل المشكلة ← تصميم الحل ← اختبار ← خوارزمية","اختبار ← تحليل ← تصميم ← كود ← خوارزمية","تحليل المشكلة ← تصميم الحل ← صياغة الخوارزمية ← كتابة الكود ← اختبار البرنامج","تصميم الحل ← كتابة الكود ← تحليل المشكلة ← خوارزمية ← اختبار"],2,"وهو التسلسل الكامل المذكور في خلاصة المحاضرة الرابعة."),
+mc(4,"المخططات الانسيابية (Flowcharts) وشبه الشيفرة (Pseudocode) تُستخدم في مرحلة:",["كتابة الكود","صياغة الخوارزمية","الاختبار","تحليل المشكلة"],1,"لتوصيف خطوات الحل خطوة بخطوة بشكل منظم."),
+mc(4,"المعالجة (Processing) في الثالوث الأساسي هي:",["البيانات التي يحتاجها البرنامج","النتائج التي تُعرض للمستخدم","العمليات الحسابية والمنطقية والخطوات اللازمة لتحويل المدخلات إلى نتائج","شكل الواجهة"],2,"المدخلات (Inputs) هي البيانات، والمخرجات (Outputs) هي النتائج والتقارير."),
+mc(4,"المعادلة الصحيحة لحساب متوسط الدرجات الثلاث في مثال المحاضرة:",["average = g1 + g2 + g3","average = g1 / 3.0","average = g1 * g2 * g3","average = (g1 + g2 + g3) / 3.0"],3,"نجمع الدرجات ثم نقسم على 3.0 (والمدخلات من النوع double)."),
+mc(4,"عدد مراحل نموذج جورج بوليا والمرحلة الثانية منه:",["ثلاث مراحل أولها الاختبار","خمس مراحل مطابقة لمراحل SDLC","أربع مراحل، والثانية وضع خطة للحل (Devising a Plan)","أربع مراحل، والثانية المراجعة"],2,"المراحل: فهم المشكلة، وضع خطة للحل، تنفيذ الخطة، المراجعة والتحقق."),
+mc(4,"المرحلة الأخيرة في نموذج بوليا هي:",["فهم المشكلة","وضع خطة للحل","تنفيذ الخطة","المراجعة والتحقق (Looking Back / Review)"],3,"فحص النتائج والتأكد من مطابقتها للمتطلبات واختبار الحالات الخاصة.")
+];
+
+/* ===================== مقالي ===================== */
+const ES=[
+{l:1,q:"اشرح مراحل دورة تنفيذ برنامج Java الخمس بالتفصيل مع ذكر امتداد الملف في كل مرحلة.",
+ m:["<b>1) كتابة الشيفرة المصدرية (Source Code):</b> يُكتب الكود في ملف نصي بامتداد <code>.java</code> ويجب أن يطابق اسم الـ public class اسم الملف.","<b>2) الترجمة (Compiler - javac):</b> يفحص المترجم قواعد كتابة الكود ويحوله إلى Bytecode، وعند وجود أخطاء صياغة يتوقف ويعرض رسائل الأخطاء.","<b>3) الشيفرة الوسيطة (Bytecode):</b> ينتج ملف بامتداد <code>.class</code> يحتوي على تعليمات محايدة ومستقلة عن عتاد الجهاز.","<b>4) الآلة الافتراضية (JVM):</b> تقرأ الـ Bytecode وتفسره حسب نظام التشغيل المستهدف (Windows, macOS, Linux, Android).","<b>5) التنفيذ (Execution):</b> تُنفَّذ التعليمات على المعالج وتظهر النتائج للمستخدم."]},
+{l:1,q:"تحدث عن نشأة وتطور لغة Java تاريخيًا، واذكر معنى شعار WORA وكيف تحقق.",
+ m:["<b>1991:</b> بدأ المشروع داخل Sun Microsystems بقيادة James Gosling بمشاركة Mike Sheridan و Patrick Naughton بهدف لغة بسيطة وموثوقة تعمل على أكثر من منصة في الأجهزة الإلكترونية.","سُميت أولًا <b>Oak</b> ثم غُيّر الاسم إلى Java قبل الإصدار الرسمي لتفادي التضارب مع لغة أخرى بالاسم نفسه.","<b>1995:</b> أعلنت Sun الإصدار الأول واشتهرت بشعار <b>WORA: Write Once, Run Anywhere</b>.","<b>2010:</b> استحوذت Oracle على Sun وأصبحت المسؤولة عن التطوير والتحديثات.","<b>تحقق WORA:</b> يُترجم البرنامج إلى Bytecode محايد، ويعمل على أي نظام توجد عليه JVM دون إعادة ترجمة."]},
+{l:1,q:"ما المفاهيم الستة المشتركة بين معظم لغات البرمجة؟ وما الخصائص الثلاث التي ميّزت Java؟",
+ m:["<b>المفاهيم الستة:</b> البيانات (Data)، المتغيرات والثوابت، العمليات والتعبيرات (Operators & Expressions)، التعليمات (Statements)، الدوال أو الأساليب (Methods)، وهياكل البرامج (Program Structures: الشرطية والتكرارية).","<b>خصائص Java:</b>","1) سهولة التعلم والتنظيم: تنظيم الكود داخل Classes و Methods والتخلص من تعقيدات المؤشرات Pointers.","2) الاستقلال عن المنصة: عبر Bytecode و JVM.","3) دعم البرمجة كائنية التوجه OOP: Classes و Objects و Methods لتنظيم البرامج الكبيرة وإعادة الاستخدام وتسهيل الصيانة."]},
+{l:2,q:"فكّك الدالة الرئيسية <code>public static void main(String[] args)</code> وبيّن معنى كل مكوّن.",
+ m:["<b>public:</b> محدد وصول يتيح للـ JVM الوصول للدالة وتنفيذها من خارج الـ Class.","<b>static:</b> تربط الدالة بالـ Class نفسه فتستدعيها JVM دون إنشاء كائن.","<b>void:</b> الدالة تؤدي مهمة ولا ترجع أي قيمة.","<b>main:</b> الاسم الخاص المعروف لدى JVM لبدء التنفيذ منه، وهي نقطة الانطلاق الأساسية للبرنامج.","<b>String[] args:</b> مصفوفة نصوص لاستقبال المعاملات الممررة من سطر الأوامر عند التشغيل."]},
+{l:2,q:"اذكر قواعد تسمية المتغيرات في Java ومراحل استخدام المتغير مع مثال لكل مرحلة.",
+ m:["<b>قواعد التسمية:</b> يبدأ بحرف أو <code>_</code> أو <code>$</code>؛ لا يبدأ برقم؛ يجوز استخدام الأرقام بعد الحرف الأول؛ لا تُستخدم الكلمات المحجوزة مثل <code>class</code> و <code>int</code> و <code>public</code>؛ اللغة حساسة لحالة الأحرف (<code>age</code> ≠ <code>Age</code>).","<b>مراحل الاستخدام:</b>","1) التعريف (Declaration): <code>int age;</code> تحديد النوع والاسم.","2) التهيئة (Initialization): <code>int age = 20;</code> إعطاء قيمة أولية.","3) الإسناد وإعادة الإسناد (Assignment): <code>age = 21;</code> تخزين قيمة جديدة لاحقًا."]},
+{l:2,q:"قارن بين المتغير والثابت في Java مع ذكر الصيغة العامة للثابت وخطأ شائع عند التعامل معه.",
+ m:["<b>المتغير:</b> موقع في الذاكرة بقيمة قابلة للتغيير أثناء التنفيذ، ولا يحتاج كلمة خاصة، مثل <code>int age = 20;</code> (يخزن بيانات متغيرة كالعمر والراتب).","<b>الثابت:</b> قيمة تُعيَّن مرة واحدة ولا تُعدَّل، يُعرَّف بالكلمة <code>final</code> (يخزن قيمًا ثابتة كـ π ونسبة الضريبة).","<b>الصيغة العامة:</b> <code>final DataType CONSTANT_NAME = value;</code> مثل <code>final double TAX_RATE = 0.14;</code>","<b>الاتفاقية:</b> أسماء الثوابت بأحرف كبيرة وتُفصل الكلمات بشرطة سفلية.","<b>الخطأ الشائع:</b> محاولة تغيير قيمة الثابت مثل <code>TAX_RATE = 0.20;</code> تؤدي إلى Compile-Time Error."]},
+{l:2,q:"اشرح نوعي التحويل بين أنواع البيانات (Type Casting) مع مثال لكل نوع، واذكر مخاطر التحويل الصريح الضيق.",
+ m:["<b>التحويل التلقائي المتسع (Widening/Implicit):</b> من نوع أصغر إلى أكبر، تلقائي بواسطة Java ولا يفقد بيانات. المسار: byte → short → int → long → float → double. مثال: <code>int number = 25; double value = number;</code> فتصبح 25.0.","<b>التحويل الصريح الضيق (Narrowing/Explicit):</b> من نوع أكبر إلى أصغر ويلزم فيه تدخل المبرمج بكتابة النوع بين قوسين. مثال: <code>double number = 10.75; int value = (int) number;</code> فتصبح 10.","<b>المخاطر:</b> (1) فقدان البيانات: حذف الكسر العشري دون تقريب. (2) تجاوز النطاق (Overflow): أرقام خاطئة وغير متوقعة. (3) فقدان الدقة: ضياع الخانات العشرية الدقيقة."]},
+{l:2,q:"اشرح أسبقية تنفيذ المعاملات في Java مع مثال، ووضّح لماذا يعطي <code>10 / 4</code> الناتج 2.",
+ m:["<b>الترتيب من الأعلى للأدنى:</b> 1) الأقواس () 2) الزيادة والإنقاص والنفي (<code>++ -- !</code>) 3) الضرب والقسمة وباقي القسمة 4) الجمع والطرح 5) معاملات المقارنة 6) المعاملات المنطقية (<code>&&</code> ثم <code>||</code>) 7) معاملات الإسناد.","<b>مثال:</b> <code>2 + 3 * 4</code> = 14 (الضرب أولًا)، بينما <code>(2 + 3) * 4</code> = 20 (الأقواس أولًا).","<b>القسمة الصحيحة:</b> إذا كان العددان من النوع <code>int</code> فالناتج عدد صحيح فقط وتُهمل الكسور، لذا <code>10 / 4</code> = 2. للحصول على 2.5 يجب تحويل أحد الرقمين إلى <code>double</code> مثل <code>10.0 / 4.0</code>."]},
+{l:3,q:"اشرح جملة <code>if</code> البسيطة وجملة <code>if-else</code>: الصيغة العامة وآلية التنفيذ مع مثال.",
+ m:["<b>الصيغة (if):</b> <code>if (condition) { statements; }</code> حيث الشرط تعبير منطقي بين أقواس دائرية والكتلة بين أقواس معقوفة.","<b>آلية التنفيذ:</b> يُقيَّم الشرط؛ إن كان <code>true</code> تُنفَّذ الكتلة ثم يتابع البرنامج، وإن كان <code>false</code> تُتجاهل الكتلة وينتقل إلى أول تعليمة بعد <code>if</code>. وينصح باستخدام الأقواس دائمًا حتى مع تعليمة واحدة.","<b>الصيغة (if-else):</b> <code>if (condition) { statements1; } else { statements2; }</code> ويضمن تنفيذ مسار واحد فقط من المسارين.","<b>مثال:</b> <code>if (grade >= 50) { Pass } else { Fail }</code>؛ عند الدرجة 75 تُطبع Pass، وعند 42 تُطبع Fail."]},
+{l:4,q:"لماذا يُعد تصميم البرامج ضروريًا؟ اذكر المراحل الخمس لتحويل المشكلة إلى برنامج، والثالوث الأساسي لتحليل المشكلة، ومراحل نموذج بوليا.",
+ m:["<b>أهمية التصميم:</b> تقليل الأخطاء قبل التنفيذ، تنظيم الأفكار وتفكيك المشكلة المعقدة، إنتاج برامج عالية الجودة سهلة الاختبار والصيانة، تسهيل التعاون بين الفريق، وإعادة الاستخدام (Reusability). وغيابه يؤدي إلى شيفرات معقدة ووقت طويل في اكتشاف الأخطاء.","<b>المراحل الخمس:</b> تحليل المشكلة ← تصميم الحل ← صياغة الخوارزمية (Flowcharts/Pseudocode) ← كتابة الكود ← اختبار البرنامج.","<b>الثالوث:</b> المدخلات (Inputs) + المعالجة (Processing) + المخرجات (Outputs). مثال: متوسط 3 درجات: المدخلات g1,g2,g3 (double)، المعالجة <code>(g1+g2+g3)/3.0</code>، المخرجات عرض average.","<b>نموذج بوليا:</b> 1) فهم المشكلة 2) وضع خطة للحل 3) تنفيذ الخطة 4) المراجعة والتحقق."]}
+];
+
+/* ===================== المحرك ===================== */
+const state={tf:{},mc:{}};
+const $=id=>document.getElementById(id);
+const L=["أ","ب","ج","د"];
+function head(i,total,l,label){return `<div class="meta"><span class="num">${label} ${i+1} / ${total}</span><span>المحاضرة ${l}</span></div>`}
+
+function renderTF(){
+  $("tf").innerHTML=TF.map((x,i)=>`<div class="q" id="tf${i}">${head(i,TF.length,x.l,"س")}<h3>${esc(x.q)}</h3>
+  <div class="opts tfrow"><button class="opt" data-v="1"><span class="l">✔</span>صح</button><button class="opt" data-v="0"><span class="l">✘</span>خطأ</button></div>
+  <div class="exp"></div></div>`).join("");
+  TF.forEach((x,i)=>{const box=$("tf"+i);box.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+    const v=b.dataset.v==="1";const ok=v===x.a;state.tf[i]=ok;
+    box.querySelectorAll(".opt").forEach(o=>{o.disabled=true;const ov=o.dataset.v==="1";if(ov===x.a)o.classList.add("correct");});
+    if(!ok)b.classList.add("wrong");
+    const e=box.querySelector(".exp");e.innerHTML=`<div class="verdict ${ok?"ok":"no"}">${ok?"✅ إجابة صحيحة، أحسنت!":"❌ إجابة خاطئة"}</div>`+(ok?"":`<div>الإجابة الصحيحة: <b>${x.a?"صح":"خطأ"}</b></div>`)+`<div>📘 ${esc(x.e)}</div>`;
+    e.classList.add("show");update();});});
+}
+function renderMC(){
+  $("mc").innerHTML=MC.map((x,i)=>`<div class="q" id="mc${i}">${head(i,MC.length,x.l,"س")}<h3>${esc(x.q)}</h3>
+  <div class="opts">${x.o.map((o,j)=>`<button class="opt" data-j="${j}"><span class="l">${L[j]}</span><span>${esc(o)}</span></button>`).join("")}</div><div class="exp"></div></div>`).join("");
+  MC.forEach((x,i)=>{const box=$("mc"+i);box.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+    const j=+b.dataset.j;const ok=j===x.a;state.mc[i]=ok;
+    box.querySelectorAll(".opt").forEach(o=>{o.disabled=true;if(+o.dataset.j===x.a)o.classList.add("correct");});
+    if(!ok)b.classList.add("wrong");
+    const e=box.querySelector(".exp");e.innerHTML=`<div class="verdict ${ok?"ok":"no"}">${ok?"✅ إجابة صحيحة، أحسنت!":"❌ إجابة خاطئة"}</div>`+(ok?"":`<div>الإجابة الصحيحة: <b>${L[x.a]}) ${esc(x.o[x.a])}</b></div>`)+`<div>📘 ${esc(x.e)}</div>`;
+    e.classList.add("show");update();});});
+}
+function renderES(){
+  $("es").innerHTML=ES.map((x,i)=>`<div class="q" id="es${i}">${head(i,ES.length,x.l,"سؤال مقالي")}<h3>${x.q}</h3>
+  <textarea placeholder="اكتب إجابتك هنا ثم قارنها بالإجابة النموذجية..."></textarea>
+  <button class="btn">👁 اعرض الإجابة النموذجية</button>
+  <div class="exp model"><div class="verdict ok">✅ الإجابة النموذجية (من محتوى المحاضرات):</div>${x.m.map(p=>`<p>${p}</p>`).join("")}</div></div>`).join("");
+  ES.forEach((x,i)=>{const box=$("es"+i);box.querySelector(".btn").onclick=()=>box.querySelector(".exp").classList.toggle("show");});
+}
+function count(o){const v=Object.values(o);return {d:v.length,r:v.filter(Boolean).length}}
+function update(){
+  const a=count(state.tf),b=count(state.mc);
+  const d=a.d+b.d,r=a.r+b.r;
+  $("done").textContent=d;$("right").textContent=r;$("wrong").textContent=d-r;
+  $("pb").style.width=d+"%";
+  if($("res").classList.contains("active"))renderRes();
+}
+function renderRes(){
+  const a=count(state.tf),b=count(state.mc);const d=a.d+b.d,r=a.r+b.r;
+  const pct=d?Math.round(r/100*100):0;
+  let msg="ابدأ بحل الأسئلة 😉";
+  if(d>=1){msg=pct>=90?"ممتاز جدًا! أنت جاهز للامتحان 🔥":pct>=75?"جيد جدًا، راجع الأخطاء وستصل للقمة 💪":pct>=50?"مقبول، حاول مراجعة المحاضرات مرة أخرى 📚":"محتاج مراجعة قوية للمحاضرات، ومتخافش هتبقى تمام 🙂";}
+  $("res").innerHTML=`<div class="result"><div class="big">${r} / 100</div><div>النسبة من الدرجة الكلية: <b>${pct}%</b> (الأسئلة المقالية للتدريب فقط ولا تُحتسب)</div>
+  <table><tr><th>القسم</th><th>تمت الإجابة</th><th>صحيحة</th></tr>
+  <tr><td>صح وخطأ</td><td>${a.d} / 50</td><td>${a.r}</td></tr>
+  <tr><td>اختيار من متعدد</td><td>${b.d} / 50</td><td>${b.r}</td></tr></table>
+  <h3>${msg}</h3><button class="btn" id="again">🔄 إعادة الامتحان</button></div>`;
+  $("again").onclick=()=>{state.tf={};state.mc={};renderTF();renderMC();renderES();update();show("tf");window.scrollTo(0,0)};
+}
+function show(t){
+  document.querySelectorAll("section").forEach(s=>s.classList.toggle("active",s.id===t));
+  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.t===t));
+  if(t==="res")renderRes();window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>show(b.dataset.t));
+renderTF();renderMC();renderES();update();
+</script>
+</body>
+</html>
